@@ -20,7 +20,7 @@ export default function ActivityTimeline() {
       <ActivityCard
         type='project'
         title='Created New Project'
-        description='TaskSync SaaS project was created.'
+        description='ApexAssign workspace project was created.'
         time='2 hours ago'
       />
 

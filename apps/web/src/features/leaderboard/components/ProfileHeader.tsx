@@ -2,22 +2,22 @@ import { Building2, Pencil } from 'lucide-react';
 
 export default function ProfileHeader() {
   return (
-    <div className='flex flex-col gap-4 border-b border-gray-200 pb-6 sm:flex-row sm:items-center sm:justify-between'>
+    <div className='flex flex-col gap-4 border-b border-zinc-800 pb-6 sm:flex-row sm:items-center sm:justify-between'>
       <div className='flex items-center gap-4'>
         {/* Avatar */}
-        <div className='h-16 w-16 flex-shrink-0 rounded-full bg-gray-200 sm:h-20 sm:w-20' />
+        <div className='h-16 w-16 flex-shrink-0 rounded-full bg-zinc-800 sm:h-20 sm:w-20' />
 
         <div>
-          <h1 className='text-2xl font-bold text-gray-900 sm:text-3xl'>
+          <h1 className='text-2xl font-bold text-zinc-100 sm:text-3xl'>
             Relentless Inivie
           </h1>
 
           <div className='mt-1.5 flex flex-wrap items-center gap-3'>
-            <span className='rounded-full bg-blue-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-800'>
+            <span className='rounded-full bg-cyan-500/10 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-cyan-300'>
               Product Designer
             </span>
 
-            <span className='flex items-center gap-1.5 text-xs text-gray-500'>
+            <span className='flex items-center gap-1.5 text-xs text-zinc-400'>
               <Building2 className='h-3.5 w-3.5' />
               Experience &amp; Interface Team
             </span>

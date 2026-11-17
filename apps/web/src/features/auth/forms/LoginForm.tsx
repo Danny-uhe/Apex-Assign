@@ -23,7 +23,7 @@ function getLoginErrorMessage(error: unknown): string {
   }
 
   if (isAxiosError(error) && !error.response) {
-    return "We couldn't reach TaskSync. Check your connection and try again.";
+    return "We couldn't reach ApexAssign. Check your connection and try again.";
   }
 
   return "We couldn't sign you in. Please try again.";
@@ -63,11 +63,11 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-md'>
-      <h1 className='text-3xl font-bold text-center text-white'>Welcome back</h1>
+    <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
+      <h1 className='text-xl font-semibold text-zinc-100'>Welcome back</h1>
 
-      <p className='mt-2 mb-6 text-center text-sm text-zinc-400'>
-        Log in to your TaskSync workspace
+      <p className='mt-1 text-sm text-zinc-400'>
+        Sign in to your ApexAssign account.
       </p>
 
       <div className='mt-6 space-y-4'>
@@ -92,7 +92,7 @@ export default function LoginForm() {
           onChange={() => setValue('remember', !watch('remember'))}
         />
 
-        <Link to='/forgot-password' className='text-sm text-cyan-400 hover:underline'>
+        <Link to='/forgot-password' className='text-sm text-cyan-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'>
           Forgot password?
         </Link>
       </div>

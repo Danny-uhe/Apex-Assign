@@ -2,12 +2,12 @@ import { Crown } from 'lucide-react';
 
 export default function TopThreeCard() {
   return (
-    <div className='rounded-2xl border border-gray-200 bg-white p-6'>
+    <div className='rounded-2xl border border-zinc-800 bg-zinc-900 p-6'>
       <div className='mb-6 flex items-center justify-between'>
         <div>
           <h2 className='text-xl font-bold'>Top Performers</h2>
 
-          <p className='text-sm text-slate-500'>This week's leaders</p>
+          <p className='text-sm text-zinc-400'>This week's leaders</p>
         </div>
 
         <Crown className='text-yellow-500' />
@@ -33,7 +33,7 @@ export default function TopThreeCard() {
         ].map((user) => (
           <div
             key={user.name}
-            className='rounded-xl border border-gray-200 bg-slate-50 p-5 text-center'
+            className='rounded-xl border border-zinc-800 bg-zinc-950/60 p-5 text-center'
           >
             <img
               src={`https://ui-avatars.com/api/?name=${user.name}`}
@@ -42,7 +42,7 @@ export default function TopThreeCard() {
 
             <h3 className='mt-3 font-semibold'>{user.name}</h3>
 
-            <p className='text-sm text-slate-500'>{user.points} pts</p>
+            <p className='text-sm text-zinc-400'>{user.points} pts</p>
 
             <span className='mt-3 inline-block rounded-full bg-blue-600 px-3 py-1 text-xs text-white'>
               {user.place}

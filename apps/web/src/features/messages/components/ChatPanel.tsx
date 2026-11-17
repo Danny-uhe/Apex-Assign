@@ -58,17 +58,17 @@ export default function ChatPanel({ projectId, projectName }: Props) {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <div className="flex h-full flex-col rounded-2xl border border-zinc-800 bg-zinc-900 text-zinc-100 shadow-sm">
       {/* Header */}
-      <div className="flex items-center gap-3 border-b border-gray-100 px-5 py-4">
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100">
-          <MessageCircle size={16} className="text-blue-600" />
+      <div className="flex items-center gap-3 border-b border-zinc-800 px-5 py-4">
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-500/10">
+          <MessageCircle size={16} className="text-cyan-400" />
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">
+          <h3 className="text-sm font-semibold text-zinc-100">
             {projectName ? `${projectName} Chat` : "Project Chat"}
           </h3>
-          <p className="text-xs text-gray-400">{messages.length} messages</p>
+          <p className="text-xs text-zinc-500">{messages.length} messages</p>
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export default function ChatPanel({ projectId, projectName }: Props) {
             <Loader2 size={20} className="animate-spin text-blue-500" />
           </div>
         ) : messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-16 text-zinc-500">
             <MessageCircle size={32} className="mb-3 opacity-30" />
             <p className="text-sm font-medium">No messages yet</p>
             <p className="text-xs">Start the conversation!</p>
@@ -99,14 +99,14 @@ export default function ChatPanel({ projectId, projectName }: Props) {
                 </Link>
 
                 <div className={`group max-w-[70%] ${isOwn ? "items-end" : "items-start"} flex flex-col gap-1`}>
-                  <p className={`text-[11px] text-gray-400 ${isOwn ? "text-right" : ""}`}>
+                  <p className={`text-[11px] text-zinc-500 ${isOwn ? "text-right" : ""}`}>
                     {msg.user?.name ?? "Unknown"}
                   </p>
                   <div className="flex items-end gap-2">
                     {isOwn && (
                       <button
                         onClick={() => del.mutate(msg.id)}
-                        className="hidden group-hover:flex h-6 w-6 items-center justify-center rounded-lg text-gray-300 hover:text-red-400 hover:bg-red-50"
+                        className="hidden group-hover:flex h-6 w-6 items-center justify-center rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10"
                       >
                         <Trash2 size={12} />
                       </button>
@@ -114,12 +114,12 @@ export default function ChatPanel({ projectId, projectName }: Props) {
                     <div className={`rounded-2xl px-4 py-2.5 text-sm ${
                       isOwn
                         ? "rounded-tr-sm bg-blue-600 text-white"
-                        : "rounded-tl-sm bg-gray-100 text-gray-800"
+                        : "rounded-tl-sm bg-zinc-800 text-zinc-200"
                     }`}>
                       {msg.content}
                     </div>
                   </div>
-                  <p className="text-[10px] text-gray-300">
+                  <p className="text-[10px] text-zinc-500">
                     {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </div>
@@ -130,10 +130,10 @@ export default function ChatPanel({ projectId, projectName }: Props) {
 
         {/* Typing indicator */}
         {typingUsers.length > 0 && (
-          <div className="flex items-center gap-2 text-xs text-gray-400">
+          <div className="flex items-center gap-2 text-xs text-zinc-400">
             <div className="flex gap-0.5">
               {[0,1,2].map((i) => (
-                <span key={i} className="inline-block h-1.5 w-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                <span key={i} className="inline-block h-1.5 w-1.5 rounded-full bg-zinc-500 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
               ))}
             </div>
             <span>{typingUsers.length === 1 ? "Someone is" : `${typingUsers.length} people are`} typing…</span>
@@ -144,18 +144,18 @@ export default function ChatPanel({ projectId, projectName }: Props) {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSend} className="border-t border-gray-100 px-4 py-3">
+      <form onSubmit={handleSend} className="border-t border-zinc-800 px-4 py-3">
         <div className="flex gap-2">
           <input
             value={text}
             onChange={handleInput}
             placeholder="Type a message…"
-            className="flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20"
           />
           <button
             type="submit"
             disabled={!text.trim() || send.isPending}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500 text-white hover:bg-cyan-400 disabled:opacity-40"
           >
             {send.isPending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
           </button>

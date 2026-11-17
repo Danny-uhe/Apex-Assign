@@ -6,10 +6,10 @@ export const loginBranding: AuthBrandingProps = {
   quote:
     '"Board view finally let me see where the whole team was stuck—not just my own list."',
 
-  author: '— from a TaskSync team lead',
+  author: '— from an ApexAssign team lead',
 
   statOne: '2,400+',
-  statOneLabel: 'Teams using TaskSync',
+  statOneLabel: 'Teams using ApexAssign',
 
   statTwo: '98%',
   statTwoLabel: 'Uptime last quarter',

@@ -2,12 +2,15 @@
 
 /* ── Dark & Sleek global defaults ───────────────────────────────────────── */
 :root {
+  color-scheme: dark;
   --accent: #22d3ee;        /* cyan-400 */
   --accent-dark: #0891b2;   /* cyan-600 */
 }
 
 body {
-  background-color: #f1f5f9; /* slate-100 — main content area */
+  min-height: 100vh;
+  background-color: #09090b;
+  color: #f4f4f5;
 }
 
 /* Smooth scrollbar */

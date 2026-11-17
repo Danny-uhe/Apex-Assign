@@ -72,7 +72,6 @@ export default function SettingsPage() {
   });
 
   /* Appearance */
-  const [darkMode,  setDarkMode]  = useState(false);
   const [language,  setLanguage]  = useState('English');
   const [timezone,  setTimezone]  = useState('UTC+1 (Lagos)');
 
@@ -396,26 +395,15 @@ export default function SettingsPage() {
             {activeTab === 'appearance' && (
               <>
                 <section className='rounded-2xl border border-zinc-700 bg-zinc-900 p-6 shadow-sm'>
-                  <h2 className='mb-5 text-base font-bold text-white'>Theme</h2>
-                  <div className='grid grid-cols-2 gap-3 sm:grid-cols-3'>
-                    {[
-                      { label: 'Light',  preview: 'bg-white border-2 border-cyan-500'  },
-                      { label: 'Dark',   preview: 'bg-zinc-900 border-2 border-cyan-500' },
-                      { label: 'System', preview: 'bg-gradient-to-r from-white to-zinc-900' },
-                    ].map((theme) => (
-                      <button
-                        key={theme.label}
-                        onClick={() => setDarkMode(theme.label === 'Dark')}
-                        className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
-                          (darkMode ? 'Dark' : 'Light') === theme.label
-                            ? 'border-cyan-500 bg-cyan-500/10'
-                            : 'border-zinc-700 hover:border-zinc-600'
-                        }`}
-                      >
-                        <div className={`h-8 w-full rounded-lg ${theme.preview}`} />
-                        <span className='text-xs font-semibold text-zinc-400'>{theme.label}</span>
-                      </button>
-                    ))}
+                  <h2 className='mb-2 text-base font-bold text-white'>Theme</h2>
+                  <div className='flex items-center gap-4 rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4'>
+                    <div className='h-12 w-20 flex-shrink-0 rounded-lg border border-zinc-700 bg-zinc-950 shadow-inner' />
+                    <div>
+                      <p className='text-sm font-semibold text-zinc-100'>Dark theme enabled</p>
+                      <p className='mt-1 text-xs text-zinc-400'>
+                        ApexAssign uses the dark workspace theme across all pages.
+                      </p>
+                    </div>
                   </div>
                 </section>
 

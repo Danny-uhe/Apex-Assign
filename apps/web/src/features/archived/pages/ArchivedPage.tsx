@@ -5,9 +5,9 @@ import { useTaskContext } from '@/app/Providers/TaskContext';
 import { taskService, type ArchivedTask } from '@/features/tasks/services/task.service';
 
 const priorityStyles: Record<string, string> = {
-  high: 'bg-red-50 text-red-600',
-  medium: 'bg-orange-50 text-orange-500',
-  low: 'bg-slate-100 text-slate-500',
+  high: 'bg-red-500/10 text-red-300',
+  medium: 'bg-orange-500/10 text-orange-300',
+  low: 'bg-zinc-800 text-zinc-300',
 };
 
 function initials(name?: string | null) {
@@ -81,22 +81,22 @@ export default function ArchivedPage() {
       <div className='space-y-5'>
         <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
           <div className='relative w-full sm:w-72'>
-            <Search size={15} className='absolute left-3 top-1/2 -translate-y-1/2 text-slate-400' />
+            <Search size={15} className='absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500' />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder='Search archived tasks...'
               aria-label='Search archived tasks'
-              className='h-10 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100'
+              className='h-10 w-full rounded-xl border border-zinc-700 bg-zinc-900 pl-9 pr-4 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20'
             />
           </div>
-          <p className='text-sm text-slate-400'>
+          <p className='text-sm text-zinc-500'>
             {visible.length} archived task{visible.length !== 1 ? 's' : ''}
           </p>
         </div>
 
         {error && (
-          <div role='alert' className='flex items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700'>
+          <div role='alert' className='flex items-center justify-between gap-3 rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-300'>
             <span>{error}</span>
             {loading === false && tasks.length === 0 && (
               <button type='button' onClick={() => void loadTasks()} className='font-semibold underline'>
@@ -107,11 +107,11 @@ export default function ArchivedPage() {
         )}
 
         {loading ? (
-          <div role='status' className='flex justify-center rounded-2xl border border-slate-200 bg-white py-20 text-blue-500'>
+          <div role='status' className='flex justify-center rounded-2xl border border-zinc-800 bg-zinc-900 py-20 text-cyan-400'>
             <Loader2 className='animate-spin' aria-label='Loading archived tasks' />
           </div>
         ) : error ? null : visible.length === 0 ? (
-          <div className='flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 py-20 text-slate-400'>
+          <div className='flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-700 py-20 text-zinc-500'>
             <p className='text-sm font-medium'>
               {tasks.length === 0 ? 'No archived tasks yet' : 'No archived tasks match your search'}
             </p>
@@ -122,7 +122,7 @@ export default function ArchivedPage() {
             {visible.map((task) => (
               <div
                 key={task.id}
-                className='flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md sm:flex-row sm:items-start sm:justify-between'
+                className='flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 shadow-sm transition hover:border-zinc-700 hover:shadow-lg sm:flex-row sm:items-start sm:justify-between'
               >
                 <div className='flex min-w-0 items-start gap-3'>
                   <div className='mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-500 text-[10px] font-bold text-white'>
@@ -130,13 +130,13 @@ export default function ArchivedPage() {
                   </div>
                   <div className='min-w-0'>
                     <div className='flex flex-wrap items-center gap-2'>
-                      <h3 className='font-semibold text-slate-700 line-through'>{task.title}</h3>
+                      <h3 className='font-semibold text-zinc-200 line-through'>{task.title}</h3>
                       <span className={`rounded-md px-2 py-0.5 text-xs font-semibold capitalize ${priorityStyles[task.priority] ?? priorityStyles.low}`}>
                         {task.priority}
                       </span>
                     </div>
-                    <p className='mt-0.5 line-clamp-1 text-sm text-slate-400'>{task.description || task.project.name}</p>
-                    <div className='mt-2 flex flex-wrap items-center gap-3 text-xs text-slate-400'>
+                    <p className='mt-0.5 line-clamp-1 text-sm text-zinc-400'>{task.description || task.project.name}</p>
+                    <div className='mt-2 flex flex-wrap items-center gap-3 text-xs text-zinc-500'>
                       <span className='flex items-center gap-1'>
                         <CalendarDays size={12} />
                         Due: {dateLabel(task.dueDate)}
@@ -151,7 +151,7 @@ export default function ArchivedPage() {
                     type='button'
                     disabled={busyTaskId === task.id}
                     onClick={() => void handleRestore(task)}
-                    className='flex items-center gap-1.5 rounded-lg border border-blue-200 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 disabled:opacity-50'
+                    className='flex items-center gap-1.5 rounded-lg border border-cyan-500/40 px-3 py-1.5 text-xs font-semibold text-cyan-300 transition-colors hover:bg-cyan-400/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 disabled:opacity-50'
                   >
                     {busyTaskId === task.id ? <Loader2 size={13} className='animate-spin' /> : <ArchiveRestore size={13} />}
                     Restore

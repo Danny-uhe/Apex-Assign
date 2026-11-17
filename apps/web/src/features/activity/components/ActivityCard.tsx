@@ -23,17 +23,17 @@ export default function ActivityCard({
     );
 
   return (
-    <div className='flex gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm'>
+    <div className='flex gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 shadow-sm'>
       <div className='mt-1'>{icon}</div>
 
       <div className='flex-1'>
         <div className='flex items-center justify-between'>
-          <h3 className='font-semibold'>{title}</h3>
+          <h3 className='font-semibold text-zinc-100'>{title}</h3>
 
-          <span className='text-sm text-gray-400'>{time}</span>
+          <span className='text-sm text-zinc-500'>{time}</span>
         </div>
 
-        <p className='mt-2 text-sm text-gray-500'>{description}</p>
+        <p className='mt-2 text-sm text-zinc-400'>{description}</p>
       </div>
     </div>
   );

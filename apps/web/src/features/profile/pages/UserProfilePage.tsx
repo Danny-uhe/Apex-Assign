@@ -99,10 +99,10 @@ export default function UserProfilePage() {
   const streak         = profile.streak    ?? 0;
 
   const stats = [
-    { icon: CheckCircle2,  label: 'Tasks Done',  value: tasksCompleted, color: 'text-green-500',  bg: 'bg-green-50'  },
-    { icon: ClipboardList, label: 'Assigned',     value: tasksAssigned,  color: 'text-blue-500',   bg: 'bg-blue-50'   },
-    { icon: Zap,           label: 'Points',       value: points,         color: 'text-purple-500', bg: 'bg-purple-50' },
-    { icon: Flame,         label: 'Day Streak',   value: streak,         color: 'text-orange-500', bg: 'bg-orange-50' },
+    { icon: CheckCircle2,  label: 'Tasks Done',  value: tasksCompleted, color: 'text-green-400',  bg: 'bg-green-500/10'  },
+    { icon: ClipboardList, label: 'Assigned',     value: tasksAssigned,  color: 'text-cyan-400',   bg: 'bg-cyan-500/10'   },
+    { icon: Zap,           label: 'Points',       value: points,         color: 'text-purple-400', bg: 'bg-purple-500/10' },
+    { icon: Flame,         label: 'Day Streak',   value: streak,         color: 'text-orange-400', bg: 'bg-orange-500/10' },
   ];
 
   const joinedAt = new Date(profile.createdAt).toLocaleDateString('en-GB', {
@@ -116,7 +116,7 @@ export default function UserProfilePage() {
         {/* Back */}
         <button
           onClick={() => navigate(-1)}
-          className='flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900'
+          className='flex items-center gap-2 text-sm font-medium text-zinc-400 transition-colors hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
         >
           <ArrowLeft size={16} />
           Back to Members
@@ -137,7 +137,7 @@ export default function UserProfilePage() {
                   {initials}
                 </div>
               )}
-              <span className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-slate-800 ${isOnline ? 'bg-green-400' : 'bg-slate-400'}`} />
+              <span className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-zinc-800 ${isOnline ? 'bg-green-400' : 'bg-zinc-500'}`} />
             </div>
 
             {/* Info */}
@@ -149,8 +149,8 @@ export default function UserProfilePage() {
                     Admin
                   </span>
                 )}
-                <span className={`flex items-center gap-1.5 text-sm font-medium ${isOnline ? 'text-green-400' : 'text-slate-400'}`}>
-                  <span className={`h-2 w-2 rounded-full ${isOnline ? 'bg-green-400' : 'bg-slate-400'}`} />
+                <span className={`flex items-center gap-1.5 text-sm font-medium ${isOnline ? 'text-green-400' : 'text-zinc-400'}`}>
+                  <span className={`h-2 w-2 rounded-full ${isOnline ? 'bg-green-400' : 'bg-zinc-500'}`} />
                   {isOnline ? 'Online' : 'Offline'}
                 </span>
               </div>
@@ -171,7 +171,7 @@ export default function UserProfilePage() {
             {!isSelf && (
               <button
                 onClick={() => setMsgOpen(true)}
-                className='flex w-fit items-center gap-2 rounded-xl bg-white/20 px-4 py-2 text-sm font-semibold text-white backdrop-blur hover:bg-white/30'
+                className='flex w-fit items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'
               >
                 <MessageCircle size={15} />
                 Message
@@ -179,7 +179,7 @@ export default function UserProfilePage() {
             )}
           </div>
 
-          <div className='relative mt-5 flex items-center gap-2 text-sm text-slate-400'>
+          <div className='relative mt-5 flex items-center gap-2 text-sm text-zinc-400'>
             <Trophy size={14} className='text-yellow-400' />
             <span>{profile.points.toLocaleString()} points</span>
             <span className='mx-2'>·</span>
@@ -190,24 +190,24 @@ export default function UserProfilePage() {
         {/* Stats */}
         <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
           {stats.map(({ icon: Icon, label, value, color: c, bg }) => (
-            <div key={label} className='flex flex-col items-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm'>
+            <div key={label} className='flex flex-col items-center gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 shadow-sm'>
               <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${bg}`}>
                 <Icon size={18} className={c} />
               </div>
               <p className={`text-xl font-bold ${c}`}>{value.toLocaleString()}</p>
-              <p className='text-xs text-slate-400'>{label}</p>
+              <p className='text-xs text-zinc-400'>{label}</p>
             </div>
           ))}
         </div>
 
         {/* Info card */}
-        <div className='rounded-2xl border border-slate-200 bg-white p-5 shadow-sm'>
-          <h2 className='mb-3 font-bold text-slate-900'>About</h2>
-          <div className='space-y-2 text-sm text-slate-500'>
-            <p><span className='font-medium text-slate-700'>Role:</span> {profile.systemRole === 'admin' ? 'Admin' : 'Member'}</p>
-            <p><span className='font-medium text-slate-700'>Status:</span> {profile.isActive ? 'Active' : 'Inactive'}</p>
-            <p><span className='font-medium text-slate-700'>Joined:</span> {joinedAt}</p>
-            {profile.position && <p><span className='font-medium text-slate-700'>Position:</span> {profile.position}</p>}
+        <div className='rounded-2xl border border-zinc-800 bg-zinc-900 p-5 shadow-sm'>
+          <h2 className='mb-3 font-bold text-zinc-100'>About</h2>
+          <div className='space-y-2 text-sm text-zinc-400'>
+            <p><span className='font-medium text-zinc-200'>Role:</span> {profile.systemRole === 'admin' ? 'Admin' : 'Member'}</p>
+            <p><span className='font-medium text-zinc-200'>Status:</span> {profile.isActive ? 'Active' : 'Inactive'}</p>
+            <p><span className='font-medium text-zinc-200'>Joined:</span> {joinedAt}</p>
+            {profile.position && <p><span className='font-medium text-zinc-200'>Position:</span> {profile.position}</p>}
           </div>
         </div>
 

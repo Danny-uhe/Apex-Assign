@@ -13,14 +13,10 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <div className='relative z-10 w-full max-w-[420px]'>
         <header className='mb-8 text-center'>
           <img
-            src='/favicon.svg'
-            alt=''
-            aria-hidden='true'
-            className='mx-auto mb-4 h-12 w-12 drop-shadow-[0_0_12px_rgba(96,63,255,0.8)]'
+            src='/logo.png'
+            alt='ApexAssign'
+            className='mx-auto mb-5 h-24 w-auto drop-shadow-[0_0_20px_rgba(96,63,255,0.5)]'
           />
-          <p className='text-3xl font-bold tracking-tight text-white'>
-            Task<span className='text-violet-400'>Sync</span>
-          </p>
           <p className='mt-2 text-sm text-zinc-400'>
             A clearer way to work together.
           </p>

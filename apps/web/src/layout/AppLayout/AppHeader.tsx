@@ -35,12 +35,12 @@ function LeaderboardProfileBanner() {
         </button>
 
         <div>
-          <h1 className='text-lg font-bold text-gray-900 sm:text-2xl'>{name}</h1>
+          <h1 className='text-lg font-bold text-zinc-100 sm:text-2xl'>{name}</h1>
           <div className='mt-1 flex flex-wrap items-center gap-2 sm:gap-3'>
             <span className='rounded-full bg-cyan-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-cyan-800'>
               {role}
             </span>
-            <span className='flex items-center gap-1.5 text-xs text-gray-500'>
+            <span className='flex items-center gap-1.5 text-xs text-zinc-400'>
               <Building2 className='h-3.5 w-3.5' />
               Experience &amp; Interface Team
             </span>
@@ -110,10 +110,10 @@ export default function AppHeader({ onMenuClick }: Props) {
   /* Leaderboard: full-width profile banner */
   if (isLeaderboard) {
     return (
-      <header className='fixed left-0 right-0 top-0 z-30 flex min-h-16 items-center border-b border-zinc-200 bg-white px-4 sm:px-6 lg:left-64 lg:min-h-20 lg:px-8'>
+      <header className='fixed left-0 right-0 top-0 z-30 flex min-h-16 items-center border-b border-zinc-800 bg-zinc-950 px-4 sm:px-6 lg:left-64 lg:min-h-20 lg:px-8'>
         <button
           onClick={onMenuClick}
-          className='mr-3 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 lg:hidden'
+          className='mr-3 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 lg:hidden'
         >
           <Menu size={20} />
         </button>
@@ -123,22 +123,22 @@ export default function AppHeader({ onMenuClick }: Props) {
   }
 
   return (
-    <header className='fixed left-0 right-0 top-0 z-30 flex min-h-16 items-center justify-between border-b border-zinc-200 bg-white px-4 shadow-sm sm:px-6 lg:left-64 lg:min-h-20 lg:px-8'>
+    <header className='fixed left-0 right-0 top-0 z-30 flex min-h-16 items-center justify-between border-b border-zinc-800 bg-zinc-950 px-4 shadow-sm sm:px-6 lg:left-64 lg:min-h-20 lg:px-8'>
       {/* Left: hamburger (mobile) + title */}
       <div className='flex items-center gap-3'>
         <button
           onClick={onMenuClick}
           id='sidebar-hamburger-btn'
-          className='flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 lg:hidden'
+          className='flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 lg:hidden'
         >
           <Menu size={20} />
         </button>
 
         <div className='min-w-0'>
-          <h1 className='truncate text-lg font-bold text-zinc-900 sm:text-2xl lg:text-3xl'>
+          <h1 className='truncate text-lg font-bold text-zinc-100 sm:text-2xl lg:text-3xl'>
             {current?.title}
           </h1>
-          <p className='hidden text-xs text-zinc-400 sm:block sm:text-sm'>
+          <p className='hidden text-xs text-zinc-500 sm:block sm:text-sm'>
             {current?.subtitle}
           </p>
         </div>
@@ -151,7 +151,7 @@ export default function AppHeader({ onMenuClick }: Props) {
           <button
             id='notification-bell-btn'
             onClick={() => setNotifOpen(!notifOpen)}
-            className='relative flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 hover:border-cyan-400 hover:text-cyan-500 sm:h-10 sm:w-10'
+            className='relative flex h-9 w-9 items-center justify-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-400 transition-colors hover:border-cyan-400 hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 sm:h-10 sm:w-10'
           >
             <Bell size={17} />
             {unreadCount > 0 && (

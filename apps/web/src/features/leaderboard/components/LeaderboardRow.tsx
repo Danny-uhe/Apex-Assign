@@ -14,7 +14,7 @@ export default function LeaderboardRow({
 
     return(
 
-        <div className="flex items-center justify-between rounded-xl border border-gray-200 p-4">
+        <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4">
 
             <div className="flex items-center gap-4">
 
@@ -33,7 +33,7 @@ export default function LeaderboardRow({
                         {name}
                     </h3>
 
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-zinc-400">
                         {tasks} Tasks
                     </p>
 
@@ -41,7 +41,7 @@ export default function LeaderboardRow({
 
             </div>
 
-            <div className="font-bold text-blue-600">
+            <div className="font-bold text-cyan-400">
                 {points} pts
             </div>
 

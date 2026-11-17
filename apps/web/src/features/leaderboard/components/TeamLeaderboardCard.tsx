@@ -34,12 +34,12 @@ export default function TeamLeaderboardCard() {
   useEffect(() => { void loadLeaderboard(); }, [loadLeaderboard]);
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
       <div className="flex items-center gap-2 mb-1">
         <Trophy size={16} className="text-yellow-500" />
-        <h2 className="font-bold text-gray-900">Team Leaderboard</h2>
+        <h2 className="font-bold text-zinc-100">Team Leaderboard</h2>
       </div>
-      <p className="mt-0.5 text-xs text-gray-500 mb-4">Ranked by points earned</p>
+      <p className="mt-0.5 text-xs text-zinc-400 mb-4">Ranked by points earned</p>
 
       {loading ? (
         <div className="flex justify-center py-6">
@@ -51,7 +51,7 @@ export default function TeamLeaderboardCard() {
           <button type="button" onClick={loadLeaderboard} className="mt-1 font-semibold underline">Retry</button>
         </div>
       ) : users.length === 0 ? (
-        <p className="text-sm text-gray-400 text-center py-4">No data yet</p>
+        <p className="text-sm text-zinc-500 text-center py-4">No data yet</p>
       ) : (
         <div className="space-y-3">
           {users.slice(0, 10).map((u, i) => {
@@ -65,15 +65,15 @@ export default function TeamLeaderboardCard() {
                     {getInitials(u.name)}
                   </div>
                   <div className="min-w-0">
-                    <p className={`truncate text-sm font-semibold ${isYou ? "text-blue-500" : "text-gray-900"}`}>
+                    <p className={`truncate text-sm font-semibold ${isYou ? "text-cyan-400" : "text-zinc-100"}`}>
                       {u.name}{isYou && <span className="ml-1 font-normal text-blue-400">(You)</span>}
                     </p>
-                    <p className="text-xs text-gray-400">{u.position ?? "Team Member"}</p>
+                    <p className="text-xs text-zinc-500">{u.position ?? "Team Member"}</p>
                   </div>
                 </div>
                 <div className="flex-shrink-0 text-right">
                   <p className="text-sm font-bold text-purple-600">{u.points.toLocaleString()} pts</p>
-                  <p className="text-[10px] text-gray-400">{u.tasksCompleted} tasks</p>
+                  <p className="text-[10px] text-zinc-500">{u.tasksCompleted} tasks</p>
                 </div>
               </div>
             );

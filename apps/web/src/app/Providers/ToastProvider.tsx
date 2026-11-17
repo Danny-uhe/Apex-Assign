@@ -16,7 +16,7 @@ function ToastContent({
     <div className='min-w-0 flex-1'>
       <div
         id={`toast-message-${notificationId}`}
-        className={`text-sm font-medium leading-5 text-slate-800 [overflow-wrap:anywhere] ${
+        className={`text-sm font-medium leading-5 text-zinc-100 [overflow-wrap:anywhere] ${
           isLongMessage && !expanded
             ? 'line-clamp-4'
             : expanded
@@ -32,7 +32,7 @@ function ToastContent({
           onClick={() => setExpanded((value) => !value)}
           aria-expanded={expanded}
           aria-controls={`toast-message-${notificationId}`}
-          className='mt-1 text-xs font-semibold text-blue-600 hover:text-blue-700 focus-visible:outline-none focus-visible:underline'
+          className='mt-1 text-xs font-semibold text-cyan-300 hover:text-cyan-200 focus-visible:outline-none focus-visible:underline'
         >
           {expanded ? 'Show less' : 'Show details'}
         </button>
@@ -62,10 +62,10 @@ export default function ToastProvider() {
               ? LoaderCircle
               : Info;
         const tone = isError
-          ? 'border-red-100 bg-red-50 text-red-600'
+          ? 'border-red-500/30 bg-red-500/10 text-red-300'
           : isSuccess
-            ? 'border-green-100 bg-green-50 text-green-600'
-            : 'border-blue-100 bg-blue-50 text-blue-600';
+            ? 'border-green-500/30 bg-green-500/10 text-green-300'
+            : 'border-cyan-500/30 bg-cyan-500/10 text-cyan-300';
 
         return (
           <ToastBar
@@ -78,7 +78,7 @@ export default function ToastProvider() {
             }}
           >
             {({ message }) => (
-              <div className='flex w-[min(26rem,calc(100vw-2rem))] items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-left shadow-[0_12px_30px_rgba(15,23,42,0.14)] ring-1 ring-black/[0.03]'>
+              <div className='flex w-[min(26rem,calc(100vw-2rem))] items-start gap-3 rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3.5 text-left shadow-[0_12px_30px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.04]'>
                 <span
                   className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${tone}`}
                   aria-hidden='true'
@@ -93,7 +93,7 @@ export default function ToastProvider() {
                   type='button'
                   onClick={() => toast.dismiss(notification.id)}
                   aria-label='Dismiss notification'
-                  className='-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+                  className='-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900'
                 >
                   <X className='h-4 w-4' aria-hidden='true' />
                 </button>

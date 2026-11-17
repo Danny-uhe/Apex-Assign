@@ -68,16 +68,16 @@ export default function CommentsModal({ open, taskTitle, onClose }: Props) {
 
   return (
     <div className='fixed inset-0 z-50 flex items-end justify-center p-0 bg-black/50 sm:items-center sm:p-4'>
-      <div className='flex h-[85vh] w-full max-w-lg flex-col rounded-t-2xl bg-white shadow-2xl sm:h-[600px] sm:rounded-2xl'>
+      <div className='flex h-[85vh] w-full max-w-lg flex-col rounded-t-2xl border border-zinc-700 bg-zinc-900 text-zinc-100 shadow-2xl sm:h-[600px] sm:rounded-2xl'>
         {/* Header */}
-        <div className='flex items-start justify-between border-b border-slate-100 px-6 py-4'>
+        <div className='flex items-start justify-between border-b border-zinc-800 px-6 py-4'>
           <div>
-            <h2 className='font-bold text-slate-900'>Comments</h2>
-            <p className='mt-0.5 truncate text-xs text-slate-400'>{taskTitle}</p>
+            <h2 className='font-bold text-zinc-100'>Comments</h2>
+            <p className='mt-0.5 truncate text-xs text-zinc-500'>{taskTitle}</p>
           </div>
           <button
             onClick={onClose}
-            className='rounded-lg p-1.5 text-slate-400 hover:bg-slate-100'
+            className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
           >
             <X size={18} />
           </button>
@@ -92,32 +92,32 @@ export default function CommentsModal({ open, taskTitle, onClose }: Props) {
               >
                 {c.initials}
               </div>
-              <div className='flex-1 rounded-2xl rounded-tl-none bg-slate-50 px-4 py-3'>
+              <div className='flex-1 rounded-2xl rounded-tl-none bg-zinc-800 px-4 py-3'>
                 <div className='flex items-center justify-between'>
-                  <span className='text-xs font-semibold text-slate-700'>
+                  <span className='text-xs font-semibold text-zinc-200'>
                     {c.author}
                   </span>
-                  <span className='text-[10px] text-slate-400'>{c.time}</span>
+                  <span className='text-[10px] text-zinc-500'>{c.time}</span>
                 </div>
-                <p className='mt-1 text-sm text-slate-600'>{c.text}</p>
+                <p className='mt-1 text-sm text-zinc-300'>{c.text}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Input */}
-        <div className='border-t border-slate-100 px-4 py-3'>
-          <div className='flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2'>
+        <div className='border-t border-zinc-800 px-4 py-3'>
+          <div className='flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2'>
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder='Write a comment...'
-              className='flex-1 bg-transparent text-sm outline-none placeholder:text-slate-400'
+              className='flex-1 bg-transparent text-sm text-zinc-100 outline-none placeholder:text-zinc-500'
             />
             <button
               onClick={handleSend}
-              className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-blue-500 text-white hover:bg-blue-700 disabled:opacity-40'
+              className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500 text-white hover:bg-cyan-400 disabled:opacity-40'
               disabled={!input.trim()}
             >
               <Send size={14} />

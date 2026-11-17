@@ -28,57 +28,57 @@ export default function ForgotPasswordPage() {
   return (
     <div className='flex min-h-screen'>
       {/* Left blue panel — hidden on mobile */}
-      <div className='hidden flex-col justify-between bg-blue-600 p-12 lg:flex lg:w-[45%]'>
+      <div className='hidden flex-col justify-between border-r border-zinc-800 bg-gradient-to-b from-zinc-900 to-zinc-950 p-12 lg:flex lg:w-[45%]'>
         <div>
-          <h1 className='text-3xl font-bold text-white'>TaskSync</h1>
-          <p className='mt-1 text-sm tracking-widest text-blue-200'>WORKSPACE</p>
+          <h1 className='text-3xl font-bold text-zinc-100'>ApexAssign</h1>
+          <p className='mt-1 text-sm tracking-widest text-zinc-400'>WORKSPACE</p>
         </div>
 
         <div>
           <h2 className='text-4xl font-bold leading-tight text-white'>
             Reset your password
           </h2>
-          <p className='mt-4 text-blue-200'>
+          <p className='mt-4 text-zinc-400'>
             We'll send a secure link to your email so you can get back to your
             workspace in minutes.
           </p>
         </div>
 
-        <div className='flex gap-8 text-sm text-blue-200'>
+        <div className='flex gap-8 text-sm text-zinc-400'>
           <div>
-            <p className='text-2xl font-bold text-white'>2,400+</p>
-            <p>Teams using TaskSync</p>
+            <p className='text-2xl font-bold text-zinc-100'>2,400+</p>
+            <p>Teams using ApexAssign</p>
           </div>
           <div>
-            <p className='text-2xl font-bold text-white'>98%</p>
+            <p className='text-2xl font-bold text-zinc-100'>98%</p>
             <p>Uptime last quarter</p>
           </div>
         </div>
       </div>
 
       {/* Right: form */}
-      <div className='flex flex-1 flex-col items-center justify-center bg-white px-6 py-12 sm:px-12'>
+      <div className='flex flex-1 flex-col items-center justify-center bg-zinc-950 px-6 py-12 sm:px-12'>
         <div className='w-full max-w-md'>
           {/* Mobile logo */}
-          <h1 className='mb-8 text-2xl font-bold text-blue-600 lg:hidden'>
-            TaskSync
+          <h1 className='mb-8 text-2xl font-bold text-cyan-400 lg:hidden'>
+            ApexAssign
           </h1>
 
           {!sent ? (
             <>
-              <div className='mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100'>
-                <Mail size={22} className='text-blue-600' />
+              <div className='mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/10'>
+                <Mail size={22} className='text-cyan-400' />
               </div>
-              <h2 className='mt-4 text-3xl font-bold text-slate-900'>
+              <h2 className='mt-4 text-3xl font-bold text-zinc-100'>
                 Forgot password?
               </h2>
-              <p className='mt-2 text-sm text-slate-500'>
+              <p className='mt-2 text-sm text-zinc-400'>
                 Enter your email and we'll send you a reset link.
               </p>
 
               <form onSubmit={handleSubmit} className='mt-8 space-y-4'>
                 <div>
-                  <label className='mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400'>
+                  <label className='mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400'>
                     Email address
                   </label>
                   <input
@@ -87,14 +87,14 @@ export default function ForgotPasswordPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder='you@company.com'
                     required
-                    className='h-11 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100'
+                    className='h-11 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20'
                   />
                 </div>
 
                 <button
                   type='submit'
                   disabled={isLoading}
-                  className='h-11 w-full rounded-xl bg-blue-600 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60'
+                  className='h-11 w-full rounded-xl bg-cyan-500 text-sm font-semibold text-zinc-950 transition hover:bg-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:opacity-60'
                 >
                   {isLoading ? 'Sending…' : 'Send Reset Link'}
                 </button>
@@ -102,22 +102,22 @@ export default function ForgotPasswordPage() {
             </>
           ) : (
             <div className='flex flex-col items-center text-center'>
-              <div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-100'>
-                <CheckCircle2 size={32} className='text-green-600' />
+              <div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10'>
+                <CheckCircle2 size={32} className='text-green-400' />
               </div>
-              <h2 className='mt-5 text-2xl font-bold text-slate-900'>
+              <h2 className='mt-5 text-2xl font-bold text-zinc-100'>
                 Check your inbox
               </h2>
-              <p className='mt-2 text-sm text-slate-500'>
+              <p className='mt-2 text-sm text-zinc-400'>
                 We sent a password reset link to{' '}
-                <span className='font-semibold text-slate-700'>{email}</span>
+                <span className='font-semibold text-zinc-200'>{email}</span>
               </p>
-              <p className='mt-4 text-xs text-slate-400'>
+              <p className='mt-4 text-xs text-zinc-400'>
                 Didn't receive it? Check your spam folder or try again.
               </p>
               <button
                 onClick={() => setSent(false)}
-                className='mt-5 text-sm font-semibold text-blue-600 hover:underline'
+                className='mt-5 text-sm font-semibold text-cyan-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
               >
                 Try a different email
               </button>
@@ -127,7 +127,7 @@ export default function ForgotPasswordPage() {
           {/* Back to login */}
           <Link
             to='/login'
-            className='mt-8 flex items-center justify-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-600'
+            className='mt-8 flex items-center justify-center gap-2 text-sm font-medium text-zinc-400 hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
           >
             <ArrowLeft size={16} />
             Back to Log In

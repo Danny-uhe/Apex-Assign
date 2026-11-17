@@ -55,15 +55,8 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
   return (
     <div className='flex h-full flex-col bg-zinc-900'>
       {/* Logo */}
-      <div className='flex h-20 flex-shrink-0 items-center justify-between border-b border-white/5 px-6'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight text-white'>
-            Task<span className='text-cyan-400'>Sync</span>
-          </h1>
-          <span className='text-[10px] uppercase tracking-[3px] text-zinc-500'>
-            Workspace
-          </span>
-        </div>
+      <div className='flex h-20 flex-shrink-0 items-center justify-between border-b border-white/5 px-5'>
+        <img src='/logo.png' alt='ApexAssign' className='h-10 w-auto' />
         {onClose && (
           <button
             onClick={onClose}
@@ -117,7 +110,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className='flex min-h-screen bg-slate-100'>
+    <div className='flex min-h-screen bg-zinc-950 text-zinc-100'>
 
       {/* ── DESKTOP SIDEBAR ─── */}
       <aside className='fixed left-0 top-0 hidden h-screen w-64 flex-col lg:flex'>

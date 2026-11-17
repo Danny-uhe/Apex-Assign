@@ -2,7 +2,7 @@ export default function UserStatsCard(){
 
     return(
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
 
             <h2 className="font-bold">
                 Your Ranking
@@ -11,7 +11,7 @@ export default function UserStatsCard(){
             <div className="mt-6 space-y-5">
 
                 <div>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-zinc-400">
                         Rank
                     </p>
 
@@ -21,7 +21,7 @@ export default function UserStatsCard(){
                 </div>
 
                 <div>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-zinc-400">
                         Total Points
                     </p>
 
@@ -31,7 +31,7 @@ export default function UserStatsCard(){
                 </div>
 
                 <div>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-zinc-400">
                         Tasks Completed
                     </p>
 

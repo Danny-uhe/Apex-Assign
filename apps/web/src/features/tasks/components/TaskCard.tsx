@@ -42,17 +42,17 @@ export default function TaskCard({
       {...listeners}
       {...attributes}
       onClick={onClick}
-      className='cursor-grab rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-lg active:cursor-grabbing'
+      className='cursor-grab rounded-2xl border border-zinc-800 bg-zinc-900 p-4 shadow-sm transition-all hover:border-zinc-700 hover:shadow-lg active:cursor-grabbing'
     >
       <div className='mb-4 flex items-center justify-between'>
         <PriorityBadge priority={priority} />
 
         <button type='button'>
-          <MoreVertical size={18} className='text-slate-400' />
+          <MoreVertical size={18} className='text-zinc-500' />
         </button>
       </div>
 
-      <h3 className='text-sm font-semibold text-slate-800'>{title}</h3>
+      <h3 className='text-sm font-semibold text-zinc-100'>{title}</h3>
 
       {progress > 0 && progress < 100 && <ProgressBar progress={progress} />}
 
@@ -60,13 +60,13 @@ export default function TaskCard({
         <MemberAvatar initials={assignee} color={avatarColor} />
 
         <div className='text-right'>
-          <div className='flex items-center gap-1 text-xs text-slate-500'>
+          <div className='flex items-center gap-1 text-xs text-zinc-400'>
             <CalendarDays size={14} />
             <span>Due {dueDate}</span>
           </div>
 
           {progress > 0 && progress < 100 && (
-            <p className='mt-1 text-xs text-slate-400'>{progress}% Complete</p>
+            <p className='mt-1 text-xs text-zinc-500'>{progress}% Complete</p>
           )}
 
           {progress === 100 && (

@@ -7,9 +7,9 @@ export default function ActivityStats({
   stats: ActivityResponse['stats'] | null;
 }) {
   const items = [
-    { title: 'Completed Today', value: stats?.completedToday, icon: CheckCircle2, color: 'bg-green-100 text-green-600' },
-    { title: 'Tasks Updated Today', value: stats?.updatedToday, icon: ListChecks, color: 'bg-blue-100 text-blue-600' },
-    { title: 'Total Points', value: stats?.points, icon: Trophy, color: 'bg-yellow-100 text-yellow-600' },
+    { title: 'Completed Today', value: stats?.completedToday, icon: CheckCircle2, color: 'bg-green-500/10 text-green-400' },
+    { title: 'Tasks Updated Today', value: stats?.updatedToday, icon: ListChecks, color: 'bg-cyan-500/10 text-cyan-400' },
+    { title: 'Total Points', value: stats?.points, icon: Trophy, color: 'bg-yellow-500/10 text-yellow-300' },
   ];
 
   return (
@@ -19,12 +19,12 @@ export default function ActivityStats({
         return (
           <div
             key={item.title}
-            className='rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'
+            className='rounded-2xl border border-zinc-800 bg-zinc-900 p-5 shadow-sm sm:p-6'
           >
             <div className='flex items-center justify-between'>
               <div>
-                <p className='text-sm text-gray-500'>{item.title}</p>
-                <h2 className='mt-2 text-3xl font-bold'>
+                <p className='text-sm text-zinc-400'>{item.title}</p>
+                <h2 className='mt-2 text-3xl font-bold text-zinc-100'>
                   {item.value === undefined ? '—' : item.value.toLocaleString()}
                 </h2>
               </div>

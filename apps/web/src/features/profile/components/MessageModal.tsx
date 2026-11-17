@@ -16,7 +16,7 @@ type Props = {
 };
 
 const statusDot: Record<string, string> = {
-  online: 'bg-green-400', away: 'bg-yellow-400', offline: 'bg-slate-300',
+  online: 'bg-green-400', away: 'bg-yellow-400', offline: 'bg-zinc-500',
 };
 const statusText: Record<string, string> = {
   online: 'Online', away: 'Away', offline: 'Offline',
@@ -91,10 +91,10 @@ export default function MessageModal({ open, onClose, name, initials, color, sta
 
   return (
     <div className='fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4'>
-      <div className='flex w-full max-w-md flex-col rounded-t-2xl bg-white shadow-2xl sm:rounded-2xl' style={{ height: '520px' }}>
+      <div className='flex w-full max-w-md flex-col rounded-t-2xl border border-zinc-700 bg-zinc-900 text-zinc-100 shadow-2xl sm:rounded-2xl' style={{ height: '520px' }}>
 
         {/* Header */}
-        <div className='flex flex-shrink-0 items-center gap-3 border-b border-slate-100 px-5 py-4'>
+        <div className='flex flex-shrink-0 items-center gap-3 border-b border-zinc-800 px-5 py-4'>
           <div className='relative'>
             <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold text-white ${color}`}>
               {initials}
@@ -102,13 +102,13 @@ export default function MessageModal({ open, onClose, name, initials, color, sta
             <span className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white ${statusDot[status]}`} />
           </div>
           <div className='flex-1'>
-            <p className='font-semibold text-slate-900'>{name}</p>
-            <p className={`text-xs font-medium ${status === 'online' ? 'text-green-500' : status === 'away' ? 'text-yellow-500' : 'text-slate-400'}`}>
+            <p className='font-semibold text-zinc-100'>{name}</p>
+            <p className={`text-xs font-medium ${status === 'online' ? 'text-green-400' : status === 'away' ? 'text-yellow-300' : 'text-zinc-400'}`}>
               {statusText[status]}
-              {projectName && <span className='ml-2 text-slate-400'>· {projectName}</span>}
+              {projectName && <span className='ml-2 text-zinc-500'>· {projectName}</span>}
             </p>
           </div>
-          <button onClick={onClose} className='rounded-lg p-1.5 text-slate-400 hover:bg-slate-100'>
+          <button onClick={onClose} className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'>
             <X size={18} />
           </button>
         </div>
@@ -121,17 +121,17 @@ export default function MessageModal({ open, onClose, name, initials, color, sta
             </div>
           ) : !projectId ? (
             <div className='flex h-full flex-col items-center justify-center text-center'>
-              <MessageCircle size={32} className='mb-3 text-slate-300' />
-              <p className='text-sm font-medium text-slate-600'>No shared project</p>
-              <p className='mt-1 text-xs text-slate-400'>
+              <MessageCircle size={32} className='mb-3 text-zinc-600' />
+              <p className='text-sm font-medium text-zinc-300'>No shared project</p>
+              <p className='mt-1 text-xs text-zinc-500'>
                 You and {name.split(' ')[0]} need to be in the same project to message each other.
               </p>
             </div>
           ) : messages.length === 0 ? (
             <div className='flex h-full flex-col items-center justify-center text-center'>
-              <MessageCircle size={32} className='mb-3 text-slate-300' />
-              <p className='text-sm font-medium text-slate-600'>No messages yet</p>
-              <p className='mt-1 text-xs text-slate-400'>Send the first message!</p>
+              <MessageCircle size={32} className='mb-3 text-zinc-600' />
+              <p className='text-sm font-medium text-zinc-300'>No messages yet</p>
+              <p className='mt-1 text-xs text-zinc-500'>Send the first message!</p>
             </div>
           ) : (
             messages.map((msg) => {
@@ -145,18 +145,18 @@ export default function MessageModal({ open, onClose, name, initials, color, sta
                   )}
                   <div className={`group max-w-[75%] flex flex-col gap-0.5 ${isOwn ? 'items-end' : 'items-start'}`}>
                     <div className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                      isOwn ? 'rounded-br-sm bg-blue-500 text-white' : 'rounded-bl-sm bg-slate-100 text-slate-800'
+                      isOwn ? 'rounded-br-sm bg-cyan-600 text-white' : 'rounded-bl-sm bg-zinc-800 text-zinc-200'
                     }`}>
                       {msg.content}
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='text-[10px] text-slate-400'>
+                      <span className='text-[10px] text-zinc-500'>
                         {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {isOwn && (
                         <button
                           onClick={() => del.mutate(msg.id)}
-                          className='hidden group-hover:block text-[10px] text-slate-300 hover:text-red-400'
+                          className='hidden group-hover:block text-[10px] text-zinc-500 hover:text-red-400'
                         >
                           delete
                         </button>
@@ -171,27 +171,27 @@ export default function MessageModal({ open, onClose, name, initials, color, sta
         </div>
 
         {/* Input */}
-        <div className='flex-shrink-0 border-t border-slate-100 p-4'>
-          <div className='flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2'>
-            <button className='text-slate-400 hover:text-slate-600'><Smile size={18} /></button>
+        <div className='flex-shrink-0 border-t border-zinc-800 p-4'>
+          <div className='flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2'>
+            <button className='text-zinc-500 hover:text-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'><Smile size={18} /></button>
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
               placeholder={projectId ? `Message ${name.split(' ')[0]}...` : 'No shared project'}
               disabled={!projectId}
-              className='flex-1 bg-transparent text-sm outline-none text-slate-800 placeholder:text-slate-400 disabled:cursor-not-allowed'
+              className='flex-1 bg-transparent text-sm text-zinc-100 outline-none placeholder:text-zinc-500 disabled:cursor-not-allowed'
               autoFocus
             />
             <button
               onClick={handleSend}
               disabled={!input.trim() || !projectId || send.isPending}
-              className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-blue-500 text-white hover:bg-blue-700 disabled:opacity-40'
+              className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500 text-white hover:bg-cyan-400 disabled:opacity-40'
             >
               {send.isPending ? <Loader2 size={14} className='animate-spin' /> : <Send size={14} />}
             </button>
           </div>
-          <p className='mt-1.5 text-center text-[10px] text-slate-400'>Press Enter to send</p>
+          <p className='mt-1.5 text-center text-[10px] text-zinc-500'>Press Enter to send</p>
         </div>
       </div>
     </div>

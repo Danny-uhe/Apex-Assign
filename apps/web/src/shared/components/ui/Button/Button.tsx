@@ -4,18 +4,18 @@ import { cn } from '@/shared/lib/cn';
 import type { ButtonProps } from './Button.types';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none',
+  'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
         primary:
           'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)]',
 
-        secondary: 'bg-slate-100 text-slate-700',
+        secondary: 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700',
 
-        outline: 'border border-[var(--color-border)] bg-white',
+        outline: 'border border-[var(--color-border)] bg-zinc-900 text-zinc-100 hover:bg-zinc-800',
 
-        ghost: 'hover:bg-slate-100',
+        ghost: 'text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100',
 
         danger: 'bg-[var(--color-danger)] text-white',
       },
