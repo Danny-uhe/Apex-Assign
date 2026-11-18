@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 
-// Vanta NET effect — moving particles connected by animated lines
-// Much livelier than GLOBE: nodes float + connect dynamically
+// Vanta NET effect — floating particles connected by animated lines
+// Loads THREE r121 (known stable with Vanta) then vanta.net
 declare global {
   interface Window {
-    THREE: unknown;
+    THREE: Record<string, unknown>;
     VANTA: {
       NET: (opts: Record<string, unknown>) => { destroy: () => void };
     };
@@ -13,13 +13,15 @@ declare global {
 
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) {
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if (existing) {
+      // If already loaded just resolve
       resolve();
       return;
     }
     const s = document.createElement('script');
     s.src = src;
-    s.async = true;
+    s.async = false; // keep load order deterministic
     s.onload  = () => resolve();
     s.onerror = () => reject(new Error(`Failed to load ${src}`));
     document.head.appendChild(s);
@@ -35,12 +37,15 @@ export default function VantaGlobe() {
 
     async function init() {
       try {
-        // Load THREE first, then Vanta NET
+        // THREE r121 — well-tested with all Vanta effects
         await loadScript(
-          'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js',
+          'https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js',
         );
+        // Small pause so THREE fully registers on window
+        await new Promise<void>((r) => setTimeout(r, 50));
+
         await loadScript(
-          'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js',
+          'https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js',
         );
 
         if (cancelled || !containerRef.current || !window.VANTA?.NET) return;
@@ -55,16 +60,14 @@ export default function VantaGlobe() {
           minWidth:        200,
           scale:           1.0,
           scaleMobile:     1.0,
-          // Bright cyan nodes on dark background — matches app accent
-          color:           0x00d4ff,   // cyan node colour
-          backgroundColor: 0x09090b,  // zinc-950 — matches app bg
-          points:          14,         // number of floating nodes
-          maxDistance:     22,         // connection draw distance
-          spacing:         18,         // spread between nodes
-          showDots:        true,       // render dots at node positions
+          color:           0x00d4ff,  // bright cyan nodes — matches app accent
+          backgroundColor: 0x09090b, // zinc-950
+          points:          14,
+          maxDistance:     22,
+          spacing:         18,
+          showDots:        true,
         });
       } catch (err) {
-        // Silently fail — login form still works without the animation
         console.warn('[VantaNet] Could not load animation:', err);
       }
     }
