@@ -67,7 +67,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name:    "tasksync-auth",    // localStorage key
+      name:    "apexassign-auth",    // localStorage key
       partialize: (state) => ({    // only persist tokens + user, not computed
         user:         state.user,
         accessToken:  state.accessToken,

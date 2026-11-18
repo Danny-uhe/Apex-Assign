@@ -12,13 +12,13 @@ export default function AuthBranding({
 }: AuthBrandingProps) {
   return (
     <div className='flex h-full flex-col bg-gradient-to-b from-zinc-900 to-zinc-950 px-8 py-10 text-zinc-100'>
-      {/* Logo */}
+      {/* Logo image — replaces old text header */}
       <div>
-        <h1 className='text-[34px] font-bold leading-none'>ApexAssign</h1>
-
-        <p className='mt-1 text-[11px] font-medium tracking-[0.35em] text-zinc-400'>
-          WORKSPACE
-        </p>
+        <img
+          src='/logo.png'
+          alt='ApexAssign'
+          className='h-12 w-auto'
+        />
       </div>
 
       {/* Quote */}

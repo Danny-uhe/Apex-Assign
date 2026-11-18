@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-// Vanta GLOBE effect using THREE.js
-// Colors: purple nodes (0x603fff) on near-black (0x100f18) — dark & sleek
+// Vanta NET effect — moving particles connected by animated lines
+// Much livelier than GLOBE: nodes float + connect dynamically
 declare global {
   interface Window {
     THREE: unknown;
     VANTA: {
-      GLOBE: (opts: Record<string, unknown>) => { destroy: () => void };
+      NET: (opts: Record<string, unknown>) => { destroy: () => void };
     };
   }
 }
@@ -35,37 +35,37 @@ export default function VantaGlobe() {
 
     async function init() {
       try {
-        // Load THREE first, then Vanta GLOBE
+        // Load THREE first, then Vanta NET
         await loadScript(
           'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js',
         );
         await loadScript(
-          'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js',
+          'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js',
         );
 
-        if (cancelled || !containerRef.current || !window.VANTA?.GLOBE) return;
+        if (cancelled || !containerRef.current || !window.VANTA?.NET) return;
 
-        effectRef.current = window.VANTA.GLOBE({
-          el:            containerRef.current,
-          THREE:         window.THREE,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls:  false,
-          minHeight:     200,
-          minWidth:      200,
-          scale:         1.0,
-          scaleMobile:   1.0,
-          color:         0x603fff,   // purple nodes
-          color2:        0x8b5cf6,   // lighter purple lines
-          backgroundColor: 0x100f18, // near-black background
-          size:          1.2,
-          points:        10,
-          maxDistance:   22,
-          spacing:       15,
+        effectRef.current = window.VANTA.NET({
+          el:              containerRef.current,
+          THREE:           window.THREE,
+          mouseControls:   true,
+          touchControls:   true,
+          gyroControls:    false,
+          minHeight:       200,
+          minWidth:        200,
+          scale:           1.0,
+          scaleMobile:     1.0,
+          // Bright cyan nodes on dark background — matches app accent
+          color:           0x00d4ff,   // cyan node colour
+          backgroundColor: 0x09090b,  // zinc-950 — matches app bg
+          points:          14,         // number of floating nodes
+          maxDistance:     22,         // connection draw distance
+          spacing:         18,         // spread between nodes
+          showDots:        true,       // render dots at node positions
         });
       } catch (err) {
         // Silently fail — login form still works without the animation
-        console.warn('[VantaGlobe] Could not load animation:', err);
+        console.warn('[VantaNet] Could not load animation:', err);
       }
     }
 
