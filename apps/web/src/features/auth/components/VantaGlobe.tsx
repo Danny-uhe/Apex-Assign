@@ -1,89 +1,143 @@
 import { useEffect, useRef } from 'react';
 
-// Vanta NET effect — floating particles connected by animated lines
-// Loads THREE r121 (known stable with Vanta) then vanta.net
-declare global {
-  interface Window {
-    THREE: Record<string, unknown>;
-    VANTA: {
-      NET: (opts: Record<string, unknown>) => { destroy: () => void };
-    };
-  }
+// Pure-canvas animated particle network — no CDN, no dependencies.
+// Cyan floating dots connected by lines that fade with distance.
+// Reacts to mouse movement.
+
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  r: number;
 }
 
-function loadScript(src: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const existing = document.querySelector(`script[src="${src}"]`);
-    if (existing) {
-      // If already loaded just resolve
-      resolve();
-      return;
-    }
-    const s = document.createElement('script');
-    s.src = src;
-    s.async = false; // keep load order deterministic
-    s.onload  = () => resolve();
-    s.onerror = () => reject(new Error(`Failed to load ${src}`));
-    document.head.appendChild(s);
-  });
-}
+const COLOR_DOT  = '0, 212, 255';   // cyan-400 in RGB
+const COLOR_LINE = '0, 212, 255';
+const BG         = '#09090b';       // zinc-950
+const PARTICLE_COUNT = 70;
+const MAX_DIST   = 160;
+const SPEED      = 0.4;
 
-export default function VantaGlobe() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const effectRef    = useRef<{ destroy: () => void } | null>(null);
+export default function ParticleNet() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    let cancelled = false;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    async function init() {
-      try {
-        // THREE r121 — well-tested with all Vanta effects
-        await loadScript(
-          'https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js',
-        );
-        // Small pause so THREE fully registers on window
-        await new Promise<void>((r) => setTimeout(r, 50));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-        await loadScript(
-          'https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js',
-        );
+    let animId: number;
+    let mouse = { x: -9999, y: -9999 };
+    let particles: Particle[] = [];
 
-        if (cancelled || !containerRef.current || !window.VANTA?.NET) return;
+    const resize = () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    };
 
-        effectRef.current = window.VANTA.NET({
-          el:              containerRef.current,
-          THREE:           window.THREE,
-          mouseControls:   true,
-          touchControls:   true,
-          gyroControls:    false,
-          minHeight:       200,
-          minWidth:        200,
-          scale:           1.0,
-          scaleMobile:     1.0,
-          color:           0x00d4ff,  // bright cyan nodes — matches app accent
-          backgroundColor: 0x09090b, // zinc-950
-          points:          14,
-          maxDistance:     22,
-          spacing:         18,
-          showDots:        true,
-        });
-      } catch (err) {
-        console.warn('[VantaNet] Could not load animation:', err);
+    const init = () => {
+      particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+        x:  Math.random() * canvas.width,
+        y:  Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * SPEED,
+        vy: (Math.random() - 0.5) * SPEED,
+        r:  Math.random() * 2 + 1.5,
+      }));
+    };
+
+    const draw = () => {
+      ctx.fillStyle = BG;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw lines between close particles (and to mouse)
+      for (let i = 0; i < particles.length; i++) {
+        const a = particles[i];
+
+        // Mouse attraction line
+        const mdx = mouse.x - a.x;
+        const mdy = mouse.y - a.y;
+        const md  = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (md < MAX_DIST * 1.5) {
+          const opacity = (1 - md / (MAX_DIST * 1.5)) * 0.5;
+          ctx.strokeStyle = `rgba(${COLOR_LINE}, ${opacity})`;
+          ctx.lineWidth   = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const b   = particles[j];
+          const dx  = b.x - a.x;
+          const dy  = b.y - a.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_DIST) {
+            const opacity = (1 - dist / MAX_DIST) * 0.6;
+            ctx.strokeStyle = `rgba(${COLOR_LINE}, ${opacity})`;
+            ctx.lineWidth   = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
       }
-    }
 
-    init();
+      // Draw dots
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${COLOR_DOT}, 0.85)`;
+        ctx.fill();
+
+        // Subtle glow
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${COLOR_DOT}, 0.08)`;
+        ctx.fill();
+
+        // Move
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce off edges
+        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+
+      animId = requestAnimationFrame(draw);
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouse = { x: e.clientX, y: e.clientY };
+    };
+    const onMouseLeave = () => {
+      mouse = { x: -9999, y: -9999 };
+    };
+
+    resize();
+    draw();
+
+    window.addEventListener('resize',     resize);
+    window.addEventListener('mousemove',  onMouseMove);
+    window.addEventListener('mouseleave', onMouseLeave);
 
     return () => {
-      cancelled = true;
-      effectRef.current?.destroy();
-      effectRef.current = null;
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize',     resize);
+      window.removeEventListener('mousemove',  onMouseMove);
+      window.removeEventListener('mouseleave', onMouseLeave);
     };
   }, []);
 
   return (
-    <div
-      ref={containerRef}
+    <canvas
+      ref={canvasRef}
       className='fixed inset-0 -z-10'
       aria-hidden='true'
     />
