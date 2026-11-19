@@ -17,11 +17,13 @@ import type {
   SocketPresence,
   SocketTyping,
 } from "@/types/socket.types";
+import type { GlobalMessage } from "@/hooks/useGlobalMessages";
 
 interface SocketCtx {
   sendMessage: (projectId: string, content: string) => void;
   sendTyping: (projectId: string) => void;
   sendStopTyping: (projectId: string) => void;
+  sendGlobalMessage: (content: string) => void;
 }
 
 const SocketContext = createContext<SocketCtx | null>(null);
@@ -44,9 +46,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     const socket = connectSocket(accessToken);
     connectedRef.current = true;
 
-    // ── Incoming messages ───────────────────────────────────────────────────
+    // ── Incoming project messages ───────────────────────────────────────────
     socket.on("new_message", (msg: SocketMessage) => {
-      // Append to cached message list for the project
       queryClient.setQueryData<SocketMessage[]>(
         ["messages", msg.projectId],
         (old = []) => [...old, msg]
@@ -54,14 +55,34 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     });
 
     socket.on("message_deleted", ({ messageId }: { messageId: string }) => {
-      // Remove from all cached message lists
       queryClient.invalidateQueries({ queryKey: ["messages"] });
       void messageId;
     });
 
+    // ── Global chat ─────────────────────────────────────────────────────────
+    socket.on("new_global_message", (msg: GlobalMessage) => {
+      queryClient.setQueryData<GlobalMessage[]>(
+        ["global-messages"],
+        (old = []) => {
+          // Dedup: skip if already in cache (e.g. optimistic entry replaced)
+          const exists = old.some((m) => m.id === msg.id);
+          if (exists) return old;
+          // Replace any lingering optimistic placeholder
+          const without = old.filter((m) => !m.id.startsWith("optimistic-"));
+          return [...without, msg];
+        }
+      );
+    });
+
+    socket.on("global_message_deleted", ({ messageId }: { messageId: string }) => {
+      queryClient.setQueryData<GlobalMessage[]>(
+        ["global-messages"],
+        (old = []) => old.filter((m) => m.id !== messageId)
+      );
+    });
+
     // ── Task updates ────────────────────────────────────────────────────────
     socket.on("task_updated", (event: SocketTaskEvent) => {
-      // Invalidate the task queries so the board re-fetches
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       void event;
     });
@@ -82,12 +103,11 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
     // ── Presence ────────────────────────────────────────────────────────────
     socket.on("user_presence", (presence: SocketPresence) => {
-      // Invalidate member queries so online indicators refresh
       queryClient.invalidateQueries({ queryKey: ["members"] });
       void presence;
     });
 
-    // ── Typing (forwarded to message query data — consumed by chat UI) ──────
+    // ── Typing (project chat) ───────────────────────────────────────────────
     socket.on("typing", (payload: SocketTyping) => {
       queryClient.setQueryData(
         ["typing", payload.projectId],
@@ -109,6 +129,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     return () => {
       socket.off("new_message");
       socket.off("message_deleted");
+      socket.off("new_global_message");
+      socket.off("global_message_deleted");
       socket.off("task_updated");
       socket.off("notification");
       socket.off("user_presence");
@@ -138,8 +160,12 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     getSocket()?.emit("stop_typing", { projectId });
   };
 
+  const sendGlobalMessage = (content: string) => {
+    getSocket()?.emit("send_global_message", { content });
+  };
+
   return (
-    <SocketContext.Provider value={{ sendMessage, sendTyping, sendStopTyping }}>
+    <SocketContext.Provider value={{ sendMessage, sendTyping, sendStopTyping, sendGlobalMessage }}>
       {children}
     </SocketContext.Provider>
   );

@@ -46,6 +46,7 @@ model User {
   organizationMembers OrganizationMember[]
   sentInvitations     Invitation[]         @relation("InvitedBy")
   messages            Message[]
+  globalMessages      GlobalMessage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -261,4 +262,16 @@ model Message {
 
   @@index([projectId])
   @@index([userId])
+}
+
+model GlobalMessage {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
 }

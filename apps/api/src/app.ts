@@ -19,6 +19,8 @@ import commentRoutes from "./modules/comments/comment.routes.js";
 import notificationRoutes from "./modules/notifications/ntification.routes.js";
 import invitationRoutes from "./modules/invitaions/invitation.routes.js";
 import messageRoutes from "./modules/messages/message.routes.js";
+import globalMessageRoutes from "./modules/globalMessages/globalMessage.routes.js";
+import oauthRoutes from "./modules/oauth/oauth.routes.js";
 
 // Admin Routes
 import adminRoutes from "./modules/users/admin.routes.js";
@@ -77,7 +79,7 @@ app.get("/api/docs.json", (_, res) => { res.json(swaggerSpec); });
 app.use("/api/admin", adminRoutes);
 
 app.get("/", (_, res) => {
-  res.json({ success: true, message: "TaskSync API is running 🚀" });
+  res.json({ success: true, message: "ApexAssign API is running 🚀" });
 });
 
 // Serve uploaded files as static assets
@@ -94,5 +96,7 @@ app.use("/api/organisation", orgRoutes);
 app.use("/api/projects/:projectId/messages", messageRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
+app.use("/api/chat", globalMessageRoutes);
+app.use("/api/oauth", oauthRoutes);
 
 export default app;
