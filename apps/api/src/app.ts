@@ -21,6 +21,7 @@ import invitationRoutes from "./modules/invitaions/invitation.routes.js";
 import messageRoutes from "./modules/messages/message.routes.js";
 import globalMessageRoutes from "./modules/globalMessages/globalMessage.routes.js";
 import oauthRoutes from "./modules/oauth/oauth.routes.js";
+import { authLimiter, chatLimiter, apiLimiter } from "./middleware/rateLimiter.js";
 
 // Admin Routes
 import adminRoutes from "./modules/users/admin.routes.js";
@@ -60,6 +61,11 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
 
+// ── Rate limiting ──────────────────────────────────────────────────────────
+// Trust Render's proxy so req.ip reflects the real client IP
+app.set("trust proxy", 1);
+app.use("/api/", apiLimiter);
+
 // ── Health check (used by Render) ──────────────────────────────────────────
 app.get("/api/health", (_, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
@@ -85,7 +91,7 @@ app.get("/", (_, res) => {
 // Serve uploaded files as static assets
 app.use("/uploads", express.static(path.resolve(__dirname, "../../uploads")));
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api", taskRoutes);
@@ -96,7 +102,7 @@ app.use("/api/organisation", orgRoutes);
 app.use("/api/projects/:projectId/messages", messageRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
-app.use("/api/chat", globalMessageRoutes);
+app.use("/api/chat", chatLimiter, globalMessageRoutes);
 app.use("/api/oauth", oauthRoutes);
 
 export default app;
