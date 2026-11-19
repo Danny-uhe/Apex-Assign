@@ -1,10 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ApexAssign</title>
+    <!-- Prevent flash of wrong theme before React loads -->
+    <script>
+      try {
+        var saved = localStorage.getItem('apexassign-theme');
+        var theme = saved === 'light' ? 'light' : 'dark';
+        document.documentElement.className = theme;
+      } catch (e) {
+        document.documentElement.className = 'dark';
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

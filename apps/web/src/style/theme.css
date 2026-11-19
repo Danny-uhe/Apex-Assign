@@ -1,34 +1,49 @@
 :root {
-    /* Brand */
-    --color-primary: #22D3EE;
-    --color-primary-hover: #06B6D4;
-    --color-primary-light: rgb(34 211 238 / 12%);
-  
-    /* Backgrounds */
-    --color-background: #09090B;
-    --color-surface: #18181B;
-  
+    /* Brand — sky-500 matches ApexAssign logo arrow blue */
+    --color-primary:       #0ea5e9;
+    --color-primary-hover: #0284c7;
+    --color-primary-light: rgb(14 165 233 / 12%);
+
+    /* Backgrounds (dark defaults) */
+    --color-background: #09090b;
+    --color-surface:    #18181b;
+
     /* Text */
-    --color-text-primary: #F4F4F5;
+    --color-text-primary:   #F4F4F5;
     --color-text-secondary: #A1A1AA;
-    --color-text-muted: #71717A;
-  
+    --color-text-muted:     #71717A;
+
     /* Borders */
     --color-border: #3F3F46;
-  
+
     /* Status */
     --color-success: #22C55E;
     --color-warning: #F59E0B;
-    --color-danger: #EF4444;
-  
+    --color-danger:  #EF4444;
+
     /* Radius */
     --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-xl: 16px;
-  
+
     /* Shadows */
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 18%);
     --shadow-md: 0 4px 8px rgb(0 0 0 / 22%);
     --shadow-lg: 0 10px 24px rgb(0 0 0 / 28%);
-  }
+}
+
+html.light {
+    --color-background: #f1f5f9;
+    --color-surface:    #ffffff;
+    --color-text-primary:   #0f172a;
+    --color-text-secondary: #475569;
+    --color-text-muted:     #94a3b8;
+    --color-border:         #e2e8f0;
+    --color-primary:        #0284c7;   /* sky-600 for better contrast on white */
+    --color-primary-hover:  #0369a1;
+    --color-primary-light:  #e0f2fe;
+    --shadow-sm: 0 1px 3px rgb(0 0 0 / 8%);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 10%);
+    --shadow-lg: 0 10px 30px rgb(0 0 0 / 12%);
+}

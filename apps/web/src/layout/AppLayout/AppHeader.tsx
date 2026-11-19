@@ -3,6 +3,7 @@ import { Bell, Building2, Menu, Pencil, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 import NotificationDropdown from './NotificationDropdown';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useUserProfile } from '@/app/Providers/UserProfileContext';
 import { useTaskContext } from '@/app/Providers/TaskContext';
 import { useNotifications } from '@/app/Providers/NotificationContext';
@@ -146,6 +147,9 @@ export default function AppHeader({ onMenuClick }: Props) {
 
       {/* Right: contextual actions */}
       <div className='flex flex-shrink-0 items-center gap-3 sm:gap-4'>
+        {/* Theme toggle */}
+        <ThemeToggle />
+
         {/* Notification bell */}
         <div className='relative'>
           <button
