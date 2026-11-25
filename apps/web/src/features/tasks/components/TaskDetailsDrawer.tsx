@@ -14,7 +14,7 @@ export default function TaskDetailsDrawer({ open, task, onClose }: Props) {
     <>
       <div onClick={onClose} className='fixed inset-0 z-40 bg-black/40' />
 
-      <div className='fixed right-0 top-0 z-50 flex h-screen w-[420px] flex-col border-l border-zinc-800 bg-zinc-900 text-zinc-100 shadow-2xl'>
+      <div className='fixed right-0 top-0 z-50 flex h-screen w-full max-w-[420px] flex-col border-l border-zinc-800 bg-zinc-900 text-zinc-100 shadow-2xl'>
         <div className='flex items-center justify-between border-b border-zinc-800 p-6'>
           <h2 className='text-xl font-bold text-zinc-100'>Task Details</h2>
 

@@ -81,7 +81,7 @@ export default function GlobalChatPage() {
 
   return (
     <AppLayout>
-      <div className="mx-auto flex h-[calc(100vh-10rem)] max-w-3xl flex-col rounded-2xl border border-zinc-800 bg-zinc-900 text-zinc-100 shadow-sm">
+      <div className="mx-auto flex h-[calc(100dvh-8rem)] max-w-3xl w-full flex-col rounded-2xl border border-zinc-800 bg-zinc-900 text-zinc-100 shadow-sm">
         {/* ── Header ── */}
         <div className="flex items-center gap-3 border-b border-zinc-800 px-5 py-4">
           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-sky-500/10">
