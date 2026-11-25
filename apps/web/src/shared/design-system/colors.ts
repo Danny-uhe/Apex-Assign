@@ -1,32 +1,11 @@
 export const colors = {
   brand: {
-    primary: '#3B82F6',
-    primaryHover: '#2563EB',
-    primaryLight: '#DBEAFE',
+    primary: '#ea580c',
+    primaryHover: '#9a3412',
+    primaryLight: '#ffedd5',
   },
-
-  background: {
-    page: '#F8FAFC',
-    surface: '#FFFFFF',
-    sidebar: '#FFFFFF',
-  },
-
-  text: {
-    primary: '#334155',
-    secondary: '#64748B',
-    muted: '#94A3B8',
-    white: '#FFFFFF',
-  },
-
-  border: {
-    light: '#E2E8F0',
-    default: '#CBD5E1',
-  },
-
-  state: {
-    success: '#22C55E',
-    warning: '#F59E0B',
-    danger: '#EF4444',
-    info: '#3B82F6',
-  },
+  background: { page: '#f4f5f8', surface: '#ffffff', sidebar: '#ffffff' },
+  text: { primary: '#334155', secondary: '#5b6472', muted: '#9aa3b2', white: '#ffffff' },
+  border: { light: '#e4e7ec', default: '#e4e7ec' },
+  state: { success: '#22c55e', warning: '#eab308', danger: '#EF4444', info: '#ea580c' },
 } as const;

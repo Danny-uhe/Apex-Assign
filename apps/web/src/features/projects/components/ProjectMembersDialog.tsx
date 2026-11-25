@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { Loader2, MailPlus, UserPlus, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { invitationService } from "@/features/auth/services/invitation.services";
@@ -195,7 +195,7 @@ export default function ProjectMembersDialog({
   };
 
   const inputClass =
-    "w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20 disabled:bg-zinc-800 disabled:text-zinc-500";
+    "w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 disabled:bg-zinc-800 disabled:text-zinc-500";
 
   return (
     <div
@@ -213,7 +213,7 @@ export default function ProjectMembersDialog({
       >
         <header className="flex items-start justify-between gap-4 border-b border-zinc-800 px-5 py-4 sm:px-6">
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-cyan-400">
+            <p className="text-xs font-semibold uppercase tracking-wide text-orange-500 dark:text-orange-400">
               Project collaboration
             </p>
             <h2
@@ -234,7 +234,7 @@ export default function ProjectMembersDialog({
             onClick={onClose}
             disabled={submitting}
             aria-label="Close member management"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 disabled:opacity-50"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 disabled:opacity-50"
           >
             <X size={18} aria-hidden="true" />
           </button>
@@ -263,7 +263,7 @@ export default function ProjectMembersDialog({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+                  className="rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
                 >
                   Done
                 </button>
@@ -313,7 +313,7 @@ export default function ProjectMembersDialog({
                     setTab("existing");
                     setActionError("");
                   }}
-                  className={`min-h-10 rounded-lg px-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+                  className={`min-h-10 rounded-lg px-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
                     tab === "existing"
                       ? "bg-zinc-800 text-zinc-100 shadow-sm"
                       : "text-zinc-400 hover:text-zinc-100"
@@ -333,7 +333,7 @@ export default function ProjectMembersDialog({
                       setTab("invite");
                       setActionError("");
                     }}
-                    className={`min-h-10 rounded-lg px-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+                    className={`min-h-10 rounded-lg px-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
                       tab === "invite"
                         ? "bg-zinc-800 text-zinc-100 shadow-sm"
                         : "text-zinc-400 hover:text-zinc-100"
@@ -370,7 +370,7 @@ export default function ProjectMembersDialog({
                         >
                           <Loader2
                             size={16}
-                            className="animate-spin text-cyan-400"
+                            className="animate-spin text-orange-500 dark:text-orange-400"
                             aria-hidden="true"
                           />
                           Loading eligible members…
@@ -429,7 +429,7 @@ export default function ProjectMembersDialog({
                         <button
                           type="submit"
                           disabled={submitting || loadingMembers || !selectedUserId}
-                          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-cyan-500 px-4 text-sm font-semibold text-white transition hover:bg-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {submitting ? (
                             <Loader2 size={16} className="animate-spin" aria-hidden="true" />
@@ -443,7 +443,7 @@ export default function ProjectMembersDialog({
                   </form>
 
                   {!isAdmin && (
-                    <p className="mt-4 rounded-lg bg-cyan-500/10 px-3.5 py-3 text-sm text-cyan-200">
+                    <p className="mt-4 rounded-lg bg-orange-500/10 px-3.5 py-3 text-sm text-orange-200">
                       Only system admins can send email invitations. You can still add
                       existing organization members here.
                     </p>
@@ -514,7 +514,7 @@ export default function ProjectMembersDialog({
                       <button
                         type="submit"
                         disabled={submitting || !name.trim() || !email.trim()}
-                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-cyan-500 px-4 text-sm font-semibold text-white transition hover:bg-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {submitting ? (
                           <Loader2 size={16} className="animate-spin" aria-hidden="true" />

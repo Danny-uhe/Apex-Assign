@@ -1,4 +1,4 @@
-import { Search, List, LayoutGrid, X } from 'lucide-react';
+﻿import { Search, List, LayoutGrid, X } from 'lucide-react';
 
 type Props = {
   view: 'list' | 'board';
@@ -24,7 +24,7 @@ export default function TaskToolbar({ view, onViewChange, search, onSearchChange
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder='Search tasks...'
-            className='h-10 w-full min-w-[180px] max-w-xs rounded-xl border border-zinc-700 bg-zinc-800 pl-9 pr-8 text-sm text-white placeholder-zinc-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20 sm:w-64'
+            className='h-10 w-full min-w-[180px] max-w-xs rounded-xl border border-zinc-700 bg-zinc-800 pl-9 pr-8 text-sm text-white placeholder-zinc-500 outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 sm:w-64'
           />
           {search && (
             <button
@@ -70,7 +70,7 @@ export default function TaskToolbar({ view, onViewChange, search, onSearchChange
       <div className='flex items-center gap-3'>
         <div className='flex items-center -space-x-2'>
           {[
-            { initials: 'RE', color: 'bg-cyan-500' },
+            { initials: 'RE', color: 'bg-orange-600' },
             { initials: 'CJ', color: 'bg-emerald-500' },
             { initials: 'RI', color: 'bg-purple-500' },
             { initials: 'ST', color: 'bg-amber-500' },

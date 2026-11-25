@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react';
+﻿import type { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger';
@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants = {
-  primary:   'bg-cyan-500 hover:bg-cyan-600 text-white',
+  primary:   'bg-orange-600 hover:bg-orange-700 text-white',
   secondary: 'bg-zinc-700 hover:bg-zinc-600 text-zinc-100',
   danger:    'bg-red-600 hover:bg-red-700 text-white',
 };

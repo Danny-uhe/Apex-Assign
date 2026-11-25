@@ -1,4 +1,4 @@
-import { CheckCircle2, ListChecks, Trophy } from 'lucide-react';
+﻿import { CheckCircle2, ListChecks, Trophy } from 'lucide-react';
 import type { ActivityResponse } from '../services/activity.service';
 
 export default function ActivityStats({
@@ -8,7 +8,7 @@ export default function ActivityStats({
 }) {
   const items = [
     { title: 'Completed Today', value: stats?.completedToday, icon: CheckCircle2, color: 'bg-green-500/10 text-green-400' },
-    { title: 'Tasks Updated Today', value: stats?.updatedToday, icon: ListChecks, color: 'bg-cyan-500/10 text-cyan-400' },
+    { title: 'Tasks Updated Today', value: stats?.updatedToday, icon: ListChecks, color: 'bg-orange-500/10 text-orange-500 dark:text-orange-400' },
     { title: 'Total Points', value: stats?.points, icon: Trophy, color: 'bg-yellow-500/10 text-yellow-300' },
   ];
 

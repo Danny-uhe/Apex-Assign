@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { Task, TaskStatus, TaskPriority } from '../types/types';
@@ -24,7 +24,7 @@ const statuses: { value: TaskStatus; label: string }[] = [
 ];
 
 const inputClass =
-  'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20';
+  'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20';
 const labelClass =
   'mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-500';
 
@@ -164,7 +164,7 @@ export default function EditTaskModal({ open, task, onClose }: Props) {
           <button
             onClick={handleSave}
             disabled={!title.trim() || saving}
-            className='rounded-xl bg-cyan-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600 disabled:opacity-40'
+            className='rounded-xl bg-orange-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-40'
           >
             {saving ? 'Saving…' : 'Save Changes'}
           </button>

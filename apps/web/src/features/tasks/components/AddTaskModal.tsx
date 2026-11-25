@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { X, CalendarDays, Upload, Trash2, FileText, ImageIcon, File, UserCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useTaskContext } from '@/app/Providers/TaskContext';
@@ -26,7 +26,7 @@ type Member = { id: string; name: string; avatar?: string | null; role?: string 
 
 function fileIcon(type: AttachedFile['type']) {
   if (type === 'pdf')   return <FileText  size={16} className='text-red-400'  />;
-  if (type === 'image') return <ImageIcon size={16} className='text-cyan-400' />;
+  if (type === 'image') return <ImageIcon size={16} className='text-orange-500 dark:text-orange-400' />;
   return                       <File      size={16} className='text-zinc-500' />;
 }
 
@@ -147,7 +147,7 @@ export default function AddTaskModal() {
 
   const handleClose = () => { reset(); closeAddTask(); };
 
-  const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20';
+  const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20';
 
   return (
     <div className='fixed inset-0 z-50 flex items-end justify-center bg-black/60 sm:items-center sm:p-4'>
@@ -219,7 +219,7 @@ export default function AddTaskModal() {
                   onClick={() => setAssignedToId('')}
                   className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
                     assignedToId === ''
-                      ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400'
+                      ? 'border-orange-600 bg-orange-500/10 text-orange-500 dark:text-orange-400'
                       : 'border-zinc-700 bg-zinc-800 text-zinc-400 hover:border-zinc-600'
                   }`}
                 >
@@ -234,11 +234,11 @@ export default function AddTaskModal() {
                     onClick={() => setAssignedToId(m.id)}
                     className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
                       assignedToId === m.id
-                        ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400'
+                        ? 'border-orange-600 bg-orange-500/10 text-orange-500 dark:text-orange-400'
                         : 'border-zinc-700 bg-zinc-800 text-zinc-400 hover:border-zinc-600'
                     }`}
                   >
-                    <span className='flex h-4 w-4 items-center justify-center rounded-full bg-cyan-500 text-[9px] font-bold text-white'>
+                    <span className='flex h-4 w-4 items-center justify-center rounded-full bg-orange-600 text-[9px] font-bold text-white'>
                       {getInitials(m.name)}
                     </span>
                     {m.name.split(' ')[0]}
@@ -273,7 +273,7 @@ export default function AddTaskModal() {
                   onClick={() => setPriority(p.value)}
                   className={`flex flex-col items-center gap-2 rounded-xl border-2 py-3 transition-all ${
                     priority === p.value
-                      ? 'border-cyan-500 bg-cyan-500/10'
+                      ? 'border-orange-600 bg-orange-500/10'
                       : 'border-zinc-700 bg-zinc-800 hover:border-zinc-600'
                   }`}
                 >
@@ -297,7 +297,7 @@ export default function AddTaskModal() {
                   onClick={() => setStatus(s.value)}
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                     status === s.value
-                      ? 'bg-cyan-500 text-white'
+                      ? 'bg-orange-600 text-white'
                       : 'border border-zinc-700 bg-zinc-800 text-zinc-400 hover:border-zinc-600'
                   }`}
                 >
@@ -317,12 +317,12 @@ export default function AddTaskModal() {
               onDragLeave={() => setDragging(false)}
               onDrop={(e) => { e.preventDefault(); setDragging(false); addFiles(e.dataTransfer.files); }}
               className={`flex w-full flex-col items-center gap-2 rounded-xl border-2 border-dashed py-6 transition-colors ${
-                dragging ? 'border-cyan-400 bg-cyan-500/10' : 'border-zinc-700 hover:border-cyan-500/50 hover:bg-zinc-800'
+                dragging ? 'border-orange-500 bg-orange-500/10' : 'border-zinc-700 hover:border-orange-500/50 hover:bg-zinc-800'
               }`}
             >
-              <Upload size={22} className='text-cyan-400' />
+              <Upload size={22} className='text-orange-500 dark:text-orange-400' />
               <p className='text-sm'>
-                <span className='font-semibold text-cyan-400'>Click to upload</span>
+                <span className='font-semibold text-orange-500 dark:text-orange-400'>Click to upload</span>
                 <span className='text-zinc-500'> or drag and drop</span>
               </p>
               <p className='text-xs text-zinc-500'>PDF, PNG, JPG — up to 10 MB each</p>
@@ -364,7 +364,7 @@ export default function AddTaskModal() {
           <button
             onClick={handleCreate}
             disabled={!title.trim() || !projectId || saving}
-            className='rounded-xl bg-cyan-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600 disabled:opacity-40'
+            className='rounded-xl bg-orange-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-40'
           >
             {saving ? 'Creating…' : 'Create Task'}
           </button>

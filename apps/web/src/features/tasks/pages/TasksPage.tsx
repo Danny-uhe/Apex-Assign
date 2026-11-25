@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import AppLayout from '@/layout/AppLayout';
 
 import { DndContext, closestCenter } from '@dnd-kit/core';
@@ -18,7 +18,7 @@ type FilterTab = 'Today' | 'Upcoming' | 'Completed' | 'Assigned';
 
 /* Active filter chips shown above the list */
 const filterChips = [
-  { label: 'In Progress', color: 'bg-cyan-500/10 text-cyan-400' },
+  { label: 'In Progress', color: 'bg-orange-500/10 text-orange-500 dark:text-orange-400' },
   { label: 'High Priority', color: 'bg-red-500/10 text-red-400' },
 ];
 
@@ -34,12 +34,12 @@ function ProgressSummary({ tasks }: { tasks: Task[] }) {
     <div className='rounded-2xl border border-zinc-700 bg-zinc-900 px-5 py-4 shadow-sm'>
       <div className='mb-2 flex items-center justify-between text-sm'>
         <span className='font-semibold text-zinc-300'>Overall Progress</span>
-        <span className='font-bold text-cyan-400'>{pct}%</span>
+        <span className='font-bold text-orange-500 dark:text-orange-400'>{pct}%</span>
       </div>
       {/* Progress bar */}
       <div className='h-2.5 w-full overflow-hidden rounded-full bg-zinc-700'>
         <div
-          className='h-full rounded-full bg-gradient-to-r from-cyan-500 to-green-500 transition-all duration-500'
+          className='h-full rounded-full bg-gradient-to-r from-orange-600 to-green-500 transition-all duration-500'
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -49,8 +49,8 @@ function ProgressSummary({ tasks }: { tasks: Task[] }) {
           <span className='inline-block h-2 w-2 rounded-full bg-zinc-600' />
           To Do: <strong>{tasks.length - done - inReview - inProgress}</strong>
         </span>
-        <span className='flex items-center gap-1 text-cyan-400'>
-          <span className='inline-block h-2 w-2 rounded-full bg-cyan-400' />
+        <span className='flex items-center gap-1 text-orange-500 dark:text-orange-400'>
+          <span className='inline-block h-2 w-2 rounded-full bg-orange-500' />
           In Progress: <strong>{inProgress}</strong>
         </span>
         <span className='flex items-center gap-1 text-amber-400'>
@@ -159,7 +159,7 @@ export default function TasksPage() {
                     }}
                     className={`relative flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                       activeFilter === tab
-                        ? 'bg-cyan-500 text-white'
+                        ? 'bg-orange-600 text-white'
                         : 'text-zinc-500 hover:bg-zinc-800'
                     }`}
                   >
@@ -259,7 +259,7 @@ export default function TasksPage() {
                 <p className='mt-1 text-sm'>Try a different keyword or</p>
                 <button
                   onClick={() => setSearch('')}
-                  className='mt-3 rounded-xl bg-cyan-500 px-5 py-2 text-sm font-semibold text-white hover:bg-cyan-600'
+                  className='mt-3 rounded-xl bg-orange-600 px-5 py-2 text-sm font-semibold text-white hover:bg-orange-700'
                 >
                   Clear search
                 </button>

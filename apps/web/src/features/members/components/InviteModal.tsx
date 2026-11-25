@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { X, Send, Mail, User, Trash2, Clock, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { membersService, type Invitation } from '../services/members.service';
@@ -11,10 +11,10 @@ type Props = {
 
 const roleBadge = {
   admin:  'bg-red-500/10 text-red-400',
-  member: 'bg-cyan-500/10 text-cyan-400',
+  member: 'bg-orange-500/10 text-orange-500 dark:text-orange-400',
 };
 
-const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20';
+const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20';
 
 export default function InviteModal({ open, onClose, onInviteSent }: Props) {
   const [name,       setName]       = useState('');
@@ -146,7 +146,7 @@ export default function InviteModal({ open, onClose, onInviteSent }: Props) {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as 'admin' | 'member')}
-              className='rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white outline-none focus:border-cyan-500'
+              className='rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white outline-none focus:border-orange-600'
             >
               <option value='member'>Member</option>
               <option value='admin'>Admin</option>
@@ -163,7 +163,7 @@ export default function InviteModal({ open, onClose, onInviteSent }: Props) {
           <button
             onClick={handleSend}
             disabled={!canSend}
-            className='flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-500 py-3 text-sm font-semibold text-white hover:bg-cyan-600 disabled:opacity-40'
+            className='flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 py-3 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-40'
           >
             <Send size={15} />
             {sending ? 'Sending…' : 'Send Invite'}
@@ -189,7 +189,7 @@ export default function InviteModal({ open, onClose, onInviteSent }: Props) {
                   className='flex items-center justify-between rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3'
                 >
                   <div className='flex items-center gap-3 min-w-0'>
-                    <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-cyan-500/10 text-xs font-bold text-cyan-400'>
+                    <div className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-xs font-bold text-orange-500 dark:text-orange-400'>
                       {inv.name.slice(0, 2).toUpperCase()}
                     </div>
                     <div className='min-w-0'>
@@ -212,7 +212,7 @@ export default function InviteModal({ open, onClose, onInviteSent }: Props) {
                       title='Resend invite'
                       disabled={resendingId === inv.id}
                       onClick={() => handleResend(inv.id)}
-                      className='rounded-lg p-1.5 text-zinc-500 hover:bg-cyan-500/10 hover:text-cyan-400 disabled:opacity-40'
+                      className='rounded-lg p-1.5 text-zinc-500 hover:bg-orange-600/10 hover:text-orange-400 disabled:opacity-40'
                     >
                       <RefreshCw size={13} className={resendingId === inv.id ? 'animate-spin' : ''} />
                     </button>

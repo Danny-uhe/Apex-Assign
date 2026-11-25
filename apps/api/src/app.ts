@@ -20,6 +20,7 @@ import notificationRoutes from "./modules/notifications/ntification.routes.js";
 import invitationRoutes from "./modules/invitaions/invitation.routes.js";
 import messageRoutes from "./modules/messages/message.routes.js";
 import globalMessageRoutes from "./modules/globalMessages/globalMessage.routes.js";
+import directMessageRoutes from "./modules/directMessages/directMessage.routes.js";
 import oauthRoutes from "./modules/oauth/oauth.routes.js";
 import { authLimiter, chatLimiter, apiLimiter } from "./middleware/rateLimiter.js";
 
@@ -103,6 +104,7 @@ app.use("/api/projects/:projectId/messages", messageRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/chat", chatLimiter, globalMessageRoutes);
+app.use("/api/dm", chatLimiter, directMessageRoutes);
 app.use("/api/oauth", oauthRoutes);
 
 export default app;

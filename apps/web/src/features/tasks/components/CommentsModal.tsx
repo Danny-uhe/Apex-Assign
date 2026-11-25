@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { X, Send } from 'lucide-react';
 
 type Comment = {
@@ -15,7 +15,7 @@ const SEED_COMMENTS: Comment[] = [
     id: 1,
     author: 'Rowland E.',
     initials: 'RE',
-    color: 'bg-blue-500',
+    color: 'bg-orange-600',
     text: 'Started working on the bento-grid layout. Should have a draft by EOD.',
     time: '10 mins ago',
   },
@@ -57,7 +57,7 @@ export default function CommentsModal({ open, taskTitle, onClose }: Props) {
         id: Date.now(),
         author: 'You',
         initials: 'YO',
-        color: 'bg-blue-600',
+        color: 'bg-orange-700',
         text,
         time: 'Just now',
       },
@@ -77,7 +77,7 @@ export default function CommentsModal({ open, taskTitle, onClose }: Props) {
           </div>
           <button
             onClick={onClose}
-            className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+            className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
           >
             <X size={18} />
           </button>
@@ -117,7 +117,7 @@ export default function CommentsModal({ open, taskTitle, onClose }: Props) {
             />
             <button
               onClick={handleSend}
-              className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500 text-white hover:bg-cyan-400 disabled:opacity-40'
+              className='flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-40'
               disabled={!input.trim()}
             >
               <Send size={14} />

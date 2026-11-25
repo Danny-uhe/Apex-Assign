@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { X, Loader2 } from "lucide-react";
 import { projectService } from "@/services/project.service";
 import { useProjectStore } from "@/store/projectStore";
@@ -70,7 +70,7 @@ export default function CreateProjectModal({ open, onClose }: Props) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Q4 Launch"
-              className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20"
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20"
             />
           </div>
 
@@ -84,7 +84,7 @@ export default function CreateProjectModal({ open, onClose }: Props) {
               onChange={(e) => setDesc(e.target.value)}
               placeholder="What is this project about?"
               rows={3}
-              className="w-full resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20"
+              className="w-full resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20"
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function CreateProjectModal({ open, onClose }: Props) {
             <button
               type="submit"
               disabled={loading || !name.trim()}
-              className="flex items-center gap-2 rounded-xl bg-cyan-500 px-5 py-2 text-sm font-semibold text-white hover:bg-cyan-600 disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-orange-600 px-5 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50"
             >
               {loading && <Loader2 size={14} className="animate-spin" />}
               Create Project

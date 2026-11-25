@@ -1,4 +1,4 @@
-import { CheckCircle2, Trophy, FolderPlus } from 'lucide-react';
+﻿import { CheckCircle2, Trophy, FolderPlus } from 'lucide-react';
 
 type Props = {
   type: 'task' | 'reward' | 'project';
@@ -19,7 +19,7 @@ export default function ActivityCard({
     ) : type === 'reward' ? (
       <Trophy className='text-yellow-500' />
     ) : (
-      <FolderPlus className='text-blue-500' />
+      <FolderPlus className='text-orange-600' />
     );
 
   return (

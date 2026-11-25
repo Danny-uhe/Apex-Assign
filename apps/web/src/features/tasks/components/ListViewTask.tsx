@@ -1,4 +1,4 @@
-import { Archive, CalendarDays } from 'lucide-react';
+﻿import { Archive, CalendarDays } from 'lucide-react';
 import type { Task } from '../types/types';
 import { useTaskContext } from '@/app/Providers/TaskContext';
 import toast from 'react-hot-toast';
@@ -30,7 +30,7 @@ export default function ListViewTask({ task, selected, onClick }: Props) {
       onClick={onClick}
       className={`flex cursor-pointer items-start gap-4 rounded-2xl border p-4 transition-all hover:shadow-sm ${
         selected
-          ? 'border-cyan-500/50 bg-cyan-500/5'
+          ? 'border-orange-500/50 bg-orange-600/5'
           : 'border-zinc-700 bg-zinc-900 hover:border-zinc-600'
       }`}
     >
@@ -38,7 +38,7 @@ export default function ListViewTask({ task, selected, onClick }: Props) {
       <input
         type='checkbox'
         onClick={(e) => e.stopPropagation()}
-        className='mt-1 h-4 w-4 flex-shrink-0 cursor-pointer accent-cyan-500'
+        className='mt-1 h-4 w-4 flex-shrink-0 cursor-pointer accent-orange-600'
       />
 
       {/* Content */}
@@ -75,7 +75,7 @@ export default function ListViewTask({ task, selected, onClick }: Props) {
           {/* Assignee */}
           {task.assignedTo && (
             <div className='flex items-center gap-1.5'>
-              <div className='flex h-6 w-6 items-center justify-center rounded-full bg-cyan-500 text-[10px] font-bold text-white'>
+              <div className='flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-[10px] font-bold text-white'>
                 {task.assignedTo.name.slice(0, 2).toUpperCase()}
               </div>
               <span className='text-xs text-zinc-500'>{task.assignedTo.name}</span>
@@ -93,11 +93,11 @@ export default function ListViewTask({ task, selected, onClick }: Props) {
             <div className='flex flex-1 items-center gap-2'>
               <div className='h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-700'>
                 <div
-                  className='h-full rounded-full bg-cyan-500 transition-all'
+                  className='h-full rounded-full bg-orange-600 transition-all'
                   style={{ width: `${task.progress}%` }}
                 />
               </div>
-              <span className='text-xs font-semibold text-cyan-400'>
+              <span className='text-xs font-semibold text-orange-500 dark:text-orange-400'>
                 {task.progress}%
               </span>
             </div>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+﻿import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Search, ArchiveRestore, Trash2, CalendarDays, Loader2 } from 'lucide-react';
 import AppLayout from '@/layout/AppLayout';
 import { useTaskContext } from '@/app/Providers/TaskContext';
@@ -87,7 +87,7 @@ export default function ArchivedPage() {
               onChange={(event) => setSearch(event.target.value)}
               placeholder='Search archived tasks...'
               aria-label='Search archived tasks'
-              className='h-10 w-full rounded-xl border border-zinc-700 bg-zinc-900 pl-9 pr-4 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20'
+              className='h-10 w-full rounded-xl border border-zinc-700 bg-zinc-900 pl-9 pr-4 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20'
             />
           </div>
           <p className='text-sm text-zinc-500'>
@@ -107,7 +107,7 @@ export default function ArchivedPage() {
         )}
 
         {loading ? (
-          <div role='status' className='flex justify-center rounded-2xl border border-zinc-800 bg-zinc-900 py-20 text-cyan-400'>
+          <div role='status' className='flex justify-center rounded-2xl border border-zinc-800 bg-zinc-900 py-20 text-orange-500 dark:text-orange-400'>
             <Loader2 className='animate-spin' aria-label='Loading archived tasks' />
           </div>
         ) : error ? null : visible.length === 0 ? (
@@ -125,7 +125,7 @@ export default function ArchivedPage() {
                 className='flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 shadow-sm transition hover:border-zinc-700 hover:shadow-lg sm:flex-row sm:items-start sm:justify-between'
               >
                 <div className='flex min-w-0 items-start gap-3'>
-                  <div className='mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-500 text-[10px] font-bold text-white'>
+                  <div className='mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-orange-600 text-[10px] font-bold text-white'>
                     {initials(task.assignedTo?.name)}
                   </div>
                   <div className='min-w-0'>
@@ -151,7 +151,7 @@ export default function ArchivedPage() {
                     type='button'
                     disabled={busyTaskId === task.id}
                     onClick={() => void handleRestore(task)}
-                    className='flex items-center gap-1.5 rounded-lg border border-cyan-500/40 px-3 py-1.5 text-xs font-semibold text-cyan-300 transition-colors hover:bg-cyan-400/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 disabled:opacity-50'
+                    className='flex items-center gap-1.5 rounded-lg border border-orange-500/40 px-3 py-1.5 text-xs font-semibold text-orange-300 transition-colors hover:bg-orange-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 disabled:opacity-50'
                   >
                     {busyTaskId === task.id ? <Loader2 size={13} className='animate-spin' /> : <ArchiveRestore size={13} />}
                     Restore

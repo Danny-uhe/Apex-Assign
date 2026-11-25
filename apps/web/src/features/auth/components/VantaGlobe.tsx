@@ -12,8 +12,8 @@ interface Particle {
   r: number;
 }
 
-const COLOR_DOT  = '0, 212, 255';   // cyan-400 in RGB
-const COLOR_LINE = '0, 212, 255';
+const COLOR_DOT  = '234, 88, 12';    // orange-600 in RGB
+const COLOR_LINE = '234, 88, 12';
 const BG         = '#09090b';       // zinc-950
 const PARTICLE_COUNT = 70;
 const MAX_DIST   = 160;

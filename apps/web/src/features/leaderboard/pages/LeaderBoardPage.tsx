@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import AppLayout from '@/layout/AppLayout';
 import ProgressCard from '../components/ProgressCard';
@@ -69,7 +69,7 @@ export default function LeaderboardPage() {
           </div>
         )}
         {loading ? (
-          <div role='status' className='flex justify-center rounded-2xl border border-zinc-700 bg-zinc-900 py-20 text-cyan-500'>
+          <div role='status' className='flex justify-center rounded-2xl border border-zinc-700 bg-zinc-900 py-20 text-orange-600'>
             <Loader2 className='animate-spin' aria-label='Loading leaderboard data' />
           </div>
         ) : profile ? (

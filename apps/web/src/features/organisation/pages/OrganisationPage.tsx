@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Users, FolderOpen, CheckSquare, TrendingUp, Mail, Crown, Loader2, Search, Trash2, Send, X } from 'lucide-react';
 import AppLayout from '@/layout/AppLayout';
 import { useAuthStore } from '@/store/authStore';
@@ -25,7 +25,7 @@ interface OrgMember {
   isOnline: boolean;
 }
 
-const COLORS = ['bg-cyan-500','bg-purple-500','bg-green-500','bg-orange-500','bg-pink-500','bg-teal-500'];
+const COLORS = ['bg-orange-600','bg-purple-500','bg-green-500','bg-orange-500','bg-pink-500','bg-teal-500'];
 function avatarColor(id: string) {
   const s = id.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
   return COLORS[s % COLORS.length];
@@ -98,7 +98,7 @@ export default function OrganisationPage() {
     m.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20';
+  const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20';
 
   return (
     <AppLayout>
@@ -113,7 +113,7 @@ export default function OrganisationPage() {
           {isAdmin && (
             <button
               onClick={() => setShowInvite(true)}
-              className='flex items-center gap-2 rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600'
+              className='flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-700'
             >
               <Send size={15} />
               Invite Member
@@ -123,12 +123,12 @@ export default function OrganisationPage() {
 
         {/* Stats */}
         {loading ? (
-          <div className='flex justify-center py-10'><Loader2 size={24} className='animate-spin text-cyan-500' /></div>
+          <div className='flex justify-center py-10'><Loader2 size={24} className='animate-spin text-orange-600' /></div>
         ) : (
           <>
             <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
               {[
-                { icon: Users,       label: 'Members',     value: stats?.totalUsers ?? 0,           color: 'text-cyan-400',   bg: 'bg-cyan-500/10'   },
+                { icon: Users,       label: 'Members',     value: stats?.totalUsers ?? 0,           color: 'text-orange-500 dark:text-orange-400',   bg: 'bg-orange-500/10'   },
                 { icon: FolderOpen,  label: 'Projects',    value: stats?.totalProjects ?? 0,         color: 'text-purple-400', bg: 'bg-purple-500/10' },
                 { icon: CheckSquare, label: 'Tasks Done',  value: stats?.completedTasks ?? 0,        color: 'text-green-400',  bg: 'bg-green-500/10'  },
                 { icon: TrendingUp,  label: 'Completion',  value: `${stats?.completionRate ?? 0}%`,  color: 'text-amber-400',  bg: 'bg-amber-500/10'  },
@@ -153,7 +153,7 @@ export default function OrganisationPage() {
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       placeholder='Search members…'
-                      className='w-full rounded-xl border border-zinc-700 bg-zinc-800 py-2 pl-9 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20'
+                      className='w-full rounded-xl border border-zinc-700 bg-zinc-800 py-2 pl-9 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20'
                     />
                   </div>
                 </div>
@@ -258,7 +258,7 @@ export default function OrganisationPage() {
                   {(['member','admin'] as const).map((r) => (
                     <button key={r} type='button' onClick={() => setInviteRole(r)}
                       className={`rounded-xl border-2 py-2.5 text-sm font-medium transition-all ${
-                        inviteRole === r ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400' : 'border-zinc-700 text-zinc-400 hover:border-zinc-600'
+                        inviteRole === r ? 'border-orange-600 bg-orange-500/10 text-orange-500 dark:text-orange-400' : 'border-zinc-700 text-zinc-400 hover:border-zinc-600'
                       }`}>
                       {r === 'admin' ? 'Admin — full access' : 'Member — can view & work on tasks'}
                     </button>
@@ -267,7 +267,7 @@ export default function OrganisationPage() {
               </div>
 
               <button type='submit' disabled={inviting || !inviteEmail.trim() || !inviteName.trim()}
-                className='flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-500 py-3 text-sm font-semibold text-white hover:bg-cyan-600 disabled:opacity-50'>
+                className='flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 py-3 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50'>
                 {inviting ? <Loader2 size={15} className='animate-spin' /> : <Send size={15} />}
                 Send Invite
               </button>

@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+﻿import { useCallback, useEffect, useState } from "react";
 import { Trophy, Loader2 } from "lucide-react";
 import { leaderboardService, type LeaderboardUser } from "../services/leaderboard.service";
 import { useAuthStore } from "@/store/authStore";
 
-const COLORS = ["bg-blue-500","bg-purple-500","bg-green-500","bg-orange-500","bg-pink-500","bg-teal-500"];
+const COLORS = ["bg-orange-600","bg-purple-500","bg-green-500","bg-orange-500","bg-pink-500","bg-teal-500"];
 
 function avatarColor(id: string) {
   const s = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -43,7 +43,7 @@ export default function TeamLeaderboardCard() {
 
       {loading ? (
         <div className="flex justify-center py-6">
-          <Loader2 size={20} className="animate-spin text-blue-500" />
+          <Loader2 size={20} className="animate-spin text-orange-600" />
         </div>
       ) : error ? (
         <div role="alert" className="py-4 text-center text-sm text-red-600">
@@ -65,8 +65,8 @@ export default function TeamLeaderboardCard() {
                     {getInitials(u.name)}
                   </div>
                   <div className="min-w-0">
-                    <p className={`truncate text-sm font-semibold ${isYou ? "text-cyan-400" : "text-zinc-100"}`}>
-                      {u.name}{isYou && <span className="ml-1 font-normal text-blue-400">(You)</span>}
+                    <p className={`truncate text-sm font-semibold ${isYou ? "text-orange-500" : "text-zinc-100"}`}>
+                      {u.name}{isYou && <span className="ml-1 font-normal text-orange-500">(You)</span>}
                     </p>
                     <p className="text-xs text-zinc-500">{u.position ?? "Team Member"}</p>
                   </div>

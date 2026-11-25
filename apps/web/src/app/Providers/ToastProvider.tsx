@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { CircleAlert, CircleCheck, Info, LoaderCircle, X } from 'lucide-react';
 import { ToastBar, Toaster, toast } from 'react-hot-toast';
 
@@ -32,7 +32,7 @@ function ToastContent({
           onClick={() => setExpanded((value) => !value)}
           aria-expanded={expanded}
           aria-controls={`toast-message-${notificationId}`}
-          className='mt-1 text-xs font-semibold text-cyan-300 hover:text-cyan-200 focus-visible:outline-none focus-visible:underline'
+          className='mt-1 text-xs font-semibold text-orange-300 hover:text-orange-200 focus-visible:outline-none focus-visible:underline'
         >
           {expanded ? 'Show less' : 'Show details'}
         </button>
@@ -65,7 +65,7 @@ export default function ToastProvider() {
           ? 'border-red-500/30 bg-red-500/10 text-red-300'
           : isSuccess
             ? 'border-green-500/30 bg-green-500/10 text-green-300'
-            : 'border-cyan-500/30 bg-cyan-500/10 text-cyan-300';
+            : 'border-orange-500/30 bg-orange-500/10 text-orange-300';
 
         return (
           <ToastBar
@@ -93,7 +93,7 @@ export default function ToastProvider() {
                   type='button'
                   onClick={() => toast.dismiss(notification.id)}
                   aria-label='Dismiss notification'
-                  className='-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900'
+                  className='-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900'
                 >
                   <X className='h-4 w-4' aria-hidden='true' />
                 </button>

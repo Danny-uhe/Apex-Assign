@@ -1,4 +1,4 @@
-import { AlertTriangle, X } from 'lucide-react';
+﻿import { AlertTriangle, X } from 'lucide-react';
 
 type Props = {
   open: boolean;
@@ -32,7 +32,7 @@ export default function ConfirmModal({
           </div>
           <button
             onClick={onCancel}
-            className='rounded-lg p-1 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+            className='rounded-lg p-1 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
           >
             <X size={16} />
           </button>
@@ -45,7 +45,7 @@ export default function ConfirmModal({
         <div className='mt-6 flex justify-end gap-3'>
           <button
             onClick={onCancel}
-            className='rounded-xl border border-zinc-700 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+            className='rounded-xl border border-zinc-700 px-5 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
           >
             Cancel
           </button>

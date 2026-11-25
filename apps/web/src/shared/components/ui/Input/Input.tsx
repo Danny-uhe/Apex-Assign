@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+﻿import { forwardRef } from 'react';
 import { cn } from '@/shared/lib/cn';
 
 import InputError from './InputError';
@@ -28,7 +28,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             className={cn(
               'h-11 w-full rounded-lg border border-[var(--color-border)] bg-zinc-950 px-4 text-[var(--color-text-primary)] outline-none transition-all placeholder:text-zinc-500 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-400',
-              'focus:border-[var(--color-primary)] focus:ring-2 focus:ring-cyan-400/20',
+              'focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-500/20',
               error && 'border-[var(--color-danger)]',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',

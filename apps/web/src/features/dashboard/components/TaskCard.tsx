@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { MoreVertical, Clock, Eye, Pencil, Trash2, CheckCircle2 } from 'lucide-react';
 
 type TaskCardProps = {
@@ -48,7 +48,7 @@ export default function TaskCard({ title, priority, time, onView, onEdit, onDele
         <button
           onClick={() => setDone(!done)}
           className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md border-2 transition-colors ${
-            done ? 'border-cyan-500 bg-cyan-500' : 'border-zinc-600 bg-zinc-700'
+            done ? 'border-orange-600 bg-orange-600' : 'border-zinc-600 bg-zinc-700'
           }`}
         >
           {done && (

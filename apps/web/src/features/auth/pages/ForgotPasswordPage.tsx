@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Mail, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { authService } from '@/features/auth/services/auth.services';
@@ -60,14 +60,14 @@ export default function ForgotPasswordPage() {
       <div className='flex flex-1 flex-col items-center justify-center bg-zinc-950 px-6 py-12 sm:px-12'>
         <div className='w-full max-w-md'>
           {/* Mobile logo */}
-          <h1 className='mb-8 text-2xl font-bold text-cyan-400 lg:hidden'>
+          <h1 className='mb-8 text-2xl font-bold text-orange-500 dark:text-orange-400 lg:hidden'>
             ApexAssign
           </h1>
 
           {!sent ? (
             <>
-              <div className='mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/10'>
-                <Mail size={22} className='text-cyan-400' />
+              <div className='mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500/10'>
+                <Mail size={22} className='text-orange-500 dark:text-orange-400' />
               </div>
               <h2 className='mt-4 text-3xl font-bold text-zinc-100'>
                 Forgot password?
@@ -87,14 +87,14 @@ export default function ForgotPasswordPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder='you@company.com'
                     required
-                    className='h-11 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20'
+                    className='h-11 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20'
                   />
                 </div>
 
                 <button
                   type='submit'
                   disabled={isLoading}
-                  className='h-11 w-full rounded-xl bg-cyan-500 text-sm font-semibold text-zinc-950 transition hover:bg-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:opacity-60'
+                  className='h-11 w-full rounded-xl bg-orange-600 text-sm font-semibold text-zinc-950 transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 disabled:opacity-60'
                 >
                   {isLoading ? 'Sending…' : 'Send Reset Link'}
                 </button>
@@ -117,7 +117,7 @@ export default function ForgotPasswordPage() {
               </p>
               <button
                 onClick={() => setSent(false)}
-                className='mt-5 text-sm font-semibold text-cyan-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+                className='mt-5 text-sm font-semibold text-orange-500 dark:text-orange-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
               >
                 Try a different email
               </button>
@@ -127,7 +127,7 @@ export default function ForgotPasswordPage() {
           {/* Back to login */}
           <Link
             to='/login'
-            className='mt-8 flex items-center justify-center gap-2 text-sm font-medium text-zinc-400 hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+            className='mt-8 flex items-center justify-center gap-2 text-sm font-medium text-zinc-400 hover:text-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
           >
             <ArrowLeft size={16} />
             Back to Log In

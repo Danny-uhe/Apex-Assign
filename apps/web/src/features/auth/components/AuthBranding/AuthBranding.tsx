@@ -1,4 +1,4 @@
-import { CheckCircle2 } from 'lucide-react';
+﻿import { CheckCircle2 } from 'lucide-react';
 import type { AuthBrandingProps } from './AuthBranding.types';
 
 export default function AuthBranding({
@@ -50,7 +50,7 @@ export default function AuthBranding({
             <div key={feature} className='flex items-center gap-3'>
               <CheckCircle2
                 size={18}
-                className='text-cyan-400'
+                className='text-orange-500 dark:text-orange-400'
                 strokeWidth={2.5}
               />
 

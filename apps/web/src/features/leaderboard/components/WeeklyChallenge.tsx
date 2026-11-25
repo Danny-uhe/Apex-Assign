@@ -1,8 +1,8 @@
-export default function WeeklyChallenge(){
+﻿export default function WeeklyChallenge(){
 
     return(
 
-        <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-6">
+        <div className="rounded-2xl border border-orange-500/30 bg-orange-600/5 p-6">
 
             <h2 className="font-bold text-zinc-100">
                 Weekly Challenge
@@ -14,7 +14,7 @@ export default function WeeklyChallenge(){
 
             <div className="mt-5 h-3 rounded-full bg-zinc-800">
 
-                <div className="h-full w-2/3 rounded-full bg-cyan-500"/>
+                <div className="h-full w-2/3 rounded-full bg-orange-600"/>
 
             </div>
 

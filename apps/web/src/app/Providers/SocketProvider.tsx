@@ -18,6 +18,7 @@ import type {
   SocketTyping,
 } from "@/types/socket.types";
 import type { GlobalMessage } from "@/hooks/useGlobalMessages";
+import type { DirectMessage } from "@/hooks/useDirectMessages";
 
 interface SocketCtx {
   sendMessage: (projectId: string, content: string) => void;
@@ -81,6 +82,30 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       );
     });
 
+    // ── Direct messages ───────────────────────────────────────────────────
+    socket.on("new_direct_message", (msg: DirectMessage) => {
+      const otherUserId = msg.senderId === useAuthStore.getState().user?.id
+        ? msg.receiverId
+        : msg.senderId;
+      queryClient.setQueryData<DirectMessage[]>(
+        ["dm", otherUserId],
+        (old = []) => {
+          const exists = old.some((m) => m.id === msg.id);
+          if (exists) return old;
+          const without = old.filter((m) => !m.id.startsWith("optimistic-"));
+          return [...without, msg];
+        }
+      );
+      queryClient.invalidateQueries({ queryKey: ["dm-conversations"] });
+    });
+
+    socket.on("direct_message_deleted", ({ messageId, otherUserId }: { messageId: string; otherUserId: string }) => {
+      queryClient.setQueryData<DirectMessage[]>(
+        ["dm", otherUserId],
+        (old = []) => old.filter((m) => m.id !== messageId)
+      );
+    });
+
     // ── Task updates ────────────────────────────────────────────────────────
     socket.on("task_updated", (event: SocketTaskEvent) => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -131,6 +156,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       socket.off("message_deleted");
       socket.off("new_global_message");
       socket.off("global_message_deleted");
+      socket.off("new_direct_message");
+      socket.off("direct_message_deleted");
       socket.off("task_updated");
       socket.off("notification");
       socket.off("user_presence");

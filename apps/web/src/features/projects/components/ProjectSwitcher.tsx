@@ -49,7 +49,7 @@ export default function ProjectSwitcher() {
                 key={p.id}
                 onClick={() => { setActive(p); setOpen(false); }}
                 className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-sm transition-colors hover:bg-zinc-700 ${
-                  activeProject?.id === p.id ? "bg-cyan-500/10 font-semibold text-cyan-400" : "text-zinc-300"
+                  activeProject?.id === p.id ? "bg-orange-500/10 font-semibold text-orange-500 dark:text-orange-400" : "text-zinc-300"
                 }`}
               >
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: p.color ?? "#6366f1" }} />
@@ -62,7 +62,7 @@ export default function ProjectSwitcher() {
             {isAdmin && (
               <button
                 onClick={() => { setOpen(false); setShowCreate(true); }}
-                className="flex w-full items-center gap-2 border-t border-zinc-700 px-4 py-2.5 text-sm font-medium text-cyan-400 hover:bg-cyan-500/10"
+                className="flex w-full items-center gap-2 border-t border-zinc-700 px-4 py-2.5 text-sm font-medium text-orange-500 dark:text-orange-400 hover:bg-orange-500/10"
               >
                 <Plus size={14} />
                 New Project

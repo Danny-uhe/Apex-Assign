@@ -1,4 +1,4 @@
-type Props={
+﻿type Props={
     rank:number;
     name:string;
     tasks:number;
@@ -41,7 +41,7 @@ export default function LeaderboardRow({
 
             </div>
 
-            <div className="font-bold text-cyan-400">
+            <div className="font-bold text-orange-500 dark:text-orange-400">
                 {points} pts
             </div>
 

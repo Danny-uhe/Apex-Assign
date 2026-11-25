@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+﻿import { useRef, useState } from 'react';
 import { X, FileText, ImageIcon, Download, Upload, Trash2 } from 'lucide-react';
 
 type FileItem = {
@@ -22,7 +22,7 @@ type Props = {
 
 const iconMap = {
   pdf: { icon: FileText, bg: 'bg-red-500/10', color: 'text-red-300' },
-  image: { icon: ImageIcon, bg: 'bg-cyan-500/10', color: 'text-cyan-300' },
+  image: { icon: ImageIcon, bg: 'bg-orange-500/10', color: 'text-orange-300' },
   file: { icon: FileText, bg: 'bg-zinc-800', color: 'text-zinc-300' },
 };
 
@@ -57,7 +57,7 @@ export default function FilesModal({ open, taskTitle, onClose }: Props) {
           </div>
           <button
             onClick={onClose}
-            className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+            className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
           >
             <X size={18} />
           </button>
@@ -90,7 +90,7 @@ export default function FilesModal({ open, taskTitle, onClose }: Props) {
                       <p className='text-[10px] text-zinc-500'>{f.size}</p>
                     </div>
                     <div className='flex gap-1 opacity-0 transition group-hover:opacity-100'>
-                      <button className='rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'>
+                      <button className='rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'>
                         <Download size={14} />
                       </button>
                       <button
@@ -118,7 +118,7 @@ export default function FilesModal({ open, taskTitle, onClose }: Props) {
           />
           <button
             onClick={() => inputRef.current?.click()}
-            className='flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-zinc-700 py-3 text-sm font-medium text-zinc-400 transition hover:border-cyan-500 hover:text-cyan-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+            className='flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-zinc-700 py-3 text-sm font-medium text-zinc-400 transition hover:border-orange-600 hover:text-orange-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
           >
             <Upload size={16} />
             Upload Files

@@ -1,4 +1,4 @@
-import { Award, CheckCircle2, Flame, Star, Target, Zap } from 'lucide-react';
+﻿import { Award, CheckCircle2, Flame, Star, Target, Zap } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { GamificationProfile } from '../services/leaderboard.service';
 
@@ -14,7 +14,7 @@ const icons: Record<string, LucideIcon> = {
 const colors: Record<string, { icon: string; background: string; border: string }> = {
   'five-day-streak': { icon: 'text-orange-300', background: 'bg-orange-500/10', border: 'border-orange-500/20' },
   'task-master': { icon: 'text-green-300', background: 'bg-green-500/10', border: 'border-green-500/20' },
-  'project-starter': { icon: 'text-cyan-300', background: 'bg-cyan-500/10', border: 'border-cyan-500/20' },
+  'project-starter': { icon: 'text-orange-300', background: 'bg-orange-500/10', border: 'border-orange-600/20' },
   'completion-rate': { icon: 'text-yellow-300', background: 'bg-yellow-500/10', border: 'border-yellow-500/20' },
   'speed-runner': { icon: 'text-purple-300', background: 'bg-purple-500/10', border: 'border-purple-500/20' },
   'team-player': { icon: 'text-teal-300', background: 'bg-teal-500/10', border: 'border-teal-500/20' },

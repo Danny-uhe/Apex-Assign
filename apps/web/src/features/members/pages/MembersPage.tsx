@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Search, UserPlus, MoreVertical, ShieldCheck, Eye, UserX, UserCheck, Crown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -19,7 +19,7 @@ function getInitials(name: string) {
 }
 
 const AVATAR_COLORS = [
-  'bg-cyan-500', 'bg-purple-500', 'bg-emerald-500',
+  'bg-orange-600', 'bg-purple-500', 'bg-emerald-500',
   'bg-amber-500', 'bg-red-500',   'bg-teal-500',
 ];
 
@@ -146,7 +146,7 @@ export default function MembersPage() {
           {isAdmin && (
             <button
               onClick={() => setInviteOpen(true)}
-              className='flex w-fit items-center gap-2 rounded-xl bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600'
+              className='flex w-fit items-center gap-2 rounded-xl bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-700'
             >
               <UserPlus size={16} />
               Invite Member
@@ -162,7 +162,7 @@ export default function MembersPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder='Search members...'
-              className='h-10 w-full rounded-xl border border-zinc-700 bg-zinc-800 pl-9 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20'
+              className='h-10 w-full rounded-xl border border-zinc-700 bg-zinc-800 pl-9 pr-4 text-sm text-white placeholder-zinc-500 outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20'
             />
           </div>
 
@@ -172,7 +172,7 @@ export default function MembersPage() {
               onClick={() => setFilterActive(f)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize transition-colors ${
                 filterActive === f
-                  ? 'bg-cyan-500 text-white'
+                  ? 'bg-orange-600 text-white'
                   : 'border border-zinc-700 text-zinc-400 hover:bg-zinc-800'
               }`}
             >
@@ -267,7 +267,7 @@ export default function MembersPage() {
                     type='button'
                     onClick={() => navigate(`/profile/${m.id}`)}
                     aria-label={`View ${m.name}'s profile`}
-                    className='relative flex-shrink-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2'
+                    className='relative flex-shrink-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2'
                   >
                     {m.avatar ? (
                       <img src={m.avatar} alt='' className='h-12 w-12 rounded-xl object-cover' />
@@ -292,7 +292,7 @@ export default function MembersPage() {
                   <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                     m.systemRole === 'admin'
                       ? 'bg-red-500/10 text-red-400'
-                      : 'bg-cyan-500/10 text-cyan-400'
+                      : 'bg-orange-500/10 text-orange-500 dark:text-orange-400'
                   }`}>
                     {m.systemRole === 'admin' ? 'Admin' : 'Member'}
                   </span>
@@ -307,7 +307,7 @@ export default function MembersPage() {
                 {/* Stats */}
                 <div className='mt-4 grid grid-cols-2 divide-x divide-zinc-700 rounded-xl bg-zinc-800 py-2'>
                   <div className='flex flex-col items-center gap-0.5 px-2'>
-                    <p className='text-sm font-bold text-cyan-400'>{m.points.toLocaleString()}</p>
+                    <p className='text-sm font-bold text-orange-500 dark:text-orange-400'>{m.points.toLocaleString()}</p>
                     <p className='text-[10px] text-zinc-500'>Points</p>
                   </div>
                   <div className='flex flex-col items-center gap-0.5 px-2'>

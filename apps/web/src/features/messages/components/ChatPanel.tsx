@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { Send, Trash2, MessageCircle, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useMessages, useSendMessage, useDeleteMessage, useTypingUsers } from "@/hooks/useMessages";
@@ -15,7 +15,7 @@ function getInitials(name: string) {
 }
 
 const AVATAR_COLORS = [
-  "bg-blue-500", "bg-purple-500", "bg-green-500",
+  "bg-orange-600", "bg-purple-500", "bg-green-500",
   "bg-orange-500", "bg-pink-500", "bg-teal-500",
 ];
 
@@ -61,8 +61,8 @@ export default function ChatPanel({ projectId, projectName }: Props) {
     <div className="flex h-full flex-col rounded-2xl border border-zinc-800 bg-zinc-900 text-zinc-100 shadow-sm">
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-zinc-800 px-5 py-4">
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-500/10">
-          <MessageCircle size={16} className="text-cyan-400" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-500/10">
+          <MessageCircle size={16} className="text-orange-500 dark:text-orange-400" />
         </div>
         <div>
           <h3 className="text-sm font-semibold text-zinc-100">
@@ -76,7 +76,7 @@ export default function ChatPanel({ projectId, projectName }: Props) {
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         {isLoading ? (
           <div className="flex items-center justify-center py-10">
-            <Loader2 size={20} className="animate-spin text-blue-500" />
+            <Loader2 size={20} className="animate-spin text-orange-600" />
           </div>
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-zinc-500">
@@ -93,7 +93,7 @@ export default function ChatPanel({ projectId, projectName }: Props) {
                 <Link
                   to={`/profile/${msg.userId}`}
                   aria-label={`View ${msg.user?.name ?? "user"}'s profile`}
-                  className={`h-8 w-8 flex-shrink-0 flex items-center justify-center rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${avatarColor(msg.userId)}`}
+                  className={`h-8 w-8 flex-shrink-0 flex items-center justify-center rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${avatarColor(msg.userId)}`}
                 >
                   {getInitials(msg.user?.name ?? "?")}
                 </Link>
@@ -113,7 +113,7 @@ export default function ChatPanel({ projectId, projectName }: Props) {
                     )}
                     <div className={`rounded-2xl px-4 py-2.5 text-sm ${
                       isOwn
-                        ? "rounded-tr-sm bg-blue-600 text-white"
+                        ? "rounded-tr-sm bg-orange-700 text-white"
                         : "rounded-tl-sm bg-zinc-800 text-zinc-200"
                     }`}>
                       {msg.content}
@@ -150,12 +150,12 @@ export default function ChatPanel({ projectId, projectName }: Props) {
             value={text}
             onChange={handleInput}
             placeholder="Type a message…"
-            className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20"
+            className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
           />
           <button
             type="submit"
             disabled={!text.trim() || send.isPending}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500 text-white hover:bg-cyan-400 disabled:opacity-40"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-40"
           >
             {send.isPending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
           </button>

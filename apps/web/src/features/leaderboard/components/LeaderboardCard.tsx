@@ -1,4 +1,4 @@
-type Props = {
+﻿type Props = {
   position: number;
   name: string;
   tasks: number;
@@ -31,7 +31,7 @@ export default function LeaderboardCard({
       <div className='mt-5'>
         <h2 className='text-lg font-semibold text-white'>{name}</h2>
 
-        <p className='mt-2 text-cyan-400 font-semibold'>{points} pts</p>
+        <p className='mt-2 text-orange-500 dark:text-orange-400 font-semibold'>{points} pts</p>
       </div>
     </div>
   );

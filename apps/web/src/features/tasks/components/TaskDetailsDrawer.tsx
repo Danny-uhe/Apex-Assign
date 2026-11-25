@@ -1,4 +1,4 @@
-import { X, Calendar, User, Flag } from 'lucide-react';
+﻿import { X, Calendar, User, Flag } from 'lucide-react';
 import type { Task } from '../types/types';
 
 type Props = {
@@ -18,7 +18,7 @@ export default function TaskDetailsDrawer({ open, task, onClose }: Props) {
         <div className='flex items-center justify-between border-b border-zinc-800 p-6'>
           <h2 className='text-xl font-bold text-zinc-100'>Task Details</h2>
 
-          <button onClick={onClose} className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'>
+          <button onClick={onClose} className='rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'>
             <X size={18} />
           </button>
         </div>

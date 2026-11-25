@@ -1,4 +1,4 @@
-import { Building2, Pencil } from 'lucide-react';
+﻿import { Building2, Pencil } from 'lucide-react';
 
 export default function ProfileHeader() {
   return (
@@ -13,7 +13,7 @@ export default function ProfileHeader() {
           </h1>
 
           <div className='mt-1.5 flex flex-wrap items-center gap-3'>
-            <span className='rounded-full bg-cyan-500/10 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-cyan-300'>
+            <span className='rounded-full bg-orange-500/10 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-orange-300'>
               Product Designer
             </span>
 
@@ -27,7 +27,7 @@ export default function ProfileHeader() {
 
       <button
         id='edit-profile-btn'
-        className='flex items-center gap-2 self-start rounded-full bg-blue-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-800 active:scale-95 sm:self-auto'
+        className='flex items-center gap-2 self-start rounded-full bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-orange-700 active:scale-95 sm:self-auto'
       >
         <Pencil className='h-4 w-4' />
         Edit Profile

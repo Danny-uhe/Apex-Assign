@@ -1,4 +1,4 @@
-import type { GamificationPreferences } from '../services/leaderboard.service';
+﻿import type { GamificationPreferences } from '../services/leaderboard.service';
 
 type PreferenceKey = keyof GamificationPreferences;
 
@@ -21,8 +21,8 @@ function Toggle({
       aria-checked={checked}
       disabled={disabled}
       onClick={onChange}
-      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-wait disabled:opacity-60 ${
-        checked ? 'bg-cyan-500' : 'bg-zinc-700'
+      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-wait disabled:opacity-60 ${
+        checked ? 'bg-orange-600' : 'bg-zinc-700'
       }`}
     >
       <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${

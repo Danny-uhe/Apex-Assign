@@ -1,4 +1,4 @@
-export default function TodayProgressCard() {
+﻿export default function TodayProgressCard() {
   return (
     <div className='rounded-2xl border border-zinc-700 bg-zinc-900 p-6 shadow-sm'>
       {/* Header */}
@@ -7,12 +7,12 @@ export default function TodayProgressCard() {
           Today's Progress
         </h3>
 
-        <span className='text-sm font-bold text-cyan-400'>60%</span>
+        <span className='text-sm font-bold text-orange-500 dark:text-orange-400'>60%</span>
       </div>
 
       {/* Progress Bar */}
       <div className='mt-5 h-2 overflow-hidden rounded-full bg-zinc-700'>
-        <div className='h-full w-[60%] rounded-full bg-cyan-500'></div>
+        <div className='h-full w-[60%] rounded-full bg-orange-600'></div>
       </div>
 
       {/* Stats */}

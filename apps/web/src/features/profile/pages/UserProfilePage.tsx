@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft, Mail, CheckCircle2, ClipboardList,
@@ -31,7 +31,7 @@ interface UserProfile {
 }
 
 const AVATAR_COLORS = [
-  'bg-blue-500','bg-purple-500','bg-emerald-500',
+  'bg-orange-600','bg-purple-500','bg-emerald-500',
   'bg-amber-500','bg-rose-500','bg-teal-500',
 ];
 function avatarColor(id: string) {
@@ -70,7 +70,7 @@ export default function UserProfilePage() {
     return (
       <AppLayout>
         <div className='flex items-center justify-center py-32'>
-          <Loader2 size={28} className='animate-spin text-blue-500' />
+          <Loader2 size={28} className='animate-spin text-orange-600' />
         </div>
       </AppLayout>
     );
@@ -81,7 +81,7 @@ export default function UserProfilePage() {
       <AppLayout>
         <div className='flex flex-col items-center justify-center py-32 text-slate-400'>
           <p className='text-lg font-semibold'>User not found</p>
-          <button onClick={() => navigate(-1)} className='mt-4 text-sm text-blue-500 hover:underline'>
+          <button onClick={() => navigate(-1)} className='mt-4 text-sm text-orange-600 hover:underline'>
             Go back
           </button>
         </div>
@@ -100,7 +100,7 @@ export default function UserProfilePage() {
 
   const stats = [
     { icon: CheckCircle2,  label: 'Tasks Done',  value: tasksCompleted, color: 'text-green-400',  bg: 'bg-green-500/10'  },
-    { icon: ClipboardList, label: 'Assigned',     value: tasksAssigned,  color: 'text-cyan-400',   bg: 'bg-cyan-500/10'   },
+    { icon: ClipboardList, label: 'Assigned',     value: tasksAssigned,  color: 'text-orange-500 dark:text-orange-400',   bg: 'bg-orange-500/10'   },
     { icon: Zap,           label: 'Points',       value: points,         color: 'text-purple-400', bg: 'bg-purple-500/10' },
     { icon: Flame,         label: 'Day Streak',   value: streak,         color: 'text-orange-400', bg: 'bg-orange-500/10' },
   ];
@@ -116,7 +116,7 @@ export default function UserProfilePage() {
         {/* Back */}
         <button
           onClick={() => navigate(-1)}
-          className='flex items-center gap-2 text-sm font-medium text-zinc-400 transition-colors hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'
+          className='flex items-center gap-2 text-sm font-medium text-zinc-400 transition-colors hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'
         >
           <ArrowLeft size={16} />
           Back to Members

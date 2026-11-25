@@ -1,4 +1,4 @@
-import { useDroppable } from '@dnd-kit/core';
+﻿import { useDroppable } from '@dnd-kit/core';
 import type { ReactNode } from 'react';
 
 type Props = {
@@ -16,7 +16,7 @@ export default function TaskColumn({ id, title, children }: Props) {
     <div
       ref={setNodeRef}
       className={`rounded-2xl border p-5 transition-all duration-200 ${
-        isOver ? 'border-cyan-500 bg-cyan-500/5' : 'border-zinc-700 bg-zinc-900'
+        isOver ? 'border-orange-600 bg-orange-600/5' : 'border-zinc-700 bg-zinc-900'
       }`}
     >
       <h2 className='mb-5 text-xl font-bold text-white'>{title}</h2>

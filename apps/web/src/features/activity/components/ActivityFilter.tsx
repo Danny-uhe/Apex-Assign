@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Bell, CheckCircle2, FolderPlus, ListChecks, Search } from 'lucide-react';
 import type { ActivityEntry } from '../services/activity.service';
 
@@ -55,7 +55,7 @@ export default function ActivityFilter({
               onClick={() => setActive(period)}
               className={`relative flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
                 active === period
-                  ? 'bg-cyan-500 text-white'
+                  ? 'bg-orange-600 text-white'
                   : 'border border-zinc-700 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100'
               }`}
             >
@@ -76,7 +76,7 @@ export default function ActivityFilter({
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder='Search activity...'
-            className='w-full rounded-xl border border-zinc-700 bg-zinc-950 py-2 pl-9 pr-4 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20'
+            className='w-full rounded-xl border border-zinc-700 bg-zinc-950 py-2 pl-9 pr-4 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20'
           />
         </div>
       </div>
@@ -98,10 +98,10 @@ export default function ActivityFilter({
 
 function ActivityRow({ item }: { item: ActivityEntry }) {
   const iconMap = {
-    task_created: { icon: ListChecks, bg: 'bg-cyan-500/10', color: 'text-cyan-400' },
+    task_created: { icon: ListChecks, bg: 'bg-orange-500/10', color: 'text-orange-500 dark:text-orange-400' },
     task_completed: { icon: CheckCircle2, bg: 'bg-green-500/10', color: 'text-green-400' },
     notification: { icon: Bell, bg: 'bg-yellow-500/10', color: 'text-yellow-300' },
-    project_created: { icon: FolderPlus, bg: 'bg-cyan-500/10', color: 'text-cyan-400' },
+    project_created: { icon: FolderPlus, bg: 'bg-orange-500/10', color: 'text-orange-500 dark:text-orange-400' },
   };
   const { icon: Icon, bg, color } = iconMap[item.type];
 

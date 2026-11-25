@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+﻿import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isAxiosError } from 'axios';
@@ -92,7 +92,7 @@ export default function LoginForm() {
           onChange={() => setValue('remember', !watch('remember'))}
         />
 
-        <Link to='/forgot-password' className='text-sm text-cyan-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400'>
+        <Link to='/forgot-password' className='text-sm text-orange-500 dark:text-orange-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500'>
           Forgot password?
         </Link>
       </div>

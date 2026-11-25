@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Plus, Folder, CheckSquare, Users, UserPlus, Loader2 } from 'lucide-react';
 import AppLayout from '@/layout/AppLayout';
 import TodayProgressCard from '@/features/dashboard/components/TodayProgressCard';
@@ -51,7 +51,7 @@ export default function DashboardPage() {
           <div className='grid grid-cols-3 gap-4 lg:col-span-8'>
             {[
               { label: 'To Do',       count: todoCount,       color: 'bg-zinc-800 text-zinc-300'    },
-              { label: 'In Progress', count: inProgressCount, color: 'bg-cyan-500/10 text-cyan-400' },
+              { label: 'In Progress', count: inProgressCount, color: 'bg-orange-500/10 text-orange-500 dark:text-orange-400' },
               { label: 'Done',        count: doneCount,       color: 'bg-green-500/10 text-green-400' },
             ].map(({ label, count, color }) => (
               <div key={label} className='rounded-2xl border border-zinc-700 bg-zinc-900 p-5 shadow-sm'>
@@ -71,7 +71,7 @@ export default function DashboardPage() {
             {isAdmin && (
               <button
                 onClick={() => setShowNewProject(true)}
-                className='flex items-center gap-1.5 rounded-xl bg-cyan-500 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-600'
+                className='flex items-center gap-1.5 rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700'
               >
                 <Plus size={15} /> New Project
               </button>
@@ -80,7 +80,7 @@ export default function DashboardPage() {
 
           {projLoading ? (
             <div className='flex items-center justify-center py-10'>
-              <Loader2 size={24} className='animate-spin text-cyan-500' />
+              <Loader2 size={24} className='animate-spin text-orange-600' />
             </div>
           ) : projects.length === 0 ? (
             <div className='flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 py-12 text-zinc-500'>
@@ -89,7 +89,7 @@ export default function DashboardPage() {
               {isAdmin && (
                 <button
                   onClick={() => setShowNewProject(true)}
-                  className='mt-3 text-sm font-semibold text-cyan-400 hover:underline'
+                  className='mt-3 text-sm font-semibold text-orange-500 dark:text-orange-400 hover:underline'
                 >
                   + Create your first project
                 </button>
@@ -108,8 +108,8 @@ export default function DashboardPage() {
                     key={p.id}
                     className={`group relative rounded-xl border p-4 transition-all hover:shadow-md ${
                       isActive
-                        ? 'border-cyan-500/50 bg-cyan-500/5 shadow-sm'
-                        : 'border-zinc-700 bg-zinc-800 hover:border-cyan-500/30'
+                        ? 'border-orange-500/50 bg-orange-600/5 shadow-sm'
+                        : 'border-zinc-700 bg-zinc-800 hover:border-orange-500/30'
                     }`}
                   >
                     <button
@@ -117,7 +117,7 @@ export default function DashboardPage() {
                       onClick={() => setActive(p)}
                       aria-label={`Select ${p.name} project`}
                       aria-pressed={isActive}
-                      className='absolute inset-0 z-10 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900'
+                      className='absolute inset-0 z-10 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900'
                     />
                     <div className='relative'>
                       <div className='flex min-w-0 items-start justify-between gap-2'>
@@ -133,7 +133,7 @@ export default function DashboardPage() {
                             type='button'
                             onClick={() => setMemberProject(p)}
                             aria-label={`Manage members for ${p.name}`}
-                            className='z-20 inline-flex min-h-8 shrink-0 items-center gap-1.5 rounded-lg border border-zinc-600 bg-zinc-700 px-2.5 text-xs font-semibold text-zinc-300 shadow-sm transition hover:border-cyan-500/50 hover:bg-zinc-600 hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2'
+                            className='z-20 inline-flex min-h-8 shrink-0 items-center gap-1.5 rounded-lg border border-zinc-600 bg-zinc-700 px-2.5 text-xs font-semibold text-zinc-300 shadow-sm transition hover:border-orange-500/50 hover:bg-zinc-600 hover:text-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2'
                           >
                             <UserPlus size={14} aria-hidden='true' />
                             <span>Manage</span>
@@ -142,7 +142,7 @@ export default function DashboardPage() {
                       </div>
 
                       {isActive && (
-                        <span className='pointer-events-none mt-1 inline-flex rounded-full bg-cyan-500 px-2 py-0.5 text-[10px] font-bold text-white'>
+                        <span className='pointer-events-none mt-1 inline-flex rounded-full bg-orange-600 px-2 py-0.5 text-[10px] font-bold text-white'>
                           Active
                         </span>
                       )}
@@ -168,7 +168,7 @@ export default function DashboardPage() {
                           </div>
                           <div className='h-1.5 w-full rounded-full bg-zinc-700'>
                             <div
-                              className='h-1.5 rounded-full bg-cyan-500 transition-all'
+                              className='h-1.5 rounded-full bg-orange-600 transition-all'
                               style={{ width: `${progress}%` }}
                             />
                           </div>
@@ -201,12 +201,12 @@ export default function DashboardPage() {
 
           {tasksLoading ? (
             <div className='flex items-center justify-center py-10'>
-              <Loader2 size={24} className='animate-spin text-cyan-500' />
+              <Loader2 size={24} className='animate-spin text-orange-600' />
             </div>
           ) : recentTasks.length === 0 ? (
             <div className='flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 py-10 text-zinc-500'>
               <p className='text-sm font-medium'>No tasks yet</p>
-              <button onClick={openAddTask} className='mt-2 text-sm font-semibold text-cyan-400 hover:underline'>
+              <button onClick={openAddTask} className='mt-2 text-sm font-semibold text-orange-500 dark:text-orange-400 hover:underline'>
                 + Add your first task
               </button>
             </div>
@@ -220,7 +220,7 @@ export default function DashboardPage() {
                 >
                   <span className={`h-2 w-2 rounded-full flex-shrink-0 ${
                     task.status === 'done'        ? 'bg-green-500' :
-                    task.status === 'in_progress' ? 'bg-cyan-500'  :
+                    task.status === 'in_progress' ? 'bg-orange-600'  :
                     task.status === 'in_review'   ? 'bg-purple-500': 'bg-zinc-500'
                   }`} />
                   <span className={`flex-1 text-sm ${task.status === 'done' ? 'line-through text-zinc-500' : 'text-zinc-300'}`}>

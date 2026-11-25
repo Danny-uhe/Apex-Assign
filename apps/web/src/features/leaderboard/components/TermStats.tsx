@@ -1,4 +1,4 @@
-export default function TeamStats() {
+﻿export default function TeamStats() {
   return (
     <div className='rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-sm'>
       <h2 className='text-lg font-semibold text-zinc-100'>Team Statistics</h2>
@@ -11,7 +11,7 @@ export default function TeamStats() {
           </div>
 
           <div className='mt-2 h-2 rounded-full bg-zinc-700'>
-            <div className='h-full w-[80%] rounded-full bg-blue-600'></div>
+            <div className='h-full w-[80%] rounded-full bg-orange-700'></div>
           </div>
         </div>
 

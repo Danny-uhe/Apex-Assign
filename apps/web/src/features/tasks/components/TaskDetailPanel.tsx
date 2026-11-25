@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { X, FileText, ImageIcon, Paperclip, Plus, MessageCircle } from 'lucide-react';
 import type { Task } from '../types/types';
 import CommentsModal from './CommentsModal';
@@ -56,7 +56,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
             {onEdit && (
               <button
                 onClick={onEdit}
-                className='rounded-lg px-2.5 py-1 text-xs font-semibold text-cyan-400 hover:bg-cyan-500/10'
+                className='rounded-lg px-2.5 py-1 text-xs font-semibold text-orange-500 dark:text-orange-400 hover:bg-orange-600/10'
               >
                 Edit
               </button>
@@ -78,7 +78,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
               Assignee
             </p>
             <div className='flex items-center gap-2'>
-              <div className='flex h-6 w-6 items-center justify-center rounded-full bg-cyan-500 text-[10px] font-bold text-white'>
+              <div className='flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-[10px] font-bold text-white'>
                 {(task.assignedTo?.name ?? 'RI').slice(0, 2).toUpperCase()}
               </div>
               <span className='text-sm font-medium text-zinc-300'>
@@ -116,7 +116,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
               onClick={() => handleTabClick(tab)}
               className={`mr-3 border-b-2 py-2.5 text-xs font-medium transition-colors sm:mr-4 sm:text-sm ${
                 activeTab === tab && tab === 'Notes'
-                  ? 'border-cyan-500 text-cyan-400'
+                  ? 'border-orange-600 text-orange-500 dark:text-orange-400'
                   : 'border-transparent text-zinc-500 hover:text-zinc-300'
               }`}
             >
@@ -135,7 +135,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
             <p className='text-[10px] font-semibold uppercase tracking-widest text-zinc-500'>
               Action Items
             </p>
-            <span className='text-xs font-semibold text-cyan-400'>
+            <span className='text-xs font-semibold text-orange-500 dark:text-orange-400'>
               {doneCount}/{actionItems.length} Done
             </span>
           </div>
@@ -149,7 +149,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
                 <div
                   className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md ${
                     item.done
-                      ? 'bg-cyan-500'
+                      ? 'bg-orange-600'
                       : 'border-2 border-zinc-600 bg-zinc-700'
                   }`}
                 >
@@ -194,7 +194,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
               <button
                 id='add-attachment-btn'
                 onClick={() => setShowFiles(true)}
-                className='flex items-center gap-1 text-xs font-semibold text-cyan-400 hover:text-cyan-300'
+                className='flex items-center gap-1 text-xs font-semibold text-orange-500 dark:text-orange-400 hover:text-orange-300'
               >
                 <Plus size={12} /> Add New
               </button>
@@ -210,7 +210,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
                     className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg ${
                       file.type === 'pdf'
                         ? 'bg-red-500/10 text-red-400'
-                        : 'bg-cyan-500/10 text-cyan-400'
+                        : 'bg-orange-500/10 text-orange-500 dark:text-orange-400'
                     }`}
                   >
                     {file.type === 'pdf' ? (
@@ -232,7 +232,7 @@ export default function TaskDetailPanel({ task, onClose, onEdit }: Props) {
             {/* Open full files view */}
             <button
               onClick={() => setShowFiles(true)}
-              className='mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-zinc-700 py-2 text-xs font-medium text-zinc-500 hover:border-cyan-500/50 hover:text-cyan-400'
+              className='mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-zinc-700 py-2 text-xs font-medium text-zinc-500 hover:border-orange-500/50 hover:text-orange-400'
             >
               <MessageCircle size={12} />
               View all files

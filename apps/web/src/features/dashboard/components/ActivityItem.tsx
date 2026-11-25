@@ -1,4 +1,4 @@
-import { CheckCircle2, Coins, UserPlus } from 'lucide-react';
+﻿import { CheckCircle2, Coins, UserPlus } from 'lucide-react';
 
 type ActivityItemProps = {
   type: 'completed' | 'points' | 'member';
@@ -11,7 +11,7 @@ export default function ActivityItem({ type, title, time }: ActivityItemProps) {
     type === 'completed' ? (
       <CheckCircle2 className='h-5 w-5 text-green-400' />
     ) : type === 'points' ? (
-      <Coins className='h-5 w-5 text-cyan-400' />
+      <Coins className='h-5 w-5 text-orange-500 dark:text-orange-400' />
     ) : (
       <UserPlus className='h-5 w-5 text-amber-400' />
     );

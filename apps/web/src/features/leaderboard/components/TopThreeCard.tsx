@@ -1,4 +1,4 @@
-import { Crown } from 'lucide-react';
+﻿import { Crown } from 'lucide-react';
 
 export default function TopThreeCard() {
   return (
@@ -44,7 +44,7 @@ export default function TopThreeCard() {
 
             <p className='text-sm text-zinc-400'>{user.points} pts</p>
 
-            <span className='mt-3 inline-block rounded-full bg-blue-600 px-3 py-1 text-xs text-white'>
+            <span className='mt-3 inline-block rounded-full bg-orange-700 px-3 py-1 text-xs text-white'>
               {user.place}
             </span>
           </div>

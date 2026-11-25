@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import {
   Camera, Eye, EyeOff, Trash2, AlertTriangle,
   Zap, Flame, Trophy, Bell, Shield, Palette, Moon, Globe,
@@ -156,7 +156,7 @@ export default function SettingsPage() {
     }
   };
 
-  const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/20';
+  const inp = 'w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 outline-none transition focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20';
   const lbl = 'mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-500';
 
   /* ── Toggle helper ── */
@@ -165,7 +165,7 @@ export default function SettingsPage() {
       role='switch'
       aria-checked={checked}
       onClick={onChange}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-cyan-500' : 'bg-zinc-600'}`}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-orange-600' : 'bg-zinc-600'}`}
     >
       <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
     </button>
@@ -191,7 +191,7 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab(id)}
                 className={`flex items-center gap-2.5 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
                   activeTab === id
-                    ? 'bg-cyan-500 text-white'
+                    ? 'bg-orange-600 text-white'
                     : 'text-zinc-400 hover:bg-zinc-800'
                 }`}
               >
@@ -208,23 +208,23 @@ export default function SettingsPage() {
             {activeTab === 'profile' && (
               <>
                 {/* Stats banner */}
-                <section className='rounded-2xl bg-gradient-to-br from-cyan-600 to-cyan-800 p-5 text-white shadow-sm'>
-                  <p className='mb-3 text-xs font-semibold uppercase tracking-wider text-cyan-200'>Your Progress</p>
+                <section className='rounded-2xl bg-gradient-to-br from-orange-700 to-orange-800 p-5 text-white shadow-sm'>
+                  <p className='mb-3 text-xs font-semibold uppercase tracking-wider text-orange-200'>Your Progress</p>
                   <div className='grid grid-cols-3 gap-3'>
                     <div className='flex flex-col items-center gap-1 rounded-xl bg-white/15 py-3'>
                       <Zap size={18} className='text-yellow-300' fill='currentColor' />
                       <p className='text-lg font-bold'>{points.toLocaleString()}</p>
-                      <p className='text-[10px] text-cyan-200'>Points</p>
+                      <p className='text-[10px] text-orange-200'>Points</p>
                     </div>
                     <div className='flex flex-col items-center gap-1 rounded-xl bg-white/15 py-3'>
                       <Flame size={18} className='text-orange-300' />
                       <p className='text-lg font-bold'>{streak}</p>
-                      <p className='text-[10px] text-cyan-200'>Day Streak</p>
+                      <p className='text-[10px] text-orange-200'>Day Streak</p>
                     </div>
                     <div className='flex flex-col items-center gap-1 rounded-xl bg-white/15 py-3'>
                       <Trophy size={18} className='text-yellow-300' />
                       <p className='text-lg font-bold'>#{rank}</p>
-                      <p className='text-[10px] text-cyan-200'>Rank</p>
+                      <p className='text-[10px] text-orange-200'>Rank</p>
                     </div>
                   </div>
                 </section>
@@ -238,12 +238,12 @@ export default function SettingsPage() {
                       <img
                         src={avatarUrl}
                         alt='Profile avatar'
-                        className='h-20 w-20 rounded-full object-cover ring-4 ring-cyan-500/30'
+                        className='h-20 w-20 rounded-full object-cover ring-4 ring-orange-500/30'
                       />
                       <button
                         type='button'
                         onClick={openAvatarPicker}
-                        className='absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500 text-white shadow-md hover:bg-cyan-600'
+                        className='absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full bg-orange-600 text-white shadow-md hover:bg-orange-700'
                       >
                         <Camera size={13} />
                       </button>
@@ -254,7 +254,7 @@ export default function SettingsPage() {
                       <button
                         type='button'
                         onClick={openAvatarPicker}
-                        className='mt-2 text-xs font-medium text-cyan-400 hover:underline'
+                        className='mt-2 text-xs font-medium text-orange-500 dark:text-orange-400 hover:underline'
                       >
                         Change profile photo
                       </button>
@@ -396,7 +396,7 @@ export default function SettingsPage() {
               <>
                 <section className='rounded-2xl border border-zinc-700 bg-zinc-900 p-6 shadow-sm'>
                   <h2 className='mb-2 text-base font-bold text-white'>Theme</h2>
-                  <div className='flex items-center gap-4 rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4'>
+                  <div className='flex items-center gap-4 rounded-xl border border-orange-500/30 bg-orange-600/5 p-4'>
                     <div className='h-12 w-20 flex-shrink-0 rounded-lg border border-zinc-700 bg-zinc-950 shadow-inner' />
                     <div>
                       <p className='text-sm font-semibold text-zinc-100'>Dark theme enabled</p>
@@ -438,7 +438,7 @@ export default function SettingsPage() {
                   onClick={handleSave}
                   disabled={saving}
                   className={`rounded-xl px-8 py-3 text-sm font-semibold text-white transition-colors ${
-                    saved ? 'bg-green-500' : 'bg-cyan-500 hover:bg-cyan-600'
+                    saved ? 'bg-green-500' : 'bg-orange-600 hover:bg-orange-700'
                   } ${saving ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   {saved ? '✓ Saved!' : saving ? 'Saving...' : 'Save Changes'}

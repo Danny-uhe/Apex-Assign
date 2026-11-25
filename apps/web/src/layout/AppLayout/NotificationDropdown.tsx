@@ -1,14 +1,14 @@
-import { CheckCheck, X, Bell, UserPlus, CheckCircle2, AtSign, Users, MessageCircle } from 'lucide-react';
+﻿import { CheckCheck, X, Bell, UserPlus, CheckCircle2, AtSign, Users, MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '@/app/Providers/NotificationContext';
 import type { AppNotification } from '@/app/Providers/NotificationContext';
 
 const typeIcon: Record<AppNotification['type'], { icon: React.ElementType; bg: string; color: string }> = {
-  assignment: { icon: Bell,          bg: 'bg-cyan-500/10',   color: 'text-cyan-400'   },
+  assignment: { icon: Bell,          bg: 'bg-orange-500/10',   color: 'text-orange-500 dark:text-orange-400'   },
   invite:     { icon: UserPlus,      bg: 'bg-purple-500/10', color: 'text-purple-400' },
   completed:  { icon: CheckCircle2,  bg: 'bg-green-500/10',  color: 'text-green-400'  },
   mention:    { icon: AtSign,        bg: 'bg-amber-500/10',  color: 'text-amber-400'  },
-  message:    { icon: MessageCircle, bg: 'bg-cyan-500/10',   color: 'text-cyan-400'   },
+  message:    { icon: MessageCircle, bg: 'bg-orange-500/10',   color: 'text-orange-500 dark:text-orange-400'   },
   general:    { icon: Users,         bg: 'bg-zinc-700',      color: 'text-zinc-400'   },
 };
 
@@ -32,7 +32,7 @@ export default function NotificationDropdown() {
         <button
           onClick={markAllRead}
           disabled={unread === 0}
-          className='flex items-center gap-1 text-xs font-medium text-cyan-400 hover:underline disabled:opacity-40'
+          className='flex items-center gap-1 text-xs font-medium text-orange-500 dark:text-orange-400 hover:underline disabled:opacity-40'
         >
           <CheckCheck size={13} />
           Mark all read
@@ -50,7 +50,7 @@ export default function NotificationDropdown() {
               <div
                 key={n.id}
                 className={`group flex items-start gap-3 border-b border-zinc-800 px-4 py-3 transition last:border-0 hover:bg-zinc-800 ${
-                  n.read ? '' : 'bg-cyan-500/5'
+                  n.read ? '' : 'bg-orange-600/5'
                 }`}
               >
                 {/* Icon or avatar */}
@@ -72,7 +72,7 @@ export default function NotificationDropdown() {
                       navigate(`/profile/${n.relatedId}?message=1`);
                     }
                   }}
-                  className='min-w-0 flex-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500'
+                  className='min-w-0 flex-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600'
                 >
                   <p className='text-xs font-semibold text-zinc-200'>{n.title}</p>
                   <p className='mt-0.5 text-xs leading-snug text-zinc-500'>{n.message}</p>
@@ -80,7 +80,7 @@ export default function NotificationDropdown() {
                 </button>
 
                 <div className='flex flex-shrink-0 flex-col items-end gap-1'>
-                  {!n.read && <span className='h-2 w-2 rounded-full bg-cyan-500' />}
+                  {!n.read && <span className='h-2 w-2 rounded-full bg-orange-600' />}
                   <button
                     onClick={(e) => { e.stopPropagation(); dismiss(n.id); }}
                     className='rounded p-0.5 text-zinc-600 opacity-0 hover:text-red-400 group-hover:opacity-100'

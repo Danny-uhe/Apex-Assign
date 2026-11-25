@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { Globe, Send, Trash2, Loader2, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/layout/AppLayout";
@@ -21,7 +21,7 @@ function getInitials(name: string) {
 }
 
 const AVATAR_COLORS = [
-  "bg-blue-500",
+  "bg-orange-600",
   "bg-purple-500",
   "bg-green-500",
   "bg-orange-500",
@@ -84,8 +84,8 @@ export default function GlobalChatPage() {
       <div className="mx-auto flex h-[calc(100dvh-8rem)] max-w-3xl w-full flex-col rounded-2xl border border-zinc-800 bg-zinc-900 text-zinc-100 shadow-sm">
         {/* ── Header ── */}
         <div className="flex items-center gap-3 border-b border-zinc-800 px-5 py-4">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-sky-500/10">
-            <Globe size={20} className="text-sky-400" />
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-orange-500/10">
+            <Globe size={20} className="text-orange-500 dark:text-orange-400" />
           </div>
           <div className="flex-1 min-w-0">
             <h2 className="text-base font-semibold text-zinc-100">Global Chat</h2>
@@ -102,7 +102,7 @@ export default function GlobalChatPage() {
         <div className="flex-1 overflow-y-auto space-y-4 px-4 py-4">
           {isLoading ? (
             <div className="flex items-center justify-center py-16">
-              <Loader2 size={22} className="animate-spin text-sky-400" />
+              <Loader2 size={22} className="animate-spin text-orange-500 dark:text-orange-400" />
             </div>
           ) : messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-zinc-500">
@@ -125,7 +125,7 @@ export default function GlobalChatPage() {
                     <Link
                       to={`/profile/${msg.userId}`}
                       aria-label={`View ${msg.user?.name ?? "user"}'s profile`}
-                      className={`h-8 w-8 flex-shrink-0 flex items-center justify-center rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${bgColor}`}
+                      className={`h-8 w-8 flex-shrink-0 flex items-center justify-center rounded-full text-xs font-bold text-white transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${bgColor}`}
                     >
                       {initials}
                     </Link>
@@ -159,7 +159,7 @@ export default function GlobalChatPage() {
                       <div
                         className={`rounded-2xl px-4 py-2.5 text-sm ${
                           isOwn
-                            ? "rounded-tr-sm bg-sky-600 text-white"
+                            ? "rounded-tr-sm bg-orange-700 text-white"
                             : "rounded-tl-sm bg-zinc-800 text-zinc-200"
                         }`}
                       >
@@ -205,12 +205,12 @@ export default function GlobalChatPage() {
               onChange={handleInput}
               onKeyDown={handleKeyDown}
               placeholder="Message everyone…"
-              className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-400/20"
+              className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
             />
             <button
               type="submit"
               disabled={!text.trim() || send.isPending}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500 text-white hover:bg-sky-400 disabled:opacity-40 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-40 transition-colors"
               aria-label="Send message"
             >
               {send.isPending ? (

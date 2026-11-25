@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 
 import type { AppLayoutProps } from './AppLayout.types';
+import LogoPlaceholder from '@/components/ui/LogoPlaceholder';
 import AppHeader   from './AppHeader';
 import AddTaskModal from '@/features/tasks/components/AddTaskModal';
 import PointsToast  from '@/features/shared/PointsToast';
@@ -48,15 +49,15 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-150 ${
       isActive
-        ? 'bg-cyan-500/10 text-cyan-400 shadow-sm shadow-cyan-500/10'
-        : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+        ? 'bg-orange-500/10 text-orange-500 dark:text-orange-400 shadow-sm shadow-orange-500/10'
+        : 'text-zinc-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:text-white'
     }`;
 
   return (
     <div className='flex h-full flex-col bg-zinc-900'>
       {/* Logo */}
       <div className='flex h-20 flex-shrink-0 items-center justify-between border-b border-white/5 px-5'>
-        <img src='/logo.png' alt='ApexAssign' className='h-10 w-auto' />
+        <LogoPlaceholder />
         {onClose && (
           <button
             onClick={onClose}

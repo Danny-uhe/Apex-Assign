@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import {
@@ -157,7 +157,7 @@ export default function TaskBoardCard({ task, onClick, onEdit }: Props) {
                 <button
                   type='button'
                   onClick={(e) => handleMoveTo(e, 'in_review')}
-                  className='flex w-full items-center gap-2 border-t border-zinc-700 px-3 py-2 text-sm text-cyan-400 hover:bg-cyan-500/10'
+                  className='flex w-full items-center gap-2 border-t border-zinc-700 px-3 py-2 text-sm text-orange-500 dark:text-orange-400 hover:bg-orange-600/10'
                 >
                   <CheckCircle2 size={14} />
                   Submit for review

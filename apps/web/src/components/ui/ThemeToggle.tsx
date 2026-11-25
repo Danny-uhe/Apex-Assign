@@ -11,11 +11,11 @@ export default function ThemeToggle() {
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       className={`
         relative flex h-9 w-9 items-center justify-center rounded-full border
-        transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400
+        transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500
         sm:h-10 sm:w-10
         ${isDark
-          ? 'border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-sky-400 hover:text-sky-400'
-          : 'border-slate-200 bg-white text-slate-500 hover:border-sky-500 hover:text-sky-600 shadow-sm'
+          ? 'border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-orange-500 hover:text-orange-400'
+          : 'border-slate-200 bg-white text-slate-500 hover:border-orange-500 hover:text-orange-500 shadow-sm'
         }
       `}
     >
