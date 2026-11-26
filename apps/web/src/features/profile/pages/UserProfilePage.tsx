@@ -9,6 +9,7 @@ import AppLayout from '@/layout/AppLayout';
 import MessageModal from '../components/MessageModal';
 import api from '@/lib/axios';
 import { useAuthStore } from '@/store/authStore';
+import { usePresenceStore } from '@/store/presenceStore';
 import { userService } from '@/services/user.service';
 import { useUserProfile } from '@/app/Providers/UserProfileContext';
 
@@ -52,6 +53,8 @@ export default function UserProfilePage() {
   const [searchParams] = useSearchParams();
   const currentUser = useAuthStore((s) => s.user);
   const updateUser  = useAuthStore((s) => s.updateUser);
+  const liveOnline  = usePresenceStore((s) => (id ? s.onlineMap[id] : undefined));
+  const seedPresence = usePresenceStore((s) => s.seedPresence);
   const { setName: setCtxName, setRole: setCtxRole } = useUserProfile();
 
   const [profile,  setProfile]  = useState<UserProfile | null>(null);
@@ -69,13 +72,15 @@ export default function UserProfilePage() {
     // Try to fetch all org members and find the one with matching id
     api.get<{ success: boolean; members: UserProfile[] }>('/organisation/members')
       .then((res) => {
-        const found = res.data.members.find((m) => m.id === id) ?? null;
+        const list = res.data.members ?? [];
+        seedPresence(list.map((m) => ({ id: m.id, isOnline: m.isOnline })));
+        const found = list.find((m) => m.id === id) ?? null;
         setProfile(found);
         if (found && searchParams.get('message') === '1') setMsgOpen(true);
       })
       .catch(() => setProfile(null))
       .finally(() => setLoading(false));
-  }, [id, searchParams]);
+  }, [id, searchParams, seedPresence]);
 
   if (loading) {
     return (
@@ -100,8 +105,8 @@ export default function UserProfilePage() {
     );
   }
 
-  const isOnline = profile.isOnline;
   const isSelf   = currentUser?.id === profile.id;
+  const isOnline = isSelf ? true : (liveOnline ?? profile.isOnline);
   const color    = avatarColor(profile.id);
   const initials = getInitials(profile.name);
   const tasksCompleted = profile.tasksCompleted ?? 0;

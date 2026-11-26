@@ -17,7 +17,7 @@ export const logger = pino({
     ],
     censor: "[REDACTED]",
   },
-  ...(env.NODE_ENV !== "production" && {
+  ...(env.NODE_ENV === "development" && !process.env.NODE_TEST_CONTEXT && {
     transport: {
       target: "pino-pretty",
       options: { colorize: true, translateTime: "SYS:standard", ignore: "pid,hostname" },

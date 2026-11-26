@@ -125,8 +125,9 @@ async function handleConnection(socket: Socket) {
     console.warn("[Socket] Could not load project memberships:", (err as Error).message);
   }
 
-  // ── Presence: Redis only — zero DB writes on connect ───────────────────
+  // ── Presence: Redis + live broadcast ───────────────────────────────────
   await setOnline(userId);
+  io.to("global:chat").emit("user_presence", { userId, isOnline: true });
   memberships.forEach(({ projectId }) =>
     socket.to(`project:${projectId}`).emit("user_presence", { userId, isOnline: true })
   );
@@ -151,12 +152,21 @@ async function handleConnection(socket: Socket) {
     socket.to(`project:${projectId}`).emit("stop_typing", { userId, projectId });
   });
 
-  // ── Disconnect: Redis only — zero DB writes ────────────────────────────
+  // ── Disconnect: Redis + live broadcast ─────────────────────────────────
   socket.on("disconnect", async () => {
     await setOffline(userId);
-    memberships.forEach(({ projectId }) =>
-      io.to(`project:${projectId}`).emit("user_presence", { userId, isOnline: false })
-    );
+    let stillOnline = false;
+    try {
+      stillOnline = (await io.in(`user:${userId}`).fetchSockets()).length > 0;
+    } catch {
+      stillOnline = false;
+    }
+    if (!stillOnline) {
+      io.to("global:chat").emit("user_presence", { userId, isOnline: false });
+      memberships.forEach(({ projectId }) =>
+        io.to(`project:${projectId}`).emit("user_presence", { userId, isOnline: false })
+      );
+    }
   });
 }
 

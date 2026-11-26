@@ -1,12 +1,12 @@
 /**
- * Redis-backed presence service.
- * Replaces the isOnline DB column writes on every socket connect/disconnect.
- * Keys: "presence:{userId}" → "1" with 90-second TTL (refreshed on activity).
- * This means 0 DB writes for presence — purely Redis.
+ * Redis-backed + live Socket.IO presence service.
+ * Keys: "presence:{userId}" -> "1" with 90-second TTL (refreshed on activity).
+ * Falls back to live Socket.IO room checks if Redis is unavailable or single-instance.
  */
 import { redisConnection, isRedisReady } from "../config/redis.js";
+import { getIO } from "../sockets/socket.js";
 
-const TTL_SECONDS = 90; // user considered online for 90s after last heartbeat
+const TTL_SECONDS = 90;
 const PREFIX = "presence:";
 
 /** Mark a user as online in Redis. */
@@ -15,12 +15,20 @@ export async function setOnline(userId: string): Promise<void> {
   try {
     await redisConnection.set(`${PREFIX}${userId}`, "1", "EX", TTL_SECONDS);
   } catch {
-    // Non-fatal — presence is best-effort
+    // Non-fatal
   }
 }
 
-/** Mark a user as offline (remove their key). */
+/** Mark a user as offline (only if they have no remaining active sockets). */
 export async function setOffline(userId: string): Promise<void> {
+  try {
+    const io = getIO();
+    const remaining = await io.in(`user:${userId}`).fetchSockets();
+    if (remaining.length > 0) return;
+  } catch {
+    // Socket server unavailable
+  }
+
   if (!isRedisReady()) return;
   try {
     await redisConnection.del(`${PREFIX}${userId}`);
@@ -41,25 +49,47 @@ export async function refreshPresence(userId: string): Promise<void> {
 
 /** Check if a user is currently online. */
 export async function isOnline(userId: string): Promise<boolean> {
-  if (!isRedisReady()) return false;
-  try {
-    const val = await redisConnection.get(`${PREFIX}${userId}`);
-    return val === "1";
-  } catch {
-    return false;
-  }
+  const result = await bulkIsOnline([userId]);
+  return Boolean(result[userId]);
 }
 
-/** Check online status for multiple users at once. */
+/** Check online status for multiple users at once (Redis + live Socket.IO fallback). */
 export async function bulkIsOnline(userIds: string[]): Promise<Record<string, boolean>> {
-  if (!isRedisReady() || userIds.length === 0) {
-    return Object.fromEntries(userIds.map((id) => [id, false]));
+  const statusMap: Record<string, boolean> = Object.fromEntries(
+    userIds.map((id) => [id, false])
+  );
+  if (userIds.length === 0) return statusMap;
+
+  if (isRedisReady()) {
+    try {
+      const keys = userIds.map((id) => `${PREFIX}${id}`);
+      const values = await redisConnection.mget(...keys);
+      userIds.forEach((id, i) => {
+        if (values[i] === "1") statusMap[id] = true;
+      });
+    } catch {
+      // Fall back to Socket.IO room check below
+    }
   }
+
+  // Also check live Socket.IO rooms for any user still marked false
   try {
-    const keys = userIds.map((id) => `${PREFIX}${id}`);
-    const values = await redisConnection.mget(...keys);
-    return Object.fromEntries(userIds.map((id, i) => [id, values[i] === "1"]));
+    const io = getIO();
+    await Promise.all(
+      userIds
+        .filter((id) => !statusMap[id])
+        .map(async (id) => {
+          try {
+            const sockets = await io.in(`user:${id}`).fetchSockets();
+            if (sockets.length > 0) statusMap[id] = true;
+          } catch {
+            // Ignore per-user check failure
+          }
+        })
+    );
   } catch {
-    return Object.fromEntries(userIds.map((id) => [id, false]));
+    // Socket server not initialized
   }
+
+  return statusMap;
 }

@@ -1,6 +1,7 @@
 import { prisma } from "../../config/prisma.js";
 import { createInvitation } from "../invitaions/invitation.service.js";
 import { invalidateActiveUserCache } from "../../middleware/auth.middleware.js";
+import { bulkIsOnline } from "../../lib/presence.js";
 
 /**
  * Total users count, total projects count, total tasks count, total tasks done,
@@ -89,15 +90,18 @@ export async function getOrgMembers(requesterId: string) {
     orderBy: { createdAt: "desc" },
   });
 
-  const doneGroups = await prisma.task.groupBy({
-    by: ["assignedToId"],
-    where: {
-      assignedToId: { in: users.map((u) => u.id) },
-      status: "done",
-      isArchived: false,
-    },
-    _count: { _all: true },
-  });
+  const [doneGroups, onlineMap] = await Promise.all([
+    prisma.task.groupBy({
+      by: ["assignedToId"],
+      where: {
+        assignedToId: { in: users.map((u) => u.id) },
+        status: "done",
+        isArchived: false,
+      },
+      _count: { _all: true },
+    }),
+    bulkIsOnline(users.map((u) => u.id)),
+  ]);
   const doneMap = new Map<string, number>(
     doneGroups
       .filter((g) => g.assignedToId !== null)
@@ -114,7 +118,7 @@ export async function getOrgMembers(requesterId: string) {
     avatar: u.avatar,
     bio: u.bio,
     position: u.position,
-    isOnline: u.isOnline,
+    isOnline: onlineMap[u.id] ?? false,
     points: u.points,
     streak: u.streak,
     projectCount: u._count.projects,

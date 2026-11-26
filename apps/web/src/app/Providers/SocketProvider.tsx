@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { connectSocket, disconnectSocket, getSocket } from "@/lib/socket";
 import { useAuthStore } from "@/store/authStore";
+import { usePresenceStore } from "@/store/presenceStore";
 import { useNotifications, notificationTypeFromString } from "./NotificationContext";
 import type {
   SocketMessage,
@@ -147,8 +148,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
     // ── Presence ────────────────────────────────────────────────────────────
     socket.on("user_presence", (presence: SocketPresence) => {
+      usePresenceStore.getState().setPresence(presence.userId, presence.isOnline);
       queryClient.invalidateQueries({ queryKey: ["members"] });
-      void presence;
     });
 
     // ── Typing (project chat) ───────────────────────────────────────────────

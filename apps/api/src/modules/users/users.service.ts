@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../../config/prisma.js";
 import { hashPassword } from "../../utils/password.js";
+import { bulkIsOnline } from "../../lib/presence.js";
 
 export async function getAllUsers(requesterId: string) {
     const memberships = await prisma.organizationMember.findMany({
@@ -10,7 +11,7 @@ export async function getAllUsers(requesterId: string) {
     const orgIds = memberships.map((m) => m.organizationId);
     if (orgIds.length === 0) return [];
 
-    return prisma.user.findMany({
+    const users = await prisma.user.findMany({
         where: {
             isActive: true,
             organizationMembers: {
@@ -31,6 +32,9 @@ export async function getAllUsers(requesterId: string) {
             name: "asc",
         },
     });
+
+    const onlineMap = await bulkIsOnline(users.map((u) => u.id));
+    return users.map((u) => ({ ...u, isOnline: onlineMap[u.id] ?? false }));
 }
 
 export async function updateProfile(

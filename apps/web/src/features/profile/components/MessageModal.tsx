@@ -58,7 +58,7 @@ export default function MessageModal({ open, onClose, name, initials, color, sta
 
   return (
     <div className='fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4'>
-      <div className='flex w-full max-w-md flex-col rounded-t-2xl border border-zinc-700 bg-zinc-900 text-zinc-100 shadow-2xl sm:rounded-2xl' style={{ height: '520px' }}>
+      <div className='flex h-[min(520px,85dvh)] w-full max-w-md flex-col rounded-t-2xl border border-zinc-700 bg-zinc-900 text-zinc-100 shadow-2xl sm:rounded-2xl'>
 
         {/* Header */}
         <div className='flex flex-shrink-0 items-center gap-3 border-b border-zinc-800 px-5 py-4'>
