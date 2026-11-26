@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className='flex min-h-screen'>
-      {/* Left blue panel — hidden on mobile */}
+      {/* Left panel — hidden on mobile */}
       <div className='hidden flex-col justify-between border-r border-zinc-800 bg-gradient-to-b from-zinc-900 to-zinc-950 p-12 lg:flex lg:w-[45%]'>
         <div>
           <h1 className='text-3xl font-bold text-zinc-100'>ApexAssign</h1>
@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type='submit'
                   disabled={isLoading}
-                  className='h-11 w-full rounded-xl bg-orange-600 text-sm font-semibold text-zinc-950 transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 disabled:opacity-60'
+                  className='h-11 w-full rounded-xl bg-orange-600 text-sm font-semibold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 disabled:opacity-60'
                 >
                   {isLoading ? 'Sending…' : 'Send Reset Link'}
                 </button>

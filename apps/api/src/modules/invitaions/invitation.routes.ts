@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authenticate }  from "../../middleware/auth.middleware.js";
 import { requireAdmin }  from "../../middleware/requireAdmin.middleware.js";
+import { inviteTokenLimiter } from "../../middleware/rateLimiter.js";
 import {
   create,
   getByToken,
@@ -20,7 +21,7 @@ router.post("/:id/resend",    authenticate, requireAdmin, resend);  // POST rese
 router.patch("/:id/cancel",   authenticate, requireAdmin, cancel);  // PATCH cancel      (admin)
 
 // Public — the token routes must be last (catch-all pattern)
-router.get( "/:token",        getByToken);   // GET  invite details by token
-router.post("/:token/accept", accept);       // POST accept invite + create account
+router.get( "/:token",        inviteTokenLimiter, getByToken);   // GET  invite details by token
+router.post("/:token/accept", inviteTokenLimiter, accept);       // POST accept invite + create account
 
 export default router;

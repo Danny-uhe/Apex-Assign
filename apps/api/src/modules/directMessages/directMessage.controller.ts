@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
+import { z } from "zod";
 import {
   getDirectMessages,
   sendDirectMessage,
   deleteDirectMessage,
   getConversations,
 } from "./directMessage.service.js";
+
+const dmSchema = z.object({
+  content: z.string().trim().min(1, "Content is required").max(2000),
+});
 
 /** GET /dm/conversations — list recent DM threads */
 export async function listConversations(req: Request, res: Response) {
@@ -42,12 +47,7 @@ export async function listMessages(req: Request, res: Response) {
 export async function sendMessage(req: Request, res: Response) {
   try {
     const receiverId = req.params.userId as string;
-    const { content } = req.body as { content: string };
-    if (!content?.trim()) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Content is required" });
-    }
+    const { content } = dmSchema.parse(req.body);
     const message = await sendDirectMessage(
       req.user!.userId,
       receiverId,

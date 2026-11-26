@@ -1,20 +1,23 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import morgan from "morgan";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import compression from "compression";
 import { env } from "./config/env.js";
 import { swaggerSpec } from "./config/swagger.js";
 import swaggerUi from "swagger-ui-express";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { httpLogger } from "./config/logger.js";
+import { sanitizeInputs } from "./utils/sanitize.js";
+import { errorHandler } from "./middleware/errorHandler.middleware.js";
+import { authenticate } from "./middleware/auth.middleware.js";
+import { requireAdmin } from "./middleware/requireAdmin.middleware.js";
+import { getAllowedOrigins } from "./sockets/socket.js";
+import { downloadAttachment } from "./modules/tasks/task-attachment.controller.js";
 
 import authRoutes from "./modules/auth/auth.routes.js";
 import userRoutes from "./modules/users/users.routes.js";
 import projectRoutes from "./modules/projects/project.routes.js";
 import taskRoutes from "./modules/tasks/task.routes.js";
+import personalTaskRoutes from "./modules/personal-tasks/personal-task.routes.js";
 import commentRoutes from "./modules/comments/comment.routes.js";
 import notificationRoutes from "./modules/notifications/ntification.routes.js";
 import invitationRoutes from "./modules/invitaions/invitation.routes.js";
@@ -32,22 +35,14 @@ import leaderboardRoutes from "./modules/gamification/gamification.routes.js";
 
 const app = express();
 
-// ── CORS — allow the deployed frontend + localhost in dev ──────────────────
-const allowedOrigins = [
-  env.FRONTEND_URL,
-  "http://localhost:5173",
-  "http://localhost:3000",
-];
+// ── CORS — explicit allowlist (no wildcard *.onrender.com) ─────────────────
+const allowedOrigins = new Set(getAllowedOrigins());
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (curl, Postman, mobile apps)
       if (!origin) return callback(null, true);
-      // Allow any exact match
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      // Allow any *.onrender.com preview URL (staging / PR deploys)
-      if (origin.endsWith(".onrender.com")) return callback(null, true);
+      if (allowedOrigins.has(origin)) return callback(null, true);
       callback(new Error(`CORS: origin ${origin} not allowed`));
     },
     credentials: true,
@@ -56,14 +51,15 @@ app.use(
 
 app.use(
   helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" }, // allow /uploads to be loaded cross-origin
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
-app.use(express.json({ limit: "10mb" }));
-app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
+app.use(compression());
+app.use(express.json({ limit: "1mb" }));
+app.use(sanitizeInputs);
+app.use(httpLogger);
 
 // ── Rate limiting ──────────────────────────────────────────────────────────
-// Trust Render's proxy so req.ip reflects the real client IP
 app.set("trust proxy", 1);
 app.use("/api/", apiLimiter);
 
@@ -72,15 +68,25 @@ app.get("/api/health", (_, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// ── Swagger API Docs ───────────────────────────────────────────────────────
-app.use("/api/docs", swaggerUi.serve);
-app.get("/api/docs", swaggerUi.setup(swaggerSpec, {
-  customSiteTitle: "TaskSync API Docs",
-  customCss: ".swagger-ui .topbar { display: none }",
-}));
+// ── Swagger API Docs (admin-only in production) ────────────────────────────
+const docsAuth =
+  env.NODE_ENV === "production"
+    ? [authenticate, requireAdmin]
+    : [];
 
-// Also serve the raw OpenAPI spec as JSON
-app.get("/api/docs.json", (_, res) => { res.json(swaggerSpec); });
+app.use("/api/docs", ...docsAuth, swaggerUi.serve);
+app.get(
+  "/api/docs",
+  ...docsAuth,
+  swaggerUi.setup(swaggerSpec, {
+    customSiteTitle: "ApexAssign API Docs",
+    customCss: ".swagger-ui .topbar { display: none }",
+  })
+);
+
+app.get("/api/docs.json", ...docsAuth, (_, res) => {
+  res.json(swaggerSpec);
+});
 
 // Admin Routes
 app.use("/api/admin", adminRoutes);
@@ -89,22 +95,26 @@ app.get("/", (_, res) => {
   res.json({ success: true, message: "ApexAssign API is running 🚀" });
 });
 
-// Serve uploaded files as static assets
-app.use("/uploads", express.static(path.resolve(__dirname, "../../uploads")));
+// Serve task attachments ONLY to authenticated project members
+app.get("/uploads/tasks/:fileName", authenticate, downloadAttachment);
 
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api", taskRoutes);
+app.use("/api/personal-tasks", personalTaskRoutes);
 app.use("/api", commentRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/invitations", invitationRoutes);
 app.use("/api/organisation", orgRoutes);
-app.use("/api/projects/:projectId/messages", messageRoutes);
+app.use("/api/projects/:projectId/messages", chatLimiter, messageRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/chat", chatLimiter, globalMessageRoutes);
 app.use("/api/dm", chatLimiter, directMessageRoutes);
 app.use("/api/oauth", oauthRoutes);
+
+// ── Centralized Error Handler ──────────────────────────────────────────────
+app.use(errorHandler);
 
 export default app;

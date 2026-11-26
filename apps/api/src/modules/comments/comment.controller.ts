@@ -1,127 +1,120 @@
 import { Request, Response } from "express";
-import { 
-    createComment,
-    getTaskComments,
-    upadteComment,
-    deleteComment } from "./comment.service.js";
-import { success } from "zod";
+import { z } from "zod";
+import {
+  createComment,
+  getTaskComments,
+  upadteComment,
+  deleteComment,
+} from "./comment.service.js";
 
+const commentContentSchema = z.object({
+  content: z
+    .string()
+    .trim()
+    .min(1, "Comment content is required")
+    .max(2000, "Comment cannot exceed 2000 characters"),
+});
 
-export async function create(
-    req: Request,
-    res: Response
-) {
-    try {
-        const taskId = req.params.taskId as string;
-        const userId = req.user!.userId;
-        const { content } = req.body;
+export async function create(req: Request, res: Response) {
+  try {
+    const taskId = req.params.taskId as string;
+    const userId = req.user!.userId;
+    const { content } = commentContentSchema.parse(req.body);
 
-        if (!content || typeof content !== "string" || !content.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Comment content is required",
-            });
-        }
+    const comment = await createComment(taskId, userId, content);
 
-        const comment = await createComment(
-            taskId,
-            userId,
-            content.trim()
-        );
-
-        return res.status(201).json({
-            success: true,
-            comment,
-        });
-    } catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: error instanceof Error ? error.message : "Something went wrong"
-        });
-    }
+    return res.status(201).json({
+      success: true,
+      comment,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something went wrong";
+    const status =
+      message === "Task not found"
+        ? 404
+        : message === "You are not a member of this project"
+        ? 403
+        : 400;
+    return res.status(status).json({
+      success: false,
+      message,
+    });
+  }
 }
 
-export async function getAll(
-    req : Request,
-    res : Response
-) {
-    try {
-        const taskId = req.params.taskId as string; 
+export async function getAll(req: Request, res: Response) {
+  try {
+    const taskId = req.params.taskId as string;
+    const comments = await getTaskComments(taskId, req.user!.userId);
 
-        const comments = await getTaskComments(taskId);
-
-        return res.status(200).json({
-            success: true,
-            comments,
-        });
-    } catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: error instanceof Error ? error.message : "Something went wrong",
-        });
-    }
+    return res.status(200).json({
+      success: true,
+      comments,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something went wrong";
+    const status =
+      message === "Task not found"
+        ? 404
+        : message === "You are not a member of this project"
+        ? 403
+        : 400;
+    return res.status(status).json({
+      success: false,
+      message,
+    });
+  }
 }
 
-export async function update(
-    req: Request,
-    res: Response
-){
-    try {
-        const commentId = req.params.commentId as string;
-        const userId = req.user!.userId;
-        const { content } = req.body ?? {};
+export async function update(req: Request, res: Response) {
+  try {
+    const commentId = req.params.commentId as string;
+    const userId = req.user!.userId;
+    const { content } = commentContentSchema.parse(req.body);
 
-        if (!content || typeof content !== "string" || !content.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Comment content is required",
-            });
-        }
+    const comment = await upadteComment(commentId, userId, content);
 
-        const comment = await upadteComment(
-            commentId,
-            userId,
-            content.trim()
-        );
-
-        return res.status(200).json({
-            success: true,
-            comment,
-        });
-    } catch (error) {
-        return res.status(400).json({
-            success: false,
-            message:
-             error instanceof Error 
-            ? error.message : "Something went wrong",
-        });
-    }
+    return res.status(200).json({
+      success: true,
+      comment,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something went wrong";
+    const status =
+      message === "Comment not found"
+        ? 404
+        : message === "You can only edit your own comment"
+        ? 403
+        : 400;
+    return res.status(status).json({
+      success: false,
+      message,
+    });
+  }
 }
 
-export async function remove(
-  req: Request,
-  res: Response
-) {
+export async function remove(req: Request, res: Response) {
   try {
     const commentId = req.params.commentId as string;
     const userId = req.user!.userId;
 
-    const result = await deleteComment(
-      commentId,
-      userId
-    );
+    const result = await deleteComment(commentId, userId);
 
     return res.status(200).json({
       success: true,
       ...result,
     });
   } catch (error) {
-    return res.status(400).json({
+    const message = error instanceof Error ? error.message : "Something went wrong";
+    const status =
+      message === "Comment not found"
+        ? 404
+        : message === "You can only delete your own comment"
+        ? 403
+        : 400;
+    return res.status(status).json({
       success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "Something went wrong",
+      message,
     });
   }
 }

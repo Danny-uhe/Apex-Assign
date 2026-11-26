@@ -1,4 +1,5 @@
-﻿import { CheckCheck, X, Bell, UserPlus, CheckCircle2, AtSign, Users, MessageCircle } from 'lucide-react';
+﻿import { useState } from 'react';
+import { CheckCheck, X, Bell, UserPlus, CheckCircle2, AtSign, Users, MessageCircle, AlertTriangle, FolderPlus, AlarmClock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '@/app/Providers/NotificationContext';
 import type { AppNotification } from '@/app/Providers/NotificationContext';
@@ -9,6 +10,9 @@ const typeIcon: Record<AppNotification['type'], { icon: React.ElementType; bg: s
   completed:  { icon: CheckCircle2,  bg: 'bg-green-500/10',  color: 'text-green-400'  },
   mention:    { icon: AtSign,        bg: 'bg-amber-500/10',  color: 'text-amber-400'  },
   message:    { icon: MessageCircle, bg: 'bg-orange-500/10',   color: 'text-orange-500 dark:text-orange-400'   },
+  reminder:   { icon: AlarmClock,    bg: 'bg-amber-500/10',  color: 'text-amber-400'  },
+  expired:    { icon: AlertTriangle, bg: 'bg-red-500/10',    color: 'text-red-400'    },
+  project:    { icon: FolderPlus,    bg: 'bg-orange-500/10', color: 'text-orange-500 dark:text-orange-400' },
   general:    { icon: Users,         bg: 'bg-zinc-700',      color: 'text-zinc-400'   },
 };
 
@@ -16,6 +20,15 @@ export default function NotificationDropdown() {
   const navigate = useNavigate();
   const { notifications, markAllRead, markRead, dismiss } = useNotifications();
   const unread = notifications.filter((n) => !n.read).length;
+  const [browserPerm, setBrowserPerm] = useState<NotificationPermission | 'unsupported'>(() =>
+    typeof window !== 'undefined' && 'Notification' in window ? window.Notification.permission : 'unsupported'
+  );
+
+  const enableBrowserAlerts = async () => {
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+    const perm = await window.Notification.requestPermission();
+    setBrowserPerm(perm);
+  };
 
   return (
     <div className='absolute right-0 top-12 z-50 w-80 rounded-2xl border border-zinc-700 bg-zinc-900 shadow-2xl sm:top-14'>
@@ -38,6 +51,19 @@ export default function NotificationDropdown() {
           Mark all read
         </button>
       </div>
+
+      {browserPerm === 'default' && (
+        <div className='flex items-center justify-between border-b border-zinc-800 bg-orange-500/10 px-4 py-2 text-xs'>
+          <span className='text-zinc-300'>Get desktop alerts while away</span>
+          <button
+            type='button'
+            onClick={enableBrowserAlerts}
+            className='font-semibold text-orange-500 dark:text-orange-400 hover:underline'
+          >
+            Enable
+          </button>
+        </div>
+      )}
 
       {/* List */}
       <div className='max-h-80 overflow-y-auto'>
@@ -70,6 +96,12 @@ export default function NotificationDropdown() {
                     markRead(n.id);
                     if (n.type === 'message' && n.relatedId) {
                       navigate(`/profile/${n.relatedId}?message=1`);
+                    } else if (n.type === 'reminder' || n.type === 'expired') {
+                      navigate('/my-tasks');
+                    } else if (n.type === 'project') {
+                      navigate('/dashboard');
+                    } else if (n.type === 'assignment') {
+                      navigate('/tasks');
                     }
                   }}
                   className='min-w-0 flex-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600'

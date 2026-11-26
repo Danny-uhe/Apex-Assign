@@ -1,4 +1,5 @@
 ﻿import { CheckCircle2 } from 'lucide-react';
+import LogoPlaceholder from '@/components/ui/LogoPlaceholder';
 import type { AuthBrandingProps } from './AuthBranding.types';
 
 export default function AuthBranding({
@@ -12,13 +13,8 @@ export default function AuthBranding({
 }: AuthBrandingProps) {
   return (
     <div className='flex h-full flex-col bg-gradient-to-b from-zinc-900 to-zinc-950 px-8 py-10 text-zinc-100'>
-      {/* Logo image — replaces old text header */}
       <div>
-        <img
-          src='/logo.png'
-          alt='ApexAssign'
-          className='h-12 w-auto'
-        />
+        <LogoPlaceholder />
       </div>
 
       {/* Quote */}

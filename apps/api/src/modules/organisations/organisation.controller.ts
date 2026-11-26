@@ -16,9 +16,9 @@ const inviteSchema = z.object({
   systemRole: z.enum(["admin", "member"]).optional(),
 });
 
-export async function getOrgStats(_req: Request, res: Response) {
+export async function getOrgStats(req: Request, res: Response) {
   try {
-    const stats = await getOrganisationStats();
+    const stats = await getOrganisationStats(req.user!.userId);
     return res.json({
       success: true,
       stats,

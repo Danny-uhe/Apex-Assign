@@ -83,7 +83,24 @@ export async function createComment(
 }
 
 
-export async function getTaskComments(taskId: string) {
+export async function getTaskComments(taskId: string, userId: string) {
+  const task = await prisma.task.findUnique({
+    where: { id: taskId },
+    select: { id: true, projectId: true },
+  });
+
+  if (!task) {
+    throw new Error("Task not found");
+  }
+
+  const member = await prisma.projectMember.findUnique({
+    where: { userId_projectId: { userId, projectId: task.projectId } },
+  });
+
+  if (!member) {
+    throw new Error("You are not a member of this project");
+  }
+
   return prisma.comment.findMany({
     where: {
       taskId,
@@ -91,9 +108,9 @@ export async function getTaskComments(taskId: string) {
     orderBy: {
       createdAt: "asc",
     },
-      include: {
-        user: {
-          select: {
+    include: {
+      user: {
+        select: {
           id: true,
           name: true,
           email: true,
@@ -101,8 +118,8 @@ export async function getTaskComments(taskId: string) {
           position: true,
         },
       },
-      },
-  })
+    },
+  });
 }
 
 

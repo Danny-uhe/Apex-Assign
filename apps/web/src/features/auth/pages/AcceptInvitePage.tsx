@@ -65,7 +65,7 @@ export default function AcceptInvitePage() {
 
   return (
     <div className='flex min-h-screen'>
-      {/* Left blue panel — hidden on mobile */}
+      {/* Left panel — hidden on mobile */}
       <div className='hidden flex-col justify-between border-r border-zinc-800 bg-gradient-to-b from-zinc-900 to-zinc-950 p-12 lg:flex lg:w-[45%]'>
         <div>
           <h1 className='text-3xl font-bold text-zinc-100'>ApexAssign</h1>
@@ -120,7 +120,7 @@ export default function AcceptInvitePage() {
               <h2 className='mt-4 text-3xl font-bold text-zinc-100'>
                 Join {invitation?.organization.name}
               </h2>
-              <p className='mt-2 text-sm text-slate-500'>
+              <p className='mt-2 text-sm text-zinc-400'>
                 <span className='font-semibold text-zinc-200'>{invitation?.invitedBy.name}</span>{' '}
                 invited you as a{' '}
                 <span className='font-semibold text-zinc-200'>{invitation?.systemRole}</span>.
@@ -182,7 +182,7 @@ export default function AcceptInvitePage() {
                 <button
                   type='submit'
                   disabled={isSubmitting}
-                  className='h-11 w-full rounded-xl bg-orange-600 text-sm font-semibold text-zinc-950 transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 disabled:opacity-60'
+                  className='h-11 w-full rounded-xl bg-orange-600 text-sm font-semibold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 disabled:opacity-60'
                 >
                   {isSubmitting ? 'Activating…' : 'Activate Account'}
                 </button>

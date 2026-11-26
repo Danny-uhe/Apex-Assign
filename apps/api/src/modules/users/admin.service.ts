@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import { invalidateActiveUserCache } from "../../middleware/auth.middleware.js";
 
 // ─── List all users ───────────────────────────────────────────────────────────
 export async function getAllOrgUsers() {
@@ -88,6 +89,7 @@ export async function deactivateUser(callerId: string, targetUserId: string) {
 
   // Immediately revoke all active sessions so deactivation takes effect now
   await prisma.refreshToken.deleteMany({ where: { userId: targetUserId } });
+  await invalidateActiveUserCache(targetUserId);
 
   return prisma.user.update({
     where: { id: targetUserId },
@@ -101,9 +103,11 @@ export async function activateUser(targetUserId: string) {
   const target = await prisma.user.findUnique({ where: { id: targetUserId } });
   if (!target) throw new Error("User not found.");
 
-  return prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: targetUserId },
     data:  { isActive: true },
     select: { id: true, name: true, isActive: true },
   });
+  await invalidateActiveUserCache(targetUserId);
+  return updated;
 }

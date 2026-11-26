@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const createTaskSchema = z.object({
-  title: z.string().min(3, "Task title is required"),
-  description: z.string().optional(),
+  title: z.string().trim().min(3, "Task title is required").max(200),
+  description: z.string().trim().max(5000).optional(),
 
   status: z
     .enum(["todo", "in_progress", "in_review", "done"])
@@ -21,17 +21,17 @@ export const createTaskSchema = z.object({
     .pipe(z.string().datetime())
     .optional(),
 
-  points: z.number().int().min(0).default(0),
+  points: z.number().int().min(0).max(1000).default(0),
 
-  assignedToId: z.string().optional(),
+  assignedToId: z.string().max(64).optional(),
 });
 
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
 
 export const updateTaskSchema = z.object({
-  title: z.string().min(3, "Task title is required").optional(),
+  title: z.string().trim().min(3, "Task title is required").max(200).optional(),
 
-  description: z.string().optional(),
+  description: z.string().trim().max(5000).optional(),
 
   status: z
     .enum(["todo", "in_progress", "in_review", "done"])
@@ -50,9 +50,9 @@ export const updateTaskSchema = z.object({
     .nullable()
     .optional(),
 
-  points: z.number().int().min(0).optional(),
+  points: z.number().int().min(0).max(1000).optional(),
 
-  assignedToId: z.string().nullable().optional(),
+  assignedToId: z.string().max(64).nullable().optional(),
 });
 
 export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;

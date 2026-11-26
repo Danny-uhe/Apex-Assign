@@ -28,7 +28,7 @@ export default function ProjectSwitcher() {
               <>
                 <span
                   className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-                  style={{ backgroundColor: activeProject.color ?? "#6366f1" }}
+                  style={{ backgroundColor: activeProject.color ?? "#ea580c" }}
                 />
                 <span className="truncate">{activeProject.name}</span>
               </>
@@ -52,7 +52,7 @@ export default function ProjectSwitcher() {
                   activeProject?.id === p.id ? "bg-orange-500/10 font-semibold text-orange-500 dark:text-orange-400" : "text-zinc-300"
                 }`}
               >
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: p.color ?? "#6366f1" }} />
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: p.color ?? "#ea580c" }} />
                 <span className="truncate">{p.name}</span>
                 {p._count && (
                   <span className="ml-auto text-xs text-zinc-500">{p._count.tasks} tasks</span>

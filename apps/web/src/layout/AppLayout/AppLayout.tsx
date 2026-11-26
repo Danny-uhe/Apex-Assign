@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  X, LayoutDashboard, ClipboardList, Trophy, Activity,
+  X, LayoutDashboard, ClipboardList, CalendarCheck, Trophy, Activity,
   Archive, Settings, LogOut, CircleHelp, Users, Building2,
 } from 'lucide-react';
 
@@ -18,6 +18,7 @@ import ProjectSwitcher     from '@/features/projects/components/ProjectSwitcher'
 const allNavItems = [
   { to: '/dashboard',    icon: LayoutDashboard, label: 'Dashboard',    adminOnly: false },
   { to: '/tasks',        icon: ClipboardList,   label: 'All Tasks',    adminOnly: false },
+  { to: '/my-tasks',     icon: CalendarCheck,   label: 'My Tasks',     adminOnly: false },
   { to: '/members',      icon: Users,           label: 'Members',      adminOnly: false },
   { to: '/leaderboard',  icon: Trophy,          label: 'Leaderboard',  adminOnly: false },
   { to: '/activity',     icon: Activity,        label: 'Activity',     adminOnly: false },

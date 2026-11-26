@@ -50,7 +50,8 @@ export default function ParticleNet() {
     };
 
     const draw = () => {
-      ctx.fillStyle = BG;
+      const isLight = document.documentElement.classList.contains('light');
+      ctx.fillStyle = isLight ? '#f1f5f9' : BG;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw lines between close particles (and to mouse)

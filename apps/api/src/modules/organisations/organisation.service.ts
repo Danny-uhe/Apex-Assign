@@ -1,16 +1,37 @@
 import { prisma } from "../../config/prisma.js";
 import { createInvitation } from "../invitaions/invitation.service.js";
+import { invalidateActiveUserCache } from "../../middleware/auth.middleware.js";
 
 /**
  * Total users count, total projects count, total tasks count, total tasks done,
- * and completion rate percentage.
+ * and completion rate percentage (scoped to requester's organization).
  */
-export async function getOrganisationStats() {
+export async function getOrganisationStats(requesterId: string) {
+  const memberships = await prisma.organizationMember.findMany({
+    where: { userId: requesterId },
+    select: { organizationId: true },
+  });
+  const orgIds = memberships.map((m) => m.organizationId);
+
   const [totalUsers, totalProjects, totalTasks, totalTasksDone] = await Promise.all([
-    prisma.user.count(),
-    prisma.project.count(),
-    prisma.task.count(),
-    prisma.task.count({ where: { status: "done" } }),
+    prisma.user.count({
+      where: orgIds.length
+        ? { organizationMembers: { some: { organizationId: { in: orgIds } } } }
+        : undefined,
+    }),
+    prisma.project.count({
+      where: orgIds.length ? { organizationId: { in: orgIds } } : undefined,
+    }),
+    prisma.task.count({
+      where: orgIds.length
+        ? { project: { organizationId: { in: orgIds } } }
+        : undefined,
+    }),
+    prisma.task.count({
+      where: orgIds.length
+        ? { status: "done", project: { organizationId: { in: orgIds } } }
+        : { status: "done" },
+    }),
   ]);
 
   const completionRate =
@@ -68,6 +89,21 @@ export async function getOrgMembers(requesterId: string) {
     orderBy: { createdAt: "desc" },
   });
 
+  const doneGroups = await prisma.task.groupBy({
+    by: ["assignedToId"],
+    where: {
+      assignedToId: { in: users.map((u) => u.id) },
+      status: "done",
+      isArchived: false,
+    },
+    _count: { _all: true },
+  });
+  const doneMap = new Map<string, number>(
+    doneGroups
+      .filter((g) => g.assignedToId !== null)
+      .map((g) => [g.assignedToId as string, g._count._all])
+  );
+
   return users.map((u) => ({
     id: u.id,
     name: u.name,
@@ -83,6 +119,7 @@ export async function getOrgMembers(requesterId: string) {
     streak: u.streak,
     projectCount: u._count.projects,
     taskCount: u._count.assignedTasks,
+    tasksCompleted: doneMap.get(u.id) ?? 0,
     createdAt: u.createdAt,
   }));
 }
@@ -128,6 +165,7 @@ export async function removeUser(userId: string, callerId?: string) {
   }
 
   await prisma.refreshToken.deleteMany({ where: { userId } });
+  await invalidateActiveUserCache(userId);
 
   return prisma.user.update({
     where: { id: userId },
@@ -143,11 +181,13 @@ export async function activateUser(userId: string) {
   const target = await prisma.user.findUnique({ where: { id: userId } });
   if (!target) throw new Error("User not found.");
 
-  return prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: userId },
     data: { isActive: true },
     select: { id: true, name: true, email: true, systemRole: true, isActive: true },
   });
+  await invalidateActiveUserCache(userId);
+  return updated;
 }
 
 /**

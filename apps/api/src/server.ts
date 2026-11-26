@@ -7,6 +7,7 @@ import { verifyMailer } from "./config/mailer.js";
 import { closeRedis } from "./config/redis.js";
 import { startEmailWorker } from "./queues/email.worker.js";
 import { prisma, startKeepAlive, stopKeepAlive } from "./config/prisma.js";
+import { startPersonalTaskCron, stopPersonalTaskCron } from "./modules/personal-tasks/personal-task.cron.js";
 
 const PORT = Number(process.env.PORT) || 5000;
 
@@ -92,6 +93,7 @@ seedOrganisation().then(() => seedAdmin()).then(() => {
   httpServer.listen(PORT, () => {
     console.log(`[Server] Running on http://localhost:${PORT}`);
     startKeepAlive(); // Ping DB every 4min so Neon never sleeps
+    startPersonalTaskCron();
   });
 });
 
@@ -102,6 +104,7 @@ async function shutdown(signal: string) {
   httpServer.close(async () => {
     console.log("[Server] HTTP server closed");
     stopKeepAlive();
+    stopPersonalTaskCron();
 
     try {
       await emailWorker.close();

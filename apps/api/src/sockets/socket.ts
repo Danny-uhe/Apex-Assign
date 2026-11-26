@@ -21,14 +21,28 @@ declare module "socket.io" {
 
 let io: Server;
 
+export function getAllowedOrigins(): string[] {
+  const extra = env.CORS_ORIGINS
+    ? env.CORS_ORIGINS.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+  return [
+    env.FRONTEND_URL,
+    "https://task-management-8fm7.onrender.com",
+    ...extra,
+    ...(env.NODE_ENV !== "production"
+      ? ["http://localhost:5173", "http://localhost:3000"]
+      : []),
+  ];
+}
+
 export function initSocket(httpServer: HttpServer): Server {
+  const allowedOrigins = new Set(getAllowedOrigins());
+
   io = new Server(httpServer, {
     cors: {
       origin: (origin, callback) => {
         if (!origin) return callback(null, true);
-        if (origin === env.FRONTEND_URL) return callback(null, true);
-        if (origin.endsWith(".onrender.com")) return callback(null, true);
-        if (origin.startsWith("http://localhost")) return callback(null, true);
+        if (allowedOrigins.has(origin)) return callback(null, true);
         callback(new Error(`Socket CORS: origin ${origin} not allowed`));
       },
       methods: ["GET", "POST"],
@@ -56,12 +70,26 @@ export function initSocket(httpServer: HttpServer): Server {
   }
 
   // ── JWT auth middleware ─────────────────────────────────────────────────
-  io.use((socket, next) => {
+  io.use(async (socket, next) => {
     const token = socket.handshake.auth?.token as string | undefined;
     if (!token) return next(new Error("Unauthorized: no token"));
     try {
-      const decoded = jwt.verify(token, env.JWT_ACCESS_SECRET) as SocketUser;
-      socket.user = decoded;
+      const decoded = jwt.verify(token, env.JWT_ACCESS_SECRET, {
+        algorithms: ["HS256"],
+      }) as SocketUser;
+
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.userId },
+        select: { isActive: true, systemRole: true },
+      });
+      if (!user?.isActive) {
+        return next(new Error("Unauthorized: account deactivated"));
+      }
+
+      socket.user = {
+        userId: decoded.userId,
+        systemRole: user.systemRole ?? decoded.systemRole,
+      };
       next();
     } catch {
       next(new Error("Unauthorized: invalid token"));
@@ -111,11 +139,15 @@ async function handleConnection(socket: Socket) {
   // ── Feature handlers ───────────────────────────────────────────────────
   registerMessageHandlers(io, socket);
 
-  // Typing indicators
+  const memberProjectIds = new Set(memberships.map((m) => m.projectId));
+
+  // Typing indicators (verified against project membership)
   socket.on("typing", ({ projectId }: { projectId: string }) => {
+    if (!projectId || !memberProjectIds.has(projectId)) return;
     socket.to(`project:${projectId}`).emit("typing", { userId, projectId });
   });
   socket.on("stop_typing", ({ projectId }: { projectId: string }) => {
+    if (!projectId || !memberProjectIds.has(projectId)) return;
     socket.to(`project:${projectId}`).emit("stop_typing", { userId, projectId });
   });
 

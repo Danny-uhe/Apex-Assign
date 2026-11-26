@@ -7,7 +7,8 @@ export type EmailJobName =
   | "send-invite"
   | "send-password-reset"
   | "send-welcome"
-  | "send-new-message";
+  | "send-new-message"
+  | "send-task-reminder";
 
 export type EmailJobData =
   | {
@@ -38,6 +39,14 @@ export type EmailJobData =
       senderName: string;
       projectName: string;
       replyUrl: string;
+    }
+  | {
+      type: "send-task-reminder";
+      to: string;
+      recipientName: string;
+      taskTitle: string;
+      dueLabel?: string;
+      tasksUrl: string;
     };
 
 // ── Queue instance ─────────────────────────────────────────────────────────
@@ -117,6 +126,26 @@ export async function queueNewMessageEmail(data: {
   }
   await emailQueue.add("send-new-message", {
     type: "send-new-message",
+    ...data,
+  });
+}
+
+export async function queueTaskReminderEmail(data: {
+  to: string;
+  recipientName: string;
+  taskTitle: string;
+  dueLabel?: string;
+  tasksUrl: string;
+}) {
+  if (!isRedisReady()) {
+    console.warn(
+      "[EmailQueue] Redis unavailable — task-reminder email skipped for:",
+      data.to
+    );
+    return;
+  }
+  await emailQueue.add("send-task-reminder", {
+    type: "send-task-reminder",
     ...data,
   });
 }

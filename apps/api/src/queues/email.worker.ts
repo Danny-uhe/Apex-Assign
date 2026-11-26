@@ -5,6 +5,7 @@ import {
   buildInviteEmail,
   buildNewMessageEmail,
   buildPasswordResetEmail,
+  buildTaskReminderEmail,
   buildWelcomeEmail,
 } from "../config/email.templates.js";
 import { env } from "../config/env.js";
@@ -116,6 +117,26 @@ export function startEmailWorker() {
           });
 
           console.log(`[EmailWorker] ✅ New-message email sent to ${data.to}`);
+          break;
+        }
+
+        case "send-task-reminder": {
+          const email = buildTaskReminderEmail({
+            recipientName: data.recipientName,
+            taskTitle: data.taskTitle,
+            dueLabel: data.dueLabel,
+            tasksUrl: data.tasksUrl,
+          });
+
+          await transporter.sendMail({
+            from: env.SMTP_FROM,
+            to: data.to,
+            subject: email.subject,
+            html: email.html,
+            text: email.text,
+          });
+
+          console.log(`[EmailWorker] ✅ Task-reminder email sent to ${data.to}`);
           break;
         }
 

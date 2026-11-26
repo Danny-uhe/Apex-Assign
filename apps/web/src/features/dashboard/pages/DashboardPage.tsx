@@ -124,7 +124,7 @@ export default function DashboardPage() {
                         <div className='pointer-events-none flex min-w-0 items-center gap-2'>
                           <span
                             className='h-3 w-3 rounded-full flex-shrink-0'
-                            style={{ backgroundColor: p.color ?? '#6366f1' }}
+                            style={{ backgroundColor: p.color ?? '#ea580c' }}
                           />
                           <h3 className='truncate font-semibold text-white'>{p.name}</h3>
                         </div>

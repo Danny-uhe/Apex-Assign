@@ -9,6 +9,10 @@ import {
 import crypto from "node:crypto";
 import { queuePasswordResetEmail } from "../../queues/email.queue.js";
 
+function hashToken(token: string): string {
+  return crypto.createHash("sha256").update(token).digest("hex");
+}
+
 // interface RegisterInput {
 //   name: string;
 //   email: string;
@@ -91,7 +95,7 @@ export async function loginUser(data: LoginInput) {
 
   await prisma.refreshToken.create({
     data: {
-      token: refreshToken,
+      token: hashToken(refreshToken),
       userId: user.id,
       expiresAt: new Date(
         Date.now() + 7 * 24 * 60 * 60 * 1000
@@ -143,9 +147,10 @@ export async function refreshAccessToken(data: RefreshInput) {
     throw new Error("Invalid or expired refresh token");
   }
 
-  const storedToken = await prisma.refreshToken.findUnique({
+  const hashed = hashToken(data.refreshToken);
+  const storedToken = await prisma.refreshToken.findFirst({
     where: {
-      token: data.refreshToken,
+      token: { in: [hashed, data.refreshToken] },
     },
   });
 
@@ -154,6 +159,7 @@ export async function refreshAccessToken(data: RefreshInput) {
   }
 
   if (storedToken.expiresAt < new Date()) {
+    await prisma.refreshToken.deleteMany({ where: { id: storedToken.id } });
     throw new Error("Refresh token expired");
   }
 
@@ -178,20 +184,32 @@ export async function refreshAccessToken(data: RefreshInput) {
     );
   }
 
-  const accessToken = generateAccessToken(
-    user.id,
-    user.systemRole
-  );
+  const accessToken = generateAccessToken(user.id, user.systemRole);
+  const newRefreshToken = generateRefreshToken(user.id);
+
+  // Rotate refresh token atomically
+  await prisma.$transaction([
+    prisma.refreshToken.deleteMany({ where: { id: storedToken.id } }),
+    prisma.refreshToken.create({
+      data: {
+        token: hashToken(newRefreshToken),
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      },
+    }),
+  ]);
 
   return {
     accessToken,
+    refreshToken: newRefreshToken,
   };
 }
 
 export async function logoutUser(data: LogoutInput) {
+  const hashed = hashToken(data.refreshToken);
   await prisma.refreshToken.deleteMany({
     where: {
-      token: data.refreshToken,
+      token: { in: [hashed, data.refreshToken] },
     },
   });
 

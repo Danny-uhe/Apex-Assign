@@ -24,7 +24,7 @@ export async function getMyActivity(req: Request, res: Response) {
 
 export async function getOrgActivity(req: Request, res: Response) {
   try {
-    const tasks = await getOrgActivityService();
+    const tasks = await getOrgActivityService(req.user!.userId);
 
     return res.json({
       success: true,

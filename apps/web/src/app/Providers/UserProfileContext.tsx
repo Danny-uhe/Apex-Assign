@@ -12,7 +12,7 @@ const LS_STREAK_KEY  = 'ts_user_streak';
 const LS_RANK_KEY    = 'ts_user_rank';
 
 const DEFAULT_NAME   = 'Relentless Inivie';
-const DEFAULT_AVATAR = `https://ui-avatars.com/api/?name=Relentless+Inivie&size=128&background=3B82F6&color=fff`;
+const DEFAULT_AVATAR = `https://ui-avatars.com/api/?name=Relentless+Inivie&size=128&background=EA580C&color=fff`;
 
 function ls(key: string, fallback: string) {
   try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }

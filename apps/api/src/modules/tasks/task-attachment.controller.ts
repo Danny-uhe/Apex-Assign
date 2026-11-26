@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
-import { addTaskAttachments, getTaskAttachments } from "./task-attachment.service.js";
+import {
+  addTaskAttachments,
+  getTaskAttachments,
+  getAuthorizedAttachmentPath,
+} from "./task-attachment.service.js";
+import { verifyMagicBytes } from "../../middleware/upload.middleware.js";
 
-export async function upload(
-  req: Request,
-  res: Response
-) {
+export async function upload(req: Request, res: Response) {
   try {
     const files = req.files as Express.Multer.File[];
 
@@ -14,6 +16,8 @@ export async function upload(
         message: "No file was uploaded",
       });
     }
+
+    await verifyMagicBytes(files);
 
     const attachments = await addTaskAttachments(
       req.params.taskId as string,
@@ -28,21 +32,12 @@ export async function upload(
   } catch (error) {
     return res.status(400).json({
       success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "Something went wrong",
+      message: error instanceof Error ? error.message : "Something went wrong",
     });
   }
 }
 
-
-
-
-export async function getAttachments(
-  req: Request,
-  res: Response
-) {
+export async function getAttachments(req: Request, res: Response) {
   try {
     const attachments = await getTaskAttachments(
       req.params.taskId as string,
@@ -54,12 +49,31 @@ export async function getAttachments(
       attachments,
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Something went wrong";
+    const message = error instanceof Error ? error.message : "Something went wrong";
+    const status = message === "Task not found" ? 404 : 403;
 
+    return res.status(status).json({
+      success: false,
+      message,
+    });
+  }
+}
+
+export async function downloadAttachment(req: Request, res: Response) {
+  try {
+    const filePath = await getAuthorizedAttachmentPath(
+      req.params.fileName as string,
+      req.user!.userId
+    );
+    return res.sendFile(filePath);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Something went wrong";
     const status =
-      message === "Task not found" ? 404 : 403;
-
+      message === "Attachment not found"
+        ? 404
+        : message === "You are not a member of this project"
+        ? 403
+        : 400;
     return res.status(status).json({
       success: false,
       message,

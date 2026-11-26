@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { authenticate } from "../../middleware/auth.middleware.js";
+import { forgotPasswordLimiter } from "../../middleware/rateLimiter.js";
 import {
   login,
   me,
@@ -15,8 +16,8 @@ const router = Router();
 // ── Public ────────────────────────────────────────────────────────────────────
 router.post("/login",           login);
 router.post("/refresh",         refresh);
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password",  resetPasswordHandler);
+router.post("/forgot-password", forgotPasswordLimiter, forgotPassword);
+router.post("/reset-password",  forgotPasswordLimiter, resetPasswordHandler);
 
 // ── Authenticated ─────────────────────────────────────────────────────────────
 router.post("/logout",     authenticate, logout);

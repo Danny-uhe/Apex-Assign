@@ -9,6 +9,7 @@ import {
 import {
   uploadTaskAttachments,
 } from "../../middleware/upload.middleware.js";
+import { uploadLimiter } from "../../middleware/rateLimiter.js";
 
 import { 
   create,
@@ -101,6 +102,7 @@ router.delete(
 router.post(
   "/tasks/:taskId/attachments",
   authenticate,
+  uploadLimiter,
   multerUpload,
   upload
 );

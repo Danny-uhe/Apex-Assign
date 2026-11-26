@@ -1,19 +1,38 @@
 import { Server, Socket } from "socket.io";
 import { prisma } from "../../config/prisma.js";
 import { notifyProjectMessage } from "../../modules/notifications/notification.service.js";
+import { stripHtml } from "../../utils/sanitize.js";
 
 interface SendMessagePayload {
   projectId: string;
   content: string;
 }
 
+const SOCKET_RATE_WINDOW_MS = 10_000;
+const SOCKET_RATE_MAX_MSGS = 20;
+
 export function registerMessageHandlers(io: Server, socket: Socket) {
   const { userId } = socket.user;
+  let windowStart = Date.now();
+  let msgCount = 0;
 
   socket.on("send_message", async (payload: SendMessagePayload) => {
-    const { projectId, content } = payload;
+    const now = Date.now();
+    if (now - windowStart > SOCKET_RATE_WINDOW_MS) {
+      windowStart = now;
+      msgCount = 0;
+    }
+    msgCount += 1;
+    if (msgCount > SOCKET_RATE_MAX_MSGS) {
+      socket.emit("error_message", { message: "Rate limit exceeded. Slow down." });
+      return;
+    }
 
-    if (!content?.trim() || !projectId) return;
+    const projectId = typeof payload?.projectId === "string" ? payload.projectId.trim() : "";
+    const rawContent = typeof payload?.content === "string" ? payload.content : "";
+    const content = stripHtml(rawContent);
+
+    if (!content || content.length > 2000 || !projectId) return;
 
     // Verify sender is a project member
     const member = await prisma.projectMember.findUnique({
@@ -22,7 +41,7 @@ export function registerMessageHandlers(io: Server, socket: Socket) {
     if (!member) return;
 
     const message = await prisma.message.create({
-      data: { content: content.trim(), projectId, userId },
+      data: { content, projectId, userId },
       include: {
         user: {
           select: { id: true, name: true, avatar: true, position: true },
@@ -42,7 +61,6 @@ export function registerMessageHandlers(io: Server, socket: Socket) {
       });
       members.forEach(({ userId: memberId }) => {
         if (memberId !== userId) {
-          // Don't double-send to sender (they got it from the project room)
           io.to(`user:${memberId}`).emit("new_message", message);
         }
       });

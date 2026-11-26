@@ -20,18 +20,18 @@ export default function PointsToast() {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-[100] flex items-center gap-3 rounded-2xl bg-slate-900 px-5 py-3.5 shadow-2xl transition-all duration-300 ${
+      className={`fixed bottom-6 right-6 z-[100] flex items-center gap-3 rounded-2xl border border-zinc-700 bg-zinc-900 px-5 py-3.5 shadow-2xl transition-all duration-300 ${
         visible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       }`}
     >
       <div className='flex h-9 w-9 items-center justify-center rounded-xl bg-yellow-400'>
-        <Zap size={16} className='text-slate-900' fill='currentColor' />
+        <Zap size={16} className='text-zinc-950' fill='currentColor' />
       </div>
       <div>
         <p className='text-sm font-bold text-white'>
           +{lastEarned.amount} points earned!
         </p>
-        <p className='text-xs text-slate-400'>{lastEarned.reason}</p>
+        <p className='text-xs text-zinc-400'>{lastEarned.reason}</p>
       </div>
       <div className='ml-2 text-right'>
         <p className='text-xs font-semibold text-yellow-400'>{points.toLocaleString()} total</p>

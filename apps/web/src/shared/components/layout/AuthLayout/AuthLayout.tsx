@@ -1,22 +1,28 @@
 import type { AuthLayoutProps } from './AuthLayout.types';
 import VantaGlobe from '@/features/auth/components/VantaGlobe';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    // bg-[#100f18] matches vanta backgroundColor exactly — no flash of wrong colour
-    <main className='relative flex min-h-screen items-center justify-center bg-[#100f18] px-5 py-12'>
-
-      {/* Animated 3-D globe background */}
+    <main className='relative flex min-h-screen items-center justify-center bg-zinc-950 px-5 py-12'>
+      {/* Animated orange particle network background */}
       <VantaGlobe />
+
+      <div className='fixed right-5 top-5 z-20'>
+        <ThemeToggle />
+      </div>
 
       {/* Frosted-glass login card — sits above the canvas */}
       <div className='relative z-10 w-full max-w-[420px]'>
         <header className='mb-8 text-center'>
-          <img
-            src='/logo.png'
-            alt='ApexAssign'
-            className='mx-auto mb-5 h-24 w-auto drop-shadow-[0_0_20px_rgba(96,63,255,0.5)]'
-          />
+          <div className='mx-auto mb-4 flex w-fit items-center gap-3 drop-shadow-[0_0_24px_rgba(234,88,12,0.35)]'>
+            <div className='flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-600 text-xl font-bold text-white shadow-lg shadow-orange-600/30 select-none'>
+              A
+            </div>
+            <span className='text-2xl font-bold tracking-tight text-zinc-100'>
+              ApexAssign
+            </span>
+          </div>
           <p className='mt-2 text-sm text-zinc-400'>
             A clearer way to work together.
           </p>

@@ -7,6 +7,7 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useUserProfile } from '@/app/Providers/UserProfileContext';
 import { useTaskContext } from '@/app/Providers/TaskContext';
 import { useNotifications } from '@/app/Providers/NotificationContext';
+import { usePersonalTaskStore } from '@/features/my-tasks/store/personalTaskStore';
 
 type Props = {
   onMenuClick: () => void;
@@ -66,6 +67,7 @@ export default function AppHeader({ onMenuClick }: Props) {
   const [notifOpen, setNotifOpen] = useState(false);
   const { avatarUrl, name } = useUserProfile();
   const { openAddTask } = useTaskContext();
+  const openAddPersonalTask = usePersonalTaskStore((s) => s.openAddModal);
   const { unreadCount } = useNotifications();
 
   const isLeaderboard = location.pathname === '/leaderboard';
@@ -87,6 +89,11 @@ export default function AppHeader({ onMenuClick }: Props) {
       title: 'Tasks',
       subtitle: 'Manage your daily flow and team assignments',
       action: 'task',
+    },
+    '/my-tasks': {
+      title: 'My Tasks',
+      subtitle: 'Personal tasks & calendar',
+      action: 'my-task',
     },
     '/leaderboard': { title: '', subtitle: '', action: 'leaderboard-profile' },
     '/activity': {
@@ -181,6 +188,19 @@ export default function AppHeader({ onMenuClick }: Props) {
           <button
             id='add-task-btn'
             onClick={openAddTask}
+            className='flex items-center gap-1.5 rounded-lg bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-orange-700 active:scale-95 sm:gap-2 sm:px-4 sm:py-2.5'
+          >
+            <Plus size={16} />
+            <span className='hidden sm:inline'>Add Task</span>
+            <span className='sm:hidden'>Add</span>
+          </button>
+        )}
+
+        {/* Add Personal Task button */}
+        {current?.action === 'my-task' && (
+          <button
+            id='add-personal-task-btn'
+            onClick={() => openAddPersonalTask()}
             className='flex items-center gap-1.5 rounded-lg bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-orange-700 active:scale-95 sm:gap-2 sm:px-4 sm:py-2.5'
           >
             <Plus size={16} />

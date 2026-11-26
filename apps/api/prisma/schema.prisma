@@ -49,6 +49,7 @@ model User {
   globalMessages      GlobalMessage[]
   sentDirectMessages     DirectMessage[] @relation("DMSender")
   receivedDirectMessages DirectMessage[] @relation("DMReceiver")
+  personalTasks          PersonalTask[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -292,4 +293,26 @@ model DirectMessage {
   @@index([senderId, receiverId])
   @@index([receiverId, senderId])
   @@index([createdAt])
+}
+
+model PersonalTask {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  priority    String    @default("medium")
+  status      String    @default("todo")
+  repeat      String    @default("none")
+  dueDate     DateTime?
+  reminderAt  DateTime?
+  isExpired   Boolean   @default(false)
+  expiresAt   DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, dueDate])
 }

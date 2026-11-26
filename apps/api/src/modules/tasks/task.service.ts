@@ -82,7 +82,7 @@ export async function createTask(
     },
   });
 
-  // 5. Notify assigned user
+  // 5. Notify assigned user + other project members
   if (data.assignedToId) {
     await createNotification(
       data.assignedToId,
@@ -90,6 +90,31 @@ export async function createTask(
       `You have been assigned a new task: ${task.title}`,
       task.id
     );
+  }
+
+  try {
+    const otherMembers = await prisma.projectMember.findMany({
+      where: {
+        projectId,
+        userId: {
+          notIn: [userId, ...(data.assignedToId ? [data.assignedToId] : [])],
+        },
+      },
+      select: { userId: true },
+    });
+
+    await Promise.all(
+      otherMembers.map((m) =>
+        createNotification(
+          m.userId,
+          "TASK_CREATED",
+          `New task "${task.title}" created in ${project.name}`,
+          task.id
+        )
+      )
+    );
+  } catch (err) {
+    console.error("[Task] Failed to notify project members on task creation:", err);
   }
 
   // 6. Broadcast to project room

@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "../../config/prisma.js";
+import { createNotification } from "../notifications/notification.service.js";
 
 import {
   CreateProjectInput,
@@ -10,8 +11,8 @@ export async function createProject(
   data: CreateProjectInput,
   ownerId: string
 ) {
-  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-    const project = await tx.project.create({
+  const project = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+    const created = await tx.project.create({
       data: {
         name: data.name,
         description: data.description,
@@ -22,14 +23,27 @@ export async function createProject(
 
     await tx.projectMember.create({
       data: {
-        projectId: project.id,
+        projectId: created.id,
         userId: ownerId,
         role: "owner",
       },
     });
 
-    return project;
+    return created;
   });
+
+  try {
+    await createNotification(
+      ownerId,
+      "PROJECT_CREATED",
+      `New project created: ${project.name}`,
+      project.id
+    );
+  } catch (err) {
+    console.error("[Project] Failed to send project created notification:", err);
+  }
+
+  return project;
 }
 
 export async function getProjects(userId: string) {
@@ -184,7 +198,7 @@ export async function deleteProject(
 }
 
 
-export async function getProjectMembers(projectId: string) {
+export async function getProjectMembers(projectId: string, requesterId: string) {
   const project = await prisma.project.findUnique({
     where: {
       id: projectId,
@@ -193,6 +207,19 @@ export async function getProjectMembers(projectId: string) {
 
   if (!project) {
     throw new Error("Project not found");
+  }
+
+  const membership = await prisma.projectMember.findUnique({
+    where: {
+      userId_projectId: {
+        userId: requesterId,
+        projectId,
+      },
+    },
+  });
+
+  if (!membership) {
+    throw new Error("You are not a member of this project");
   }
 
   return prisma.projectMember.findMany({
@@ -326,7 +353,7 @@ export async function addProjectMember(
   userId: string,
   role: "admin" | "member"
 ) {
-  const { organizationId } = await getOwnedProjectOrganizationScope(
+  const { project, organizationId } = await getOwnedProjectOrganizationScope(
     projectId,
     requesterId
   );
@@ -358,7 +385,7 @@ export async function addProjectMember(
     throw new Error("User is already a member of this project");
   }
 
-  return prisma.projectMember.create({
+  const createdMember = await prisma.projectMember.create({
     data: {
       projectId,
       userId,
@@ -378,4 +405,17 @@ export async function addProjectMember(
       },
     },
   });
+
+  try {
+    await createNotification(
+      userId,
+      "PROJECT_ADDED",
+      `You were added to project: ${project.name}`,
+      project.id
+    );
+  } catch (err) {
+    console.error("[Project] Failed to notify added member:", err);
+  }
+
+  return createdMember;
 }

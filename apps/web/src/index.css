@@ -51,9 +51,24 @@ html.light [class~="bg-black"]       { background-color: #f1f5f9 !important; }
 html.light [class~="bg-white\/5"]    { background-color: rgba(0,0,0,0.04) !important; }
 html.light [class~="bg-white\/10"]   { background-color: rgba(0,0,0,0.06) !important; }
 html.light [class~="bg-zinc-900\/80"]{ background-color: rgba(255,255,255,0.92) !important; }
+html.light [class~="from-slate-800"] { --tw-gradient-from: #e2e8f0 !important; }
+html.light [class~="to-slate-900"]   { --tw-gradient-to: #f1f5f9 !important; }
 
-/* ── Text overrides ───────────────────── */
+/* ── Light: text overrides ────────────── */
 html.light [class~="text-white"]    { color: #0f172a !important; }
+html.light [class~="bg-orange-600"][class~="text-white"],
+html.light [class~="bg-orange-700"][class~="text-white"],
+html.light [class~="bg-red-500"][class~="text-white"],
+html.light [class~="bg-red-600"][class~="text-white"],
+html.light [class~="bg-purple-500"][class~="text-white"],
+html.light [class~="bg-emerald-500"][class~="text-white"],
+html.light [class~="bg-amber-500"][class~="text-white"],
+html.light [class~="bg-rose-500"][class~="text-white"],
+html.light [class~="bg-teal-500"][class~="text-white"],
+html.light [class~="bg-green-500"][class~="text-white"],
+html.light [class~="bg-green-600"][class~="text-white"] {
+  color: #ffffff !important;
+}
 html.light [class~="text-zinc-100"] { color: #0f172a !important; }
 html.light [class~="text-zinc-200"] { color: #1e293b !important; }
 html.light [class~="text-zinc-300"] { color: #334155 !important; }
@@ -102,6 +117,22 @@ html.light input, html.light textarea, html.light select {
 }
 html.light input::placeholder,
 html.light textarea::placeholder { color: #94a3b8; }
+
+/* ── Prevent Chrome blue autofill tint ── */
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:hover,
+html.dark input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #09090b inset !important;
+  -webkit-text-fill-color: #f4f4f5 !important;
+  caret-color: #f4f4f5;
+}
+html.light input:-webkit-autofill,
+html.light input:-webkit-autofill:hover,
+html.light input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #0f172a !important;
+  caret-color: #0f172a;
+}
 
 /* ── Light: shadows become lighter ── */
 html.light [class~="shadow-black\/60"]  { box-shadow: 0 10px 30px rgba(0,0,0,0.12) !important; }

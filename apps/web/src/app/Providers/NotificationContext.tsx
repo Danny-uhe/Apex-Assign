@@ -5,7 +5,8 @@ import { useAuthStore } from '@/store/authStore';
 
 export type AppNotification = {
   id: number;
-  type: 'assignment' | 'invite' | 'mention' | 'completed' | 'message' | 'general';
+  type: 'assignment' | 'invite' | 'mention' | 'completed' | 'message' | 'reminder' | 'expired' | 'project' | 'general';
+  rawType?: string;
   title: string;
   message: string;
   time: string;
@@ -29,12 +30,16 @@ const NotificationContext = createContext<NotifCtx | null>(null);
 
 let nextId = 1000;
 
-function typeFromString(t: string): AppNotification['type'] {
-  if (t.includes('message')) return 'message';
-  if (t.includes('assign')) return 'assignment';
-  if (t.includes('invite')) return 'invite';
-  if (t.includes('mention')) return 'mention';
-  if (t.includes('complet') || t.includes('done')) return 'completed';
+export function notificationTypeFromString(t: string): AppNotification['type'] {
+  const lower = t.toLowerCase();
+  if (lower.includes('message')) return 'message';
+  if (lower.includes('reminder')) return 'reminder';
+  if (lower.includes('expired')) return 'expired';
+  if (lower.includes('project')) return 'project';
+  if (lower.includes('assign') || lower.includes('task_created')) return 'assignment';
+  if (lower.includes('invite')) return 'invite';
+  if (lower.includes('mention')) return 'mention';
+  if (lower.includes('complet') || lower.includes('done')) return 'completed';
   return 'general';
 }
 
@@ -64,7 +69,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           id: nextId++,
           dbId: n.id,
           relatedId: n.relatedId,
-          type: typeFromString(n.type),
+          rawType: n.type,
+          type: notificationTypeFromString(n.type),
           title: n.type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
           message: n.message,
           time: timeAgo(n.createdAt),

@@ -9,7 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { connectSocket, disconnectSocket, getSocket } from "@/lib/socket";
 import { useAuthStore } from "@/store/authStore";
-import { useNotifications } from "./NotificationContext";
+import { useNotifications, notificationTypeFromString } from "./NotificationContext";
 import type {
   SocketMessage,
   SocketNotification,
@@ -114,16 +114,35 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
     // ── Live notifications ──────────────────────────────────────────────────
     socket.on("notification", (notif: SocketNotification) => {
+      const title = notif.type === "new_message"
+        ? "New message"
+        : notif.type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
       addNotification({
-        type: notif.type.includes("message") ? "message" : "general",
-        title: notif.type === "new_message"
-          ? "New message"
-          : notif.type.replace(/_/g, " "),
+        type: notificationTypeFromString(notif.type),
+        rawType: notif.type,
+        title,
         message: notif.message,
         dbId: notif.id,
         relatedId: notif.relatedId,
       });
       toast(notif.message, { icon: "🔔" });
+
+      if (
+        typeof window !== "undefined" &&
+        "Notification" in window &&
+        window.Notification.permission === "granted" &&
+        document.hidden
+      ) {
+        try {
+          new window.Notification(title, {
+            body: notif.message,
+            icon: "/favicon.svg",
+          });
+        } catch {
+          // Ignore browser notification errors
+        }
+      }
     });
 
     // ── Presence ────────────────────────────────────────────────────────────

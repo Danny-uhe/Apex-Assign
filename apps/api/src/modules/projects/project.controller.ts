@@ -140,19 +140,27 @@ export async function getAll(req: Request, res: Response) {
     res: Response
   ) {
     try {
-      const members = await getProjectMembers(req.params.id as string);
+      const members = await getProjectMembers(
+        req.params.id as string,
+        req.user!.userId
+      );
   
       return res.json({
         success: true,
         members,
       });
     } catch (error) {
-      return res.status(404).json({
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
+      const status =
+        message === "Project not found"
+          ? 404
+          : message === "You are not a member of this project"
+          ? 403
+          : 400;
+      return res.status(status).json({
         success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong",
+        message,
       });
     }
   }

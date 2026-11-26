@@ -45,7 +45,7 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const { refreshToken, setToken, clearAuth } = useAuthStore.getState();
+    const { refreshToken, setToken, setAuth, user, clearAuth } = useAuthStore.getState();
 
     // No refresh token — force logout
     if (!refreshToken) {
@@ -77,7 +77,12 @@ api.interceptors.response.use(
       );
 
       const newToken = data.accessToken as string;
-      setToken(newToken);
+      const newRefreshToken = data.refreshToken as string | undefined;
+      if (newRefreshToken && user) {
+        setAuth(user, newToken, newRefreshToken);
+      } else {
+        setToken(newToken);
+      }
       processQueue(null, newToken);
 
       original.headers.Authorization = `Bearer ${newToken}`;

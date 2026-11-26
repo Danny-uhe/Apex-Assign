@@ -24,11 +24,11 @@ function baseLayout(title: string, body: string): string {
 
           <!-- Header -->
           <tr>
-            <td style="background:#2563eb;padding:32px 40px;">
+            <td style="background:#ea580c;padding:32px 40px;">
               <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">
-                TaskSync
+                ApexAssign
               </p>
-              <p style="margin:4px 0 0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#93c5fd;">
+              <p style="margin:4px 0 0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#ffedd5;">
                 Workspace
               </p>
             </td>
@@ -63,7 +63,7 @@ function ctaButton(href: string, text: string): string {
   return `
     <table cellpadding="0" cellspacing="0" style="margin:28px 0;">
       <tr>
-        <td style="border-radius:10px;background:#2563eb;">
+        <td style="border-radius:10px;background:#ea580c;">
           <a href="${href}"
              style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:10px;">
             ${text}
@@ -75,7 +75,7 @@ function ctaButton(href: string, text: string): string {
 
 function fallbackLink(href: string): string {
   return `<p style="font-size:13px;color:#94a3b8;word-break:break-all;margin-top:8px;">
-    Or copy this link: <span style="color:#2563eb;">${href}</span>
+    Or copy this link: <span style="color:#ea580c;">${href}</span>
   </p>`;
 }
 
@@ -259,21 +259,66 @@ export function buildNewMessageEmail(data: NewMessageEmailData) {
       in <strong style="color:#2563eb;">${projectName}</strong>.
     </p>
     <p style="margin:0;font-size:15px;color:#475569;">
-      Sign in to TaskSync to read the message and reply.
+      Sign in to ApexAssign to read the message and reply.
     </p>
     ${ctaButton(replyUrl, "Open conversation")}
     ${fallbackLink(replyUrl)}
   `;
 
   return {
-    subject: `${data.senderName} sent you a TaskSync message`,
-    html: baseLayout("You have a new TaskSync message", body),
+    subject: `${data.senderName} sent you a message`,
+    html: baseLayout("You have a new message", body),
     text: [
       `Hi ${data.recipientName},`,
       ``,
       `${data.senderName} sent you a message in ${data.projectName}.`,
-      `Sign in to TaskSync to read the message and reply:`,
+      `Sign in to ApexAssign to read the message and reply:`,
       data.replyUrl,
+    ].join("\n"),
+  };
+}
+
+export interface TaskReminderEmailData {
+  recipientName: string;
+  taskTitle: string;
+  dueLabel?: string;
+  tasksUrl: string;
+}
+
+export function buildTaskReminderEmail(data: TaskReminderEmailData) {
+  const recipientName = escapeHtml(data.recipientName);
+  const taskTitle = escapeHtml(data.taskTitle);
+  const dueLabel = data.dueLabel ? escapeHtml(data.dueLabel) : null;
+  const tasksUrl = escapeHtml(data.tasksUrl);
+
+  const body = `
+    <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#0f172a;">
+      Task Reminder ⏰
+    </h1>
+    <p style="margin:0 0 20px;font-size:15px;color:#475569;line-height:1.6;">
+      Hi <strong style="color:#0f172a;">${recipientName}</strong>, this is a reminder for your task:
+      <strong style="color:#ea580c;">${taskTitle}</strong>.
+    </p>
+    ${
+      dueLabel
+        ? `<p style="margin:0 0 20px;font-size:14px;color:#64748b;">Due: <strong>${dueLabel}</strong></p>`
+        : ""
+    }
+    ${ctaButton(tasksUrl, "View My Tasks")}
+    ${fallbackLink(tasksUrl)}
+  `;
+
+  return {
+    subject: `Reminder: ${data.taskTitle}`,
+    html: baseLayout(`Task Reminder: ${data.taskTitle}`, body),
+    text: [
+      `Hi ${data.recipientName},`,
+      ``,
+      `Reminder for your task: ${data.taskTitle}`,
+      ...(data.dueLabel ? [`Due: ${data.dueLabel}`] : []),
+      ``,
+      `View your tasks:`,
+      data.tasksUrl,
     ].join("\n"),
   };
 }

@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
+import { z } from "zod";
 import {
   getGlobalMessages,
   createGlobalMessage,
   deleteGlobalMessage,
 } from "./globalMessage.service.js";
+
+const globalMessageSchema = z.object({
+  content: z.string().trim().min(1, "Content is required").max(2000),
+});
 
 export async function listGlobalMessages(req: Request, res: Response) {
   try {
@@ -20,10 +25,7 @@ export async function listGlobalMessages(req: Request, res: Response) {
 
 export async function sendGlobalMessage(req: Request, res: Response) {
   try {
-    const { content } = req.body as { content: string };
-    if (!content?.trim()) {
-      return res.status(400).json({ success: false, message: "Content is required" });
-    }
+    const { content } = globalMessageSchema.parse(req.body);
     const message = await createGlobalMessage(req.user!.userId, content);
     return res.status(201).json({ success: true, message });
   } catch (error) {

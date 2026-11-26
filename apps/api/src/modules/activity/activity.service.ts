@@ -121,10 +121,19 @@ export async function getUserActivity(userId: string) {
 }
 
 /**
- * Returns recent task updates across all projects for organization admins.
+ * Returns recent task updates across projects in the admin's organization.
  */
-export async function getOrgActivity() {
+export async function getOrgActivity(requesterId: string) {
+  const memberships = await prisma.organizationMember.findMany({
+    where: { userId: requesterId },
+    select: { organizationId: true },
+  });
+  const orgIds = memberships.map((m) => m.organizationId);
+
   return prisma.task.findMany({
+    where: orgIds.length
+      ? { project: { organizationId: { in: orgIds } } }
+      : undefined,
     take: 50,
     orderBy: { updatedAt: "desc" },
     include: {

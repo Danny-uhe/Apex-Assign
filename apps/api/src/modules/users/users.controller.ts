@@ -6,7 +6,7 @@ export async function getUsers(
   req: Request,
   res: Response
 ) {
-  const users = await getAllUsers();
+  const users = await getAllUsers(req.user!.userId);
 
   return res.json({
     success: true,

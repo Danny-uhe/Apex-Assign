@@ -2,8 +2,21 @@ import bcrypt from "bcrypt";
 import { prisma } from "../../config/prisma.js";
 import { hashPassword } from "../../utils/password.js";
 
-export async function getAllUsers() {
+export async function getAllUsers(requesterId: string) {
+    const memberships = await prisma.organizationMember.findMany({
+        where: { userId: requesterId },
+        select: { organizationId: true },
+    });
+    const orgIds = memberships.map((m) => m.organizationId);
+    if (orgIds.length === 0) return [];
+
     return prisma.user.findMany({
+        where: {
+            isActive: true,
+            organizationMembers: {
+                some: { organizationId: { in: orgIds } },
+            },
+        },
         select: {
             id: true,
             name: true,
@@ -18,7 +31,7 @@ export async function getAllUsers() {
             name: "asc",
         },
     });
-};
+}
 
 export async function updateProfile(
     userId: string,

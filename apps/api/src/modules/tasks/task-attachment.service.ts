@@ -1,4 +1,6 @@
+import path from "node:path";
 import { prisma } from "../../config/prisma.js";
+import { uploadDirectory } from "../../middleware/upload.middleware.js";
 
 export async function addTaskAttachments(
   taskId: string,
@@ -80,4 +82,41 @@ export async function getTaskAttachments(
       createdAt: "desc",
     },
   });
+}
+
+export async function getAuthorizedAttachmentPath(
+  fileName: string,
+  userId: string
+): Promise<string> {
+  const safeName = path.basename(fileName);
+  if (!safeName || safeName !== fileName) {
+    throw new Error("Invalid file name");
+  }
+
+  const attachment = await prisma.taskAttachment.findFirst({
+    where: { fileName: safeName },
+    select: {
+      fileName: true,
+      task: { select: { projectId: true } },
+    },
+  });
+
+  if (!attachment) {
+    throw new Error("Attachment not found");
+  }
+
+  const member = await prisma.projectMember.findUnique({
+    where: {
+      userId_projectId: {
+        userId,
+        projectId: attachment.task.projectId,
+      },
+    },
+  });
+
+  if (!member) {
+    throw new Error("You are not a member of this project");
+  }
+
+  return path.join(uploadDirectory, safeName);
 }

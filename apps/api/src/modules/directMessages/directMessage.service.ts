@@ -3,6 +3,24 @@ import { getIO } from "../../sockets/socket.js";
 
 const DM_PAGE_SIZE = 50;
 
+async function ensureSharedOrganization(userA: string, userB: string) {
+  const [orgsA, orgsB] = await Promise.all([
+    prisma.organizationMember.findMany({
+      where: { userId: userA },
+      select: { organizationId: true },
+    }),
+    prisma.organizationMember.findMany({
+      where: { userId: userB },
+      select: { organizationId: true },
+    }),
+  ]);
+  const setA = new Set(orgsA.map((o) => o.organizationId));
+  const shared = orgsB.some((o) => setA.has(o.organizationId));
+  if (!shared) {
+    throw new Error("You can only message members of your organization");
+  }
+}
+
 /**
  * Get conversation between two users (paginated, oldest-first).
  */
@@ -11,6 +29,7 @@ export async function getDirectMessages(
   otherUserId: string,
   cursor?: string
 ) {
+  await ensureSharedOrganization(userId, otherUserId);
   const messages = await prisma.directMessage.findMany({
     where: {
       OR: [
@@ -49,12 +68,14 @@ export async function sendDirectMessage(
     throw new Error("You cannot message yourself");
   }
 
-  // Verify receiver exists
+  // Verify receiver exists and is active
   const receiver = await prisma.user.findUnique({
     where: { id: receiverId },
-    select: { id: true },
+    select: { id: true, isActive: true },
   });
-  if (!receiver) throw new Error("User not found");
+  if (!receiver || !receiver.isActive) throw new Error("User not found");
+
+  await ensureSharedOrganization(senderId, receiverId);
 
   const message = await prisma.directMessage.create({
     data: { content: content.trim(), senderId, receiverId },

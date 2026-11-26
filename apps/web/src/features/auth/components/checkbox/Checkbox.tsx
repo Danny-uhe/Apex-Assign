@@ -6,13 +6,14 @@ export default function Checkbox({
   label,
 }: CheckboxProps) {
   return (
-    <label>
+    <label className="flex cursor-pointer items-center gap-2 text-sm text-zinc-400 select-none">
       <input
         type="checkbox"
         checked={checked}
         onChange={onChange}
+        className="h-4 w-4 rounded border-zinc-600 accent-orange-600"
       />
-      {label}
+      <span>{label}</span>
     </label>
   );
 }
