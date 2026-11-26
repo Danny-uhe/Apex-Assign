@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: cd apps/api && npx prisma generate
+
+      - name: Run API tests
+        env:
+          DATABASE_URL: postgresql://user:pass@localhost:5432/db
+          JWT_ACCESS_SECRET: ci-access-secret-placeholder-12345
+          JWT_REFRESH_SECRET: ci-refresh-secret-placeholder-12345
+          REDIS_URL: redis://localhost:6379
+          SMTP_HOST: localhost
+          SMTP_USER: ci
+          SMTP_PASS: ci
+          SMTP_FROM: ci@example.com
+        run: cd apps/api && npm test
+
+      - name: Typecheck & Build API
+        run: cd apps/api && npm run typecheck && npm run build
+
+      - name: Typecheck & Build Web
+        run: cd apps/web && npx tsc --noEmit && npm run build

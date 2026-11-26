@@ -31,7 +31,7 @@ export default function NotificationDropdown() {
   };
 
   return (
-    <div className='absolute right-0 top-12 z-50 w-80 rounded-2xl border border-zinc-700 bg-zinc-900 shadow-2xl sm:top-14'>
+    <div className='absolute right-0 top-12 z-50 w-[min(20rem,calc(100vw-1.5rem))] rounded-2xl border border-zinc-700 bg-zinc-900 shadow-2xl sm:top-14'>
       {/* Header */}
       <div className='flex items-center justify-between border-b border-zinc-700 px-4 py-3'>
         <div className='flex items-center gap-2'>

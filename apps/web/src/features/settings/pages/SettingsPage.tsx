@@ -202,15 +202,15 @@ export default function SettingsPage() {
           </nav>
 
           {/* ── Tab content ── */}
-          <div className='flex-1 space-y-5'>
+          <div className='min-w-0 flex-1 space-y-5'>
 
             {/* ════ PROFILE TAB ════ */}
             {activeTab === 'profile' && (
               <>
                 {/* Stats banner */}
-                <section className='rounded-2xl bg-gradient-to-br from-orange-700 to-orange-800 p-5 text-white shadow-sm'>
+                <section className='rounded-2xl bg-gradient-to-br from-orange-700 to-orange-800 p-4 text-white shadow-sm sm:p-5'>
                   <p className='mb-3 text-xs font-semibold uppercase tracking-wider text-orange-200'>Your Progress</p>
-                  <div className='grid grid-cols-3 gap-3'>
+                  <div className='grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3'>
                     <div className='flex flex-col items-center gap-1 rounded-xl bg-white/15 py-3'>
                       <Zap size={18} className='text-yellow-300' fill='currentColor' />
                       <p className='text-lg font-bold'>{points.toLocaleString()}</p>

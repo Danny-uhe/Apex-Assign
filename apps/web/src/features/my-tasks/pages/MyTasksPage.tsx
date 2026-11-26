@@ -15,6 +15,7 @@ import {
   X,
   Repeat,
   Folder,
+  Download,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -289,17 +290,80 @@ export default function MyTasksPage() {
     ? projectTasksByDateKey[selectedDayKey] ?? []
     : [];
 
+  const handleExportIcs = () => {
+    const pad2 = (n: number) => String(n).padStart(2, "0");
+    const toIcsDate = (iso: string) => iso.slice(0, 10).replace(/-/g, "");
+    const nowStamp = (() => {
+      const d = new Date();
+      return `${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}T${pad2(d.getUTCHours())}${pad2(d.getUTCMinutes())}${pad2(d.getUTCSeconds())}Z`;
+    })();
+    const esc = (s: string) => s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
+
+    const events: string[] = [];
+    for (const t of tasks) {
+      if (!t.dueDate) continue;
+      const dt = toIcsDate(t.dueDate);
+      events.push(
+        "BEGIN:VEVENT",
+        `UID:personal-${t.id}@apexassign`,
+        `DTSTAMP:${nowStamp}`,
+        `DTSTART;VALUE=DATE:${dt}`,
+        `SUMMARY:${esc(t.title)}`,
+        ...(t.description ? [`DESCRIPTION:${esc(t.description)}`] : []),
+        "END:VEVENT"
+      );
+    }
+    for (const pt of projectTasks) {
+      if (!pt.dueDate) continue;
+      if (pt.assignedToId && currentUser?.id && pt.assignedToId !== currentUser.id) continue;
+      const dt = toIcsDate(pt.dueDate);
+      events.push(
+        "BEGIN:VEVENT",
+        `UID:project-${pt.id}@apexassign`,
+        `DTSTAMP:${nowStamp}`,
+        `DTSTART;VALUE=DATE:${dt}`,
+        `SUMMARY:${esc(`[Project] ${pt.title}`)}`,
+        ...(pt.description ? [`DESCRIPTION:${esc(pt.description)}`] : []),
+        "END:VEVENT"
+      );
+    }
+
+    if (events.length === 0) {
+      toast.error("No scheduled tasks with due dates to export");
+      return;
+    }
+
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//ApexAssign//MyTasks//EN",
+      ...events,
+      "END:VCALENDAR",
+    ].join("\r\n");
+
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "apexassign-tasks.ics";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast.success("Calendar exported (.ics)");
+  };
+
   return (
     <AppLayout>
-      <div className="space-y-6">
+      <div className="space-y-5 sm:space-y-6">
         {/* ── Top Controls Bar ── */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {/* Tabs: List View | Calendar View */}
-          <div className="inline-flex w-fit items-center gap-1 rounded-2xl border border-zinc-700 bg-zinc-900 p-1">
+          <div className="grid w-full grid-cols-2 items-center gap-1 rounded-2xl border border-zinc-700 bg-zinc-900 p-1 sm:inline-flex sm:w-fit">
             <button
               type="button"
               onClick={() => setActiveTab("list")}
-              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
+              className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors sm:px-4 sm:text-sm ${
                 activeTab === "list"
                   ? "bg-orange-600 text-white shadow-sm"
                   : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
@@ -311,7 +375,7 @@ export default function MyTasksPage() {
             <button
               type="button"
               onClick={() => setActiveTab("calendar")}
-              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
+              className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors sm:px-4 sm:text-sm ${
                 activeTab === "calendar"
                   ? "bg-orange-600 text-white shadow-sm"
                   : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
@@ -322,15 +386,26 @@ export default function MyTasksPage() {
             </button>
           </div>
 
-          {/* Prominent Add Task button */}
-          <button
-            type="button"
-            onClick={() => openAddModal()}
-            className="flex w-fit items-center gap-2 rounded-xl bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-orange-700 active:scale-95"
-          >
-            <Plus size={17} />
-            Add Task
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={handleExportIcs}
+              className="flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-900 px-3.5 py-2.5 text-xs font-semibold text-zinc-300 transition-colors hover:border-orange-500/50 hover:text-white sm:text-sm"
+            >
+              <Download size={15} />
+              Export .ics
+            </button>
+
+            {/* Prominent Add Task button */}
+            <button
+              type="button"
+              onClick={() => openAddModal()}
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-orange-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-orange-700 active:scale-95 sm:flex-initial"
+            >
+              <Plus size={17} />
+              Add Task
+            </button>
+          </div>
         </div>
 
         {/* ══════════════ LIST VIEW ══════════════ */}
@@ -509,20 +584,23 @@ export default function MyTasksPage() {
               </div>
             </div>
 
-            {/* Weekday headers */}
-            <div className="mb-2 grid grid-cols-7 gap-2 text-center">
-              {WEEKDAYS.map((day) => (
-                <div
-                  key={day}
-                  className="py-1 text-xs font-semibold uppercase tracking-wider text-zinc-500"
-                >
-                  {day}
+            {/* Responsive scrollable calendar wrapper for small/medium screens */}
+            <div className="overflow-x-auto pb-2">
+              <div className="min-w-[600px]">
+                {/* Weekday headers */}
+                <div className="mb-2 grid grid-cols-7 gap-1.5 text-center sm:gap-2">
+                  {WEEKDAYS.map((day) => (
+                    <div
+                      key={day}
+                      className="py-1 text-xs font-semibold uppercase tracking-wider text-zinc-500"
+                    >
+                      {day}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            {/* Day grid */}
-            <div className="grid grid-cols-7 gap-2">
+                {/* Day grid */}
+                <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
               {calendarDays.map((cell) => {
                 if (!cell.date || cell.dayNum === null) {
                   return (
@@ -642,6 +720,8 @@ export default function MyTasksPage() {
                   </div>
                 );
               })}
+                </div>
+              </div>
             </div>
 
             {/* Day Popover / Selected Day Tasks */}

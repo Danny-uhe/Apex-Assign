@@ -137,9 +137,26 @@ model Task {
 
   attachments TaskAttachment[]
   comments    Comment[]
+  subtasks    Subtask[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([projectId, isArchived])
+  @@index([assignedToId, status])
+  @@index([dueDate])
+}
+
+model Subtask {
+  id        String   @id @default(cuid())
+  title     String
+  isDone    Boolean  @default(false)
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
 }
 
 model TaskAttachment {

@@ -63,9 +63,25 @@ app.use(httpLogger);
 app.set("trust proxy", 1);
 app.use("/api/", apiLimiter);
 
-// ── Health check (used by Render) ──────────────────────────────────────────
+// ── Health & Readiness checks (used by Render / monitors) ──────────────────
 app.get("/api/health", (_, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.get("/api/health/ready", async (_, res) => {
+  try {
+    const { prisma } = await import("./config/prisma.js");
+    const { isRedisReady } = await import("./config/redis.js");
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({
+      status: "ready",
+      db: "ok",
+      redis: isRedisReady() ? "ok" : "degraded",
+      timestamp: new Date().toISOString(),
+    });
+  } catch {
+    res.status(503).json({ status: "not_ready", db: "error" });
+  }
 });
 
 // ── Swagger API Docs (admin-only in production) ────────────────────────────
@@ -98,21 +114,26 @@ app.get("/", (_, res) => {
 // Serve task attachments ONLY to authenticated project members
 app.get("/uploads/tasks/:fileName", authenticate, downloadAttachment);
 
-app.use("/api/auth", authLimiter, authRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api", taskRoutes);
-app.use("/api/personal-tasks", personalTaskRoutes);
-app.use("/api", commentRoutes);
-app.use("/api/notifications", notificationRoutes);
-app.use("/api/invitations", invitationRoutes);
-app.use("/api/organisation", orgRoutes);
-app.use("/api/projects/:projectId/messages", chatLimiter, messageRoutes);
-app.use("/api/activity", activityRoutes);
-app.use("/api/leaderboard", leaderboardRoutes);
-app.use("/api/chat", chatLimiter, globalMessageRoutes);
-app.use("/api/dm", chatLimiter, directMessageRoutes);
-app.use("/api/oauth", oauthRoutes);
+// Mount all API routes under /api/v1 and /api (backward-compatible alias)
+const apiRouter = express.Router();
+apiRouter.use("/auth", authLimiter, authRoutes);
+apiRouter.use("/users", userRoutes);
+apiRouter.use("/projects", projectRoutes);
+apiRouter.use("/", taskRoutes);
+apiRouter.use("/personal-tasks", personalTaskRoutes);
+apiRouter.use("/", commentRoutes);
+apiRouter.use("/notifications", notificationRoutes);
+apiRouter.use("/invitations", invitationRoutes);
+apiRouter.use("/organisation", orgRoutes);
+apiRouter.use("/projects/:projectId/messages", chatLimiter, messageRoutes);
+apiRouter.use("/activity", activityRoutes);
+apiRouter.use("/leaderboard", leaderboardRoutes);
+apiRouter.use("/chat", chatLimiter, globalMessageRoutes);
+apiRouter.use("/dm", chatLimiter, directMessageRoutes);
+apiRouter.use("/oauth", oauthRoutes);
+
+app.use("/api/v1", apiRouter);
+app.use("/api", apiRouter);
 
 // ── Centralized Error Handler ──────────────────────────────────────────────
 app.use(errorHandler);

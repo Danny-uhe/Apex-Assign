@@ -3,6 +3,7 @@ import { X, CalendarDays, Upload, Trash2, FileText, ImageIcon, File, UserCircle2
 import toast from 'react-hot-toast';
 import { useTaskContext } from '@/app/Providers/TaskContext';
 import { projectService, type ApiProject } from '@/services/project.service';
+import { taskService } from '../services/task.service';
 import api from '@/lib/axios';
 import type { TaskStatus, TaskPriority } from '../types/types';
 
@@ -21,7 +22,7 @@ const statuses: { value: TaskStatus; label: string }[] = [
   { value: 'done',        label: 'Done'        },
 ];
 
-type AttachedFile = { name: string; size: string; type: 'pdf' | 'image' | 'file' };
+type AttachedFile = { name: string; size: string; type: 'pdf' | 'image' | 'file'; file: File };
 type Member = { id: string; name: string; avatar?: string | null; role?: string };
 
 function fileIcon(type: AttachedFile['type']) {
@@ -108,7 +109,7 @@ export default function AddTaskModal() {
     setAttachments((prev) => [
       ...prev,
       ...Array.from(files).map((f) => ({
-        name: f.name, size: fmt(f.size), type: guessType(f.name),
+        name: f.name, size: fmt(f.size), type: guessType(f.name), file: f,
       })),
     ]);
   };
@@ -117,7 +118,7 @@ export default function AddTaskModal() {
     if (!title.trim() || !projectId) return;
     setSaving(true);
     try {
-      await addTask(projectId, {
+      const created = await addTask(projectId, {
         title:        title.trim(),
         description:  description.trim() || undefined,
         priority,
@@ -126,6 +127,16 @@ export default function AddTaskModal() {
         points:       0,
         assignedToId: assignedToId || undefined,
       });
+      if (attachments.length > 0 && created?.id) {
+        try {
+          await taskService.uploadAttachments(
+            created.id,
+            attachments.map((a) => a.file)
+          );
+        } catch {
+          toast.error('Task created, but attachment upload failed (only PDF, PNG, JPG, DOCX allowed).');
+        }
+      }
       toast.success('Task created');
       reset();
       closeAddTask();

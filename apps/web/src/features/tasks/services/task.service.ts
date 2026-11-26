@@ -1,9 +1,30 @@
+import axios from "axios";
 import api from "@/lib/axios";
+import { useAuthStore } from "@/store/authStore";
 
 // ── Types matching the backend schema ────────────────────────────────────────
 
 export type TaskStatus   = "todo" | "in_progress" | "in_review" | "done";
 export type TaskPriority = "low" | "medium" | "high";
+
+export interface ApiSubtask {
+  id: string;
+  title: string;
+  isDone: boolean;
+  taskId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ApiAttachment {
+  id: string;
+  fileName: string;
+  originalName: string;
+  mimeType: string;
+  fileSize: number;
+  fileUrl: string;
+  createdAt: string;
+}
 
 export interface ApiTask {
   id:           string;
@@ -92,5 +113,54 @@ export const taskService = {
 
   restoreTask(taskId: string) {
     return api.patch<{ success: boolean; task: ApiTask }>(`/tasks/${taskId}/restore`);
+  },
+
+  // ── Subtasks ───────────────────────────────────────────────────────────────
+  getSubtasks(taskId: string) {
+    return api.get<{ success: boolean; subtasks: ApiSubtask[] }>(`/tasks/${taskId}/subtasks`);
+  },
+
+  createSubtask(taskId: string, title: string) {
+    return api.post<{ success: boolean; subtask: ApiSubtask }>(`/tasks/${taskId}/subtasks`, { title });
+  },
+
+  updateSubtask(subtaskId: string, payload: { title?: string; isDone?: boolean }) {
+    return api.patch<{ success: boolean; subtask: ApiSubtask }>(`/subtasks/${subtaskId}`, payload);
+  },
+
+  deleteSubtask(subtaskId: string) {
+    return api.delete<{ success: boolean }>(`/subtasks/${subtaskId}`);
+  },
+
+  // ── Attachments ────────────────────────────────────────────────────────────
+  getAttachments(taskId: string) {
+    return api.get<{ success: boolean; attachments: ApiAttachment[] }>(`/tasks/${taskId}/attachments`);
+  },
+
+  uploadAttachments(taskId: string, files: File[]) {
+    const formData = new FormData();
+    files.forEach((f) => formData.append("attachments", f));
+    return api.post<{ success: boolean; attachments: ApiAttachment[] }>(
+      `/tasks/${taskId}/attachments`,
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+  },
+
+  async downloadAttachment(fileUrl: string, originalName: string) {
+    const base = (api.defaults.baseURL ?? "http://localhost:5000/api").replace(/\/api\/?$/, "");
+    const token = useAuthStore.getState().accessToken;
+    const res = await axios.get<Blob>(`${base}${fileUrl}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      responseType: "blob",
+    });
+    const url = URL.createObjectURL(res.data);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = originalName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   },
 };

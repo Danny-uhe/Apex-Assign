@@ -7,9 +7,10 @@ import {
 
 import type { AppLayoutProps } from './AppLayout.types';
 import LogoPlaceholder from '@/components/ui/LogoPlaceholder';
-import AppHeader   from './AppHeader';
+import AppHeader    from './AppHeader';
 import AddTaskModal from '@/features/tasks/components/AddTaskModal';
 import PointsToast  from '@/features/shared/PointsToast';
+import SupportModal from '@/features/shared/SupportModal';
 import { useAuthStore }    from '@/store/authStore';
 import { authService }     from '@/features/auth/services/auth.services';
 import { useProjectStore } from '@/store/projectStore';
@@ -26,7 +27,7 @@ const allNavItems = [
   { to: '/archived',     icon: Archive,         label: 'Archived',     adminOnly: false },
 ];
 
-function SidebarContent({ onClose }: { onClose?: () => void }) {
+function SidebarContent({ onClose, onSupport }: { onClose?: () => void; onSupport: () => void }) {
   const navigate  = useNavigate();
   const { user, refreshToken, clearAuth } = useAuthStore();
   const isAdmin   = user?.systemRole === 'admin';
@@ -91,7 +92,11 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
           Settings
         </NavLink>
 
-        <button className='flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-400 hover:bg-white/5 hover:text-white'>
+        <button
+          type='button'
+          onClick={() => { onSupport(); onClose?.(); }}
+          className='flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-400 hover:bg-white/5 hover:text-white'
+        >
           <CircleHelp size={18} />
           Support
         </button>
@@ -110,13 +115,14 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
 
   return (
     <div className='flex min-h-screen bg-zinc-950 text-zinc-100'>
 
       {/* ── DESKTOP SIDEBAR ─── */}
       <aside className='fixed left-0 top-0 hidden h-screen w-64 flex-col lg:flex'>
-        <SidebarContent />
+        <SidebarContent onSupport={() => setSupportOpen(true)} />
       </aside>
 
       {/* ── MOBILE OVERLAY ─── */}
@@ -133,13 +139,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <SidebarContent onClose={() => setSidebarOpen(false)} />
+        <SidebarContent onClose={() => setSidebarOpen(false)} onSupport={() => setSupportOpen(true)} />
       </aside>
 
       {/* ── MAIN ─── */}
-      <div className='flex flex-1 flex-col lg:ml-64'>
+      <div className='flex min-w-0 flex-1 flex-col lg:ml-64'>
         <AppHeader onMenuClick={() => setSidebarOpen(true)} />
-        <main className='mt-16 flex-1 overflow-y-auto p-4 sm:p-6 lg:mt-20 lg:p-8'>
+        <main className='mt-16 min-w-0 flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 lg:mt-20 lg:p-8'>
           {children}
         </main>
       </div>
@@ -147,6 +153,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       {/* ── GLOBAL MODALS & TOASTS ── */}
       <AddTaskModal />
       <PointsToast />
+      <SupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </div>
   );
 }

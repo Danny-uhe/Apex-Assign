@@ -111,9 +111,22 @@ export default function AppHeader({ onMenuClick }: Props) {
       subtitle: 'Manage your account',
       action: 'edit',
     },
+    '/members': {
+      title: 'Members',
+      subtitle: 'Manage team members & roles',
+      action: 'profile',
+    },
+    '/organisation': {
+      title: 'Organisation',
+      subtitle: 'Workspace stats and member directory',
+      action: 'profile',
+    },
   };
 
-  const current = pages[location.pathname];
+  const current = pages[location.pathname] ??
+    (location.pathname.startsWith('/profile')
+      ? { title: 'Profile', subtitle: 'Member overview & stats', action: 'profile' }
+      : undefined);
 
   /* Leaderboard: full-width profile banner */
   if (isLeaderboard) {
@@ -133,7 +146,7 @@ export default function AppHeader({ onMenuClick }: Props) {
   return (
     <header className='fixed left-0 right-0 top-0 z-30 flex min-h-16 items-center justify-between border-b border-zinc-800 bg-zinc-950 px-4 shadow-sm sm:px-6 lg:left-64 lg:min-h-20 lg:px-8'>
       {/* Left: hamburger (mobile) + title */}
-      <div className='flex items-center gap-3'>
+      <div className='flex min-w-0 items-center gap-2 sm:gap-3'>
         <button
           onClick={onMenuClick}
           id='sidebar-hamburger-btn'

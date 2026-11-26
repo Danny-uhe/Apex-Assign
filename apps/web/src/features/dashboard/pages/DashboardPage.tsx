@@ -48,13 +48,13 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick stats */}
-          <div className='grid grid-cols-3 gap-4 lg:col-span-8'>
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 lg:col-span-8'>
             {[
               { label: 'To Do',       count: todoCount,       color: 'bg-zinc-800 text-zinc-300'    },
               { label: 'In Progress', count: inProgressCount, color: 'bg-orange-500/10 text-orange-500 dark:text-orange-400' },
               { label: 'Done',        count: doneCount,       color: 'bg-green-500/10 text-green-400' },
             ].map(({ label, count, color }) => (
-              <div key={label} className='rounded-2xl border border-zinc-700 bg-zinc-900 p-5 shadow-sm'>
+              <div key={label} className='rounded-2xl border border-zinc-700 bg-zinc-900 p-4 shadow-sm sm:p-5'>
                 <p className='text-sm text-zinc-400'>{label}</p>
                 <p className={`mt-2 inline-flex items-center rounded-full px-3 py-1 text-2xl font-bold ${color}`}>
                   {tasksLoading ? <Loader2 size={20} className='animate-spin' /> : count}
@@ -65,8 +65,8 @@ export default function DashboardPage() {
         </div>
 
         {/* ── Projects ── */}
-        <div className='rounded-2xl border border-zinc-700 bg-zinc-900 p-5 shadow-sm sm:p-6'>
-          <div className='mb-5 flex items-center justify-between'>
+        <div className='rounded-2xl border border-zinc-700 bg-zinc-900 p-4 shadow-sm sm:p-6'>
+          <div className='mb-5 flex flex-wrap items-center justify-between gap-3'>
             <h2 className='text-base font-semibold text-white sm:text-lg'>My Projects</h2>
             {isAdmin && (
               <button
@@ -183,8 +183,8 @@ export default function DashboardPage() {
         </div>
 
         {/* ── Recent tasks for active project ── */}
-        <div className='rounded-2xl border border-zinc-700 bg-zinc-900 p-5 shadow-sm sm:p-6'>
-          <div className='mb-5 flex items-center justify-between'>
+        <div className='rounded-2xl border border-zinc-700 bg-zinc-900 p-4 shadow-sm sm:p-6'>
+          <div className='mb-5 flex flex-wrap items-center justify-between gap-3'>
             <h2 className='text-base font-semibold text-white sm:text-lg'>
               Recent Tasks
               {activeProject && (

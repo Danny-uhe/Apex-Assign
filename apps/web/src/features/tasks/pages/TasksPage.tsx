@@ -197,12 +197,12 @@ export default function TasksPage() {
             <div
               className={`grid gap-5 ${
                 selectedTask
-                  ? 'grid-cols-1 md:grid-cols-[1fr_380px]'
+                  ? 'grid-cols-1 md:grid-cols-[1fr_340px] lg:grid-cols-[1fr_380px]'
                   : 'grid-cols-1'
               }`}
             >
               {/* Task list */}
-              <div className='space-y-3'>
+              <div className='min-w-0 space-y-3'>
                 {visibleTasks.length === 0 ? (
                   <div className='flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-700 py-16 text-zinc-500'>
                     <p className='text-sm font-medium'>No tasks in this category</p>
@@ -265,7 +265,7 @@ export default function TasksPage() {
                 </button>
               </div>
             ) : (
-            <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4'>
               <TaskColumn id='todo' title='To Do'>
                 {todo.map((task) => (
                   <TaskBoardCard key={task.id} task={task} onClick={(t) => setBoardDetailTask(t)} onEdit={(t) => { setBoardDetailTask(null); setEditTaskId(t.id); }} />

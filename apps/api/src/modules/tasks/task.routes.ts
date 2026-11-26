@@ -27,6 +27,12 @@ import {
   getAll as getComments,
   update as updateComment
 } from "../comments/comment.controller.js";
+import {
+  listSubtasks,
+  createSubtask,
+  updateSubtask,
+  deleteSubtask,
+} from "./subtask.controller.js";
 
 const router = Router();
 
@@ -106,5 +112,11 @@ router.post(
   multerUpload,
   upload
 );
+
+// Subtasks / Checklists
+router.get("/tasks/:taskId/subtasks", authenticate, listSubtasks);
+router.post("/tasks/:taskId/subtasks", authenticate, createSubtask);
+router.patch("/subtasks/:subtaskId", authenticate, updateSubtask);
+router.delete("/subtasks/:subtaskId", authenticate, deleteSubtask);
 
 export default router;

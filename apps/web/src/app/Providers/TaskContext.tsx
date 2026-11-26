@@ -54,7 +54,7 @@ type TaskContextType = {
   tasks:        Task[];
   loading:      boolean;
   refetch:      () => void;
-  addTask:      (projectId: string, data: Omit<Task, 'id' | 'projectId' | 'progress' | 'filter'>) => Promise<void>;
+  addTask:      (projectId: string, data: Omit<Task, 'id' | 'projectId' | 'progress' | 'filter'>) => Promise<Task>;
   updateTask:   (t: Task) => Promise<void>;
   deleteTask:   (projectId: string, id: string) => Promise<void>;
   archiveTask:  (id: string) => Promise<void>;
@@ -161,6 +161,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     const newTask = mapApiTask(res.data.task);
     setTasks((prev) => [newTask, ...prev]);
     addPoints(POINTS.TASK_CREATE, 'Task created');
+    return newTask;
   }, [addPoints]);
 
   // ── Update task ──────────────────────────────────────────────────────────

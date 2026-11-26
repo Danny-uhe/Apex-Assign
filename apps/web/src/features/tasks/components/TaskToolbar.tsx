@@ -12,9 +12,9 @@ export default function TaskToolbar({ view, onViewChange, search, onSearchChange
     <div className='mb-4 flex flex-wrap items-center justify-between gap-3'>
 
       {/* Left: search + view toggle */}
-      <div className='flex flex-wrap items-center gap-3'>
+      <div className='flex w-full flex-wrap items-center gap-3 sm:w-auto'>
         {/* Search */}
-        <div className='relative'>
+        <div className='relative min-w-0 flex-1 sm:w-64 sm:flex-initial'>
           <Search
             size={15}
             className='absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500'
@@ -24,7 +24,7 @@ export default function TaskToolbar({ view, onViewChange, search, onSearchChange
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder='Search tasks...'
-            className='h-10 w-full min-w-[180px] max-w-xs rounded-xl border border-zinc-700 bg-zinc-800 pl-9 pr-8 text-sm text-white placeholder-zinc-500 outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 sm:w-64'
+            className='h-10 w-full rounded-xl border border-zinc-700 bg-zinc-800 pl-9 pr-8 text-sm text-white placeholder-zinc-500 outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20'
           />
           {search && (
             <button
@@ -67,7 +67,7 @@ export default function TaskToolbar({ view, onViewChange, search, onSearchChange
       </div>
 
       {/* Right: assignee avatars + all members */}
-      <div className='flex items-center gap-3'>
+      <div className='hidden items-center gap-3 md:flex'>
         <div className='flex items-center -space-x-2'>
           {[
             { initials: 'RE', color: 'bg-orange-600' },
